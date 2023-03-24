@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <h2 className={roboto.className}>What’s the next right thing?</h2>
+      <h2 className={roboto.className}>What&apos;s the next right thing?</h2>
       {!selectingTodoistTasks && (
         <Input
           placeholder="type it here"

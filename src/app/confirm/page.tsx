@@ -36,7 +36,7 @@ export default function Confirm({ searchParams }) {
             task
           )}`}
         >
-          <p className={styles.todoistButtonText}>that's right!</p>
+          <p className={styles.todoistButtonText}>that&apos;s right!</p>
         </Link>
       </div>
     </main>

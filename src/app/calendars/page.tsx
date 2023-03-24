@@ -45,6 +45,7 @@ export default function Calendars({ searchParams }) {
 
   useEffect(() => {
     createEvent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // console.log({ addedToGoogleCalendar });
