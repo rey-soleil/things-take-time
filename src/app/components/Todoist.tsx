@@ -8,11 +8,14 @@ import styles from "../page.module.css";
 const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
 
 type TodoistTasksProps = {
-    selectedTask: Task | undefined;
-    setSelectedTask: (task: Task | undefined) => void;
-  };
+  selectedTask: Task | undefined;
+  setSelectedTask: (task: Task | undefined) => void;
+};
 
-export default function Todoist({ selectedTask, setSelectedTask }: TodoistTasksProps) {
+export default function Todoist({
+  selectedTask,
+  setSelectedTask,
+}: TodoistTasksProps) {
   const [tasks, setTasks] = useState<Task[]>();
 
   useEffect(() => {
@@ -23,7 +26,7 @@ export default function Todoist({ selectedTask, setSelectedTask }: TodoistTasksP
     <div className={styles.todoistTasks}>
       {tasks?.map((task) => (
         <Chip
-          size="medium"
+          size="large"
           sx={{ color: "white", fontSize: "20px" }}
           key={task.id}
           label={task.content}

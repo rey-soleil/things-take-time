@@ -5,8 +5,8 @@ import Input from "@mui/material/Input";
 import { Roboto } from "next/font/google";
 import Link from "next/link";
 import { useState } from "react";
+import Todoist from "./components/Todoist";
 import styles from "./page.module.css";
-import Todoist from "./todoist/page";
 
 const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 
@@ -16,7 +16,7 @@ export default function Home() {
   const [selectingTodoistTasks, setSelectingTodoistTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task>();
 
-  console.log({ eventName, selectingTodoistTasks, selectedTask });
+  // console.log({ eventName, selectingTodoistTasks, selectedTask });
 
   return (
     <main className={styles.main}>
@@ -52,10 +52,9 @@ export default function Home() {
       {(eventName || selectedTask) && (
         <div className={`${roboto.className} ${styles.todoistButton}`}>
           <Link
-            href={`/stopwatch?eventName=${eventName}&task=${JSON.stringify({
-              id: selectedTask?.id,
-              content: selectedTask?.content,
-            })}`}
+            href={`/stopwatch?eventName=${eventName}&task=${JSON.stringify(
+              selectedTask
+            )}`}
           >
             <p className={styles.todoistButtonText}>next</p>
           </Link>

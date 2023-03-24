@@ -29,6 +29,12 @@
   text-align: center;
   width: 80%;
   max-width: 300px;
+  cursor: pointer;
+  margin: 0 2vw;
+}
+
+.todoistTasks {
+  max-width: 100%;
 }
 
 .eventNameChip {
@@ -36,6 +42,24 @@
   background-color: blue;
   padding: 20px;
   border-radius: 50px;
+}
+
+.bigClockText {
+  font-size: 10vmax;
+}
+
+.stopwatchButtons {
+  display: flex;
+}
+
+.calendar > * {
+  margin-bottom: 10vh;
+}
+
+.calendarUpdateRow {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  align-items: center;
 }
 
 .description {
