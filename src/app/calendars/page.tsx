@@ -4,6 +4,7 @@ import { TodoistApi } from "@doist/todoist-api-typescript";
 import CheckIcon from "@mui/icons-material/Check";
 import { Roboto } from "next/font/google";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import styles from "../page.module.css";
@@ -11,15 +12,21 @@ import styles from "../page.module.css";
 const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
 
-export default function Calendars({ searchParams }: any) {
+export default function Calendars() {
   const [addedToGoogleCalendar, setAddedToGoogleCalendar] = useState(false);
   const [addedToTodoist, setAddedToTodoist] = useState(false);
 
-  let { startTime, eventName, task } = searchParams;
+  const searchParams = useSearchParams();
+
+  let startTime: any = searchParams.get("startTime");
+  let eventName: any = searchParams.get("eventName");
+  let task: any = searchParams.get("task");
 
   if (eventName === "undefined") eventName = undefined;
   if (task === "undefined") task = undefined;
   if (task) task = JSON.parse(task);
+
+  console.log({ startTime, eventName, task });
 
   async function createEvent() {
     const body = JSON.stringify({

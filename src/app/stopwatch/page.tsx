@@ -2,24 +2,28 @@
 
 import { Roboto } from "next/font/google";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "../page.module.css";
 import { formatAsString } from "../utils";
 
 const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 
-export default function Stopwatch({ searchParams }: any) {
+export default function Stopwatch() {
   const [startTime, setStartTime] = useState<number | null>();
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>();
 
-  let { eventName, task } = searchParams;
+  const searchParams = useSearchParams();
 
-  console.log({ searchParams });
+  let eventName: any = searchParams.get("eventName");
+  let task: any = searchParams.get("task");
 
   if (eventName === "undefined") eventName = undefined;
   if (task === "undefined") task = undefined;
   if (task) task = JSON.parse(task);
+
+  console.log({ eventName, task });
 
   useEffect(() => {
     const maybeStartTime = window.localStorage.getItem("startTime");
