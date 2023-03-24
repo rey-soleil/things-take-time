@@ -1,91 +1,66 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+"use client";
 
-const inter = Inter({ subsets: ['latin'] })
+import { Task } from "@doist/todoist-api-typescript";
+import Input from "@mui/material/Input";
+import { Roboto } from "next/font/google";
+import Link from "next/link";
+import { useState } from "react";
+import styles from "./page.module.css";
+import Todoist from "./todoist/page";
+
+const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 
 export default function Home() {
+  const [eventName, setEventName] = useState<string | undefined>();
+
+  const [selectingTodoistTasks, setSelectingTodoistTasks] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task>();
+
+  console.log({ eventName, selectingTodoistTasks, selectedTask });
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      <h2 className={roboto.className}>What’s the next right thing?</h2>
+      {!selectingTodoistTasks && (
+        <Input
+          placeholder="type it here"
+          onChange={({ target }) => setEventName(target.value)}
+          sx={{ color: "white", fontSize: "45px", alignContent: "center" }}
+        ></Input>
+      )}
+      {!eventName && !selectingTodoistTasks && (
+        <>
+          <h2 className={roboto.className}>
+            <i>or</i>
+          </h2>
+          <div
+            className={`${roboto.className} ${styles.todoistButton}`}
+            onClick={() => setSelectingTodoistTasks(true)}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+            <p className={styles.todoistButtonText}>
+              choose from Todoist tasks
+            </p>
+          </div>
+        </>
+      )}
+      {!eventName && selectingTodoistTasks && (
+        <Todoist
+          selectedTask={selectedTask}
+          setSelectedTask={setSelectedTask}
         />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
+      )}
+      {(eventName || selectedTask) && (
+        <div className={`${roboto.className} ${styles.todoistButton}`}>
+          <Link
+            href={`/stopwatch?eventName=${eventName}&task=${JSON.stringify({
+              id: selectedTask?.id,
+              content: selectedTask?.content,
+            })}`}
+          >
+            <p className={styles.todoistButtonText}>next</p>
+          </Link>
         </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      )}
     </main>
-  )
+  );
 }
