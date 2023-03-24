@@ -3,7 +3,7 @@
 import { Roboto } from "next/font/google";
 import Link from "next/link";
 import styles from "../page.module.css";
-import { formatAsString } from "../stopwatch/page";
+import { formatAsString } from "../utils";
 
 const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 

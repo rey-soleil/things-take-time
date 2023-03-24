@@ -4,25 +4,13 @@ import { Roboto } from "next/font/google";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "../page.module.css";
+import { formatAsString } from "../utils";
 
 const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 
 type StopwatchParams = {
   searchParams?: { [key: string]: string | string[] | undefined };
 };
-
-export function formatAsString(time: number) {
-  const seconds = Math.floor(time / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  let timeString =
-    hours > 0 ? `${(hours % 24).toString().padStart(2, "0")}:` : "";
-  return timeString.concat(
-    `${(minutes % 60).toString().padStart(2, "0")}:${(seconds % 60)
-      .toString()
-      .padStart(2, "0")}`
-  );
-}
 
 export default function Stopwatch({ searchParams }: StopwatchParams) {
   const [startTime, setStartTime] = useState<number | null>();
