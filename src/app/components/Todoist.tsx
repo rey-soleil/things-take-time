@@ -26,7 +26,7 @@ export default function Todoist({
     <div className={styles.todoistTasks}>
       {tasks?.map((task) => (
         <Chip
-          size="large"
+          size="medium"
           sx={{ color: "white", fontSize: "20px" }}
           key={task.id}
           label={task.content}

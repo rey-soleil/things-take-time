@@ -11,7 +11,7 @@ import styles from "../page.module.css";
 const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
 
-export default function Calendars({ searchParams }) {
+export default function Calendars({ searchParams }: any) {
   const [addedToGoogleCalendar, setAddedToGoogleCalendar] = useState(false);
   const [addedToTodoist, setAddedToTodoist] = useState(false);
 

@@ -7,7 +7,7 @@ import { formatAsString } from "../utils";
 
 const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 
-export default function Confirm({ searchParams }) {
+export default function Confirm({ searchParams }: any) {
   let { startTime, timeElapsed, eventName, task } = searchParams;
 
   if (eventName === "undefined") eventName = undefined;

@@ -8,11 +8,7 @@ import { formatAsString } from "../utils";
 
 const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 
-type StopwatchParams = {
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
-export default function Stopwatch({ searchParams }: StopwatchParams) {
+export default function Stopwatch({ searchParams }: any) {
   const [startTime, setStartTime] = useState<number | null>();
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>();
