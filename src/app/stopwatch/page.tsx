@@ -15,6 +15,8 @@ export default function Stopwatch({ searchParams }: any) {
 
   let { eventName, task } = searchParams;
 
+  console.log({ searchParams });
+
   if (eventName === "undefined") eventName = undefined;
   if (task === "undefined") task = undefined;
   if (task) task = JSON.parse(task);
