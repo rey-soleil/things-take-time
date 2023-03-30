@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     },
     // This color is green
     // See https://lukeboyle.com/blog/posts/google-calendar-api-color-id
-    colorId: 2,
+    colorId: body.colorId,
   };
 
   console.log({ event });

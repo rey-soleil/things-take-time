@@ -56,6 +56,10 @@
   margin-bottom: 10vh;
 }
 
+.colorCircle {
+  font-size: large;
+}
+
 .calendarUpdateRow {
   display: grid;
   grid-template-columns: 1fr 4fr;

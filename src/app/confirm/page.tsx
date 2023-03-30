@@ -3,6 +3,7 @@
 import { Roboto } from "next/font/google";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import Colors from "../components/Colors";
 import styles from "../page.module.css";
 import { formatAsString } from "../utils";
 
@@ -38,6 +39,7 @@ export default function Confirm() {
       <div className={`${roboto.className} ${styles.bigClockText}`}>
         {formatAsString(timeElapsed)}
       </div>
+      <Colors />
       <div className={`${roboto.className} ${styles.todoistButton}`}>
         <Link
           href={`calendars?startTime=${startTime}&eventName=${eventName}&task=${JSON.stringify(
