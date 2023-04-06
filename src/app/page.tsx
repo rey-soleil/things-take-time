@@ -25,7 +25,8 @@ export default function Home() {
         <Input
           placeholder="type it here"
           onChange={({ target }) => setEventName(target.value)}
-          sx={{ color: "white", fontSize: "45px", alignContent: "center" }}
+          sx={{ color: "white", fontSize: "45px" }}
+          inputProps={{ style: { textAlign: "center" } }}
         ></Input>
       )}
       {!eventName && !selectingTodoistTasks && (
