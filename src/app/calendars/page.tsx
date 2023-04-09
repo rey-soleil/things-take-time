@@ -21,12 +21,15 @@ export default function Calendars() {
   let startTime: any = searchParams.get("startTime");
   let eventName: any = searchParams.get("eventName");
   let task: any = searchParams.get("task");
+  let taskComplete: any = JSON.parse(
+    searchParams.get("taskComplete") || "false"
+  );
 
   if (eventName === "undefined") eventName = undefined;
   if (task === "undefined") task = undefined;
   if (task) task = JSON.parse(task);
 
-  console.log({ startTime, eventName, task });
+  // console.log({ startTime, eventName, task, taskComplete });
 
   async function createEvent() {
     const body = JSON.stringify({
@@ -46,8 +49,10 @@ export default function Calendars() {
     //   "Attempted to create Google Calendar event. Response is ",
     //   response
     // );
-    task && task.id && (await api.closeTask(task.id));
-    setAddedToTodoist(true);
+    if (task && task.id && taskComplete) {
+      await api.closeTask(task.id);
+      setAddedToTodoist(true);
+    }
   }
 
   useEffect(() => {
@@ -68,20 +73,22 @@ export default function Calendars() {
           )}
           <h1 className={roboto.className}>Adding to Google Calendar</h1>
         </div>
-        <div className={styles.calendarUpdateRow}>
-          {addedToTodoist ? (
-            <CheckIcon fontSize="large" sx={{ color: "white" }} />
-          ) : (
-            <ClipLoader color="white" />
-          )}{" "}
-          <h1 className={roboto.className}>Marking Todoist task complete</h1>
-        </div>
-        {addedToGoogleCalendar && addedToTodoist && (
+        {taskComplete && (
+          <div className={styles.calendarUpdateRow}>
+            {addedToTodoist ? (
+              <CheckIcon fontSize="large" sx={{ color: "white" }} />
+            ) : (
+              <ClipLoader color="white" />
+            )}{" "}
+            <h1 className={roboto.className}>Marking Todoist task complete</h1>
+          </div>
+        )}
+        {addedToGoogleCalendar && (addedToTodoist || !taskComplete) && (
           <h1 className={roboto.className}>
             Congratulations! You’ve completed your task.
           </h1>
         )}
-        {addedToGoogleCalendar && addedToTodoist && (
+        {addedToGoogleCalendar && (addedToTodoist || !taskComplete) && (
           <div className={`${roboto.className} ${styles.todoistButton}`}>
             <Link href={`/`}>
               <p className={styles.todoistButtonText}>do another</p>

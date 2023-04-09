@@ -27,5 +27,8 @@
     "react-dom": "^18.2.0",
     "react-spinners": "^0.13.8",
     "typescript": "^5.0.2"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.1"
   }
 }
