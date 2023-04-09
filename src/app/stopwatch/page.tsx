@@ -23,7 +23,7 @@ export default function Stopwatch() {
   if (task === "undefined") task = undefined;
   if (task) task = JSON.parse(task);
 
-  console.log({ eventName, task });
+  // console.log({ eventName, task });
 
   useEffect(() => {
     const maybeStartTime = window.localStorage.getItem("startTime");

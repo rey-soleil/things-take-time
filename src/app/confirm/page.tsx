@@ -1,14 +1,17 @@
 "use client";
 
+import { Checkbox, FormControlLabel } from "@mui/material";
 import { Roboto } from "next/font/google";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import styles from "../page.module.css";
 import { formatAsString } from "../utils";
 
 const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 
 export default function Confirm() {
+  const [taskComplete, setTaskComplete] = useState(true);
   const searchParams = useSearchParams();
 
   let startTime: any = searchParams.get("startTime");
@@ -20,7 +23,7 @@ export default function Confirm() {
   if (task === "undefined") task = undefined;
   if (task) task = JSON.parse(task);
 
-  console.log({ startTime, eventName, task, timeElapsed });
+  // console.log({ startTime, eventName, task, timeElapsed });
 
   return (
     <main className={styles.main}>
@@ -38,11 +41,20 @@ export default function Confirm() {
       <div className={`${roboto.className} ${styles.bigClockText}`}>
         {formatAsString(timeElapsed)}
       </div>
+      <div className={`${roboto.className}`}>
+        <FormControlLabel
+          label="This task is complete"
+          control={
+            <Checkbox style={{ color: "white" }} checked={taskComplete} />
+          }
+          onChange={() => setTaskComplete(!taskComplete)}
+        />
+      </div>
       <div className={`${roboto.className} ${styles.todoistButton}`}>
         <Link
           href={`calendars?startTime=${startTime}&eventName=${eventName}&task=${JSON.stringify(
             task
-          )}`}
+          )}&taskComplete=${taskComplete}`}
         >
           <p className={styles.todoistButtonText}>that&apos;s right!</p>
         </Link>
