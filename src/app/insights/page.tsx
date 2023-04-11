@@ -2,6 +2,7 @@
 
 import _ from "lodash";
 import { useEffect, useState } from "react";
+import HeatMap from "../components/HeatMap";
 
 type Event = { id: string; summary: string };
 
@@ -55,7 +56,7 @@ function convertToHeatMap(events: Event[]) {
 
 export default function Insights() {
   const [events, setEvents] = useState<Event[]>();
-  const [groupedEvents, setGroupedEvents] = useState(); // useState<[string, Event[]][]>();
+  const [groupedEvents, setGroupedEvents] = useState<[string, Event[]][]>();
 
   function groupEvents(events: Event[]) {
     const groupedEvents = _(events)
@@ -94,7 +95,7 @@ export default function Insights() {
         groupedEvents.map(([summary, events]) => (
           <div key={summary}>
             <h2>{summary}</h2>
-            <ul>{JSON.stringify(convertToHeatMap(events))}</ul>
+            <HeatMap heatmap={convertToHeatMap(events)} />
           </div>
         ))}
     </div>
