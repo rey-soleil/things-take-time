@@ -57,7 +57,9 @@ export default function Stopwatch() {
     <main className={styles.main}>
       <div className={styles.eventNameChip}>
         <h1 className={roboto.className}>
-          {eventName ? eventName : task ? task.content : ""}
+          <div className="text-3xl">
+            {eventName ? eventName : task ? task.content : ""}
+          </div>
         </h1>
       </div>
       <div className={`${roboto.className} ${styles.bigClockText}`}>
