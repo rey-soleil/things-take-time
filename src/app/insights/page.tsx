@@ -42,7 +42,7 @@ export default function Insights() {
             ))}
           </Select>
         </FormControl>
-        {activity !== "" && <HeatMap heatmap={heatmaps[activity]} />}
+        {activity !== "" && <HeatMap activity={activity} heatmap={heatmaps[activity]} />}
       </div>
     </div>
   );
