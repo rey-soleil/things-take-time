@@ -41,15 +41,17 @@ export default function Confirm() {
       <div className={`${roboto.className} ${styles.bigClockText}`}>
         {formatAsString(timeElapsed)}
       </div>
-      <div className={`${roboto.className}`}>
-        <FormControlLabel
-          label="This task is complete"
-          control={
-            <Checkbox style={{ color: "white" }} checked={taskComplete} />
-          }
-          onChange={() => setTaskComplete(!taskComplete)}
-        />
-      </div>
+      {task && (
+        <div className={`${roboto.className}`}>
+          <FormControlLabel
+            label="This task is complete"
+            control={
+              <Checkbox style={{ color: "white" }} checked={taskComplete} />
+            }
+            onChange={() => setTaskComplete(!taskComplete)}
+          />
+        </div>
+      )}
       <div className={`${roboto.className} ${styles.todoistButton}`}>
         <Link
           href={`calendars?startTime=${startTime}&eventName=${eventName}&task=${JSON.stringify(
