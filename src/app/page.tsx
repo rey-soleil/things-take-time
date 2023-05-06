@@ -16,8 +16,6 @@ export default function Home() {
   const [selectingTodoistTasks, setSelectingTodoistTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task>();
 
-  // console.log({ eventName, selectingTodoistTasks, selectedTask });
-
   return (
     <main className={styles.main}>
       <h2 className={roboto.className}>What&apos;s the next right thing?</h2>

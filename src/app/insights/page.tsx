@@ -3,6 +3,7 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 import HeatMap from "../components/HeatMap";
+import RecentTasks from "../components/RecentTasks";
 
 /*
  * The Insights page allows the user to see when they tend to do each activity on their calendar.
@@ -10,6 +11,8 @@ import HeatMap from "../components/HeatMap";
  */
 export default function Insights() {
   const [activity, setActivity] = useState<string>("");
+
+  if (typeof window === "undefined") return <div>Loading...</div>;
 
   // TODO: After the UI is implemented, think of how to efficiently
   // 1. Get events from /api/insights
@@ -42,7 +45,10 @@ export default function Insights() {
             ))}
           </Select>
         </FormControl>
-        {activity !== "" && <HeatMap activity={activity} heatmap={heatmaps[activity]} />}
+        {activity !== "" && (
+          <HeatMap activity={activity} heatmap={heatmaps[activity]} />
+        )}
+        <RecentTasks />
       </div>
     </div>
   );
