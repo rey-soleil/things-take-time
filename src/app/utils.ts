@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { GCalEvent } from "./insights/page";
 
 type Task = {
@@ -42,10 +43,10 @@ export function date(task: Task) {
     .slice(4, 10)}`;
 }
 
-// This function accepts an array of GCalEvents and finds
-//  the most recent (up to) 10 tasks completed using next-right-thing.
-export function findMostRecentTasks(events: GCalEvent[]) {
-  events = events
+// This function filters out all-day events and events without descriptions,
+// then sorts them in reverse chronological order.
+export function filterAndSortEvents(events: GCalEvent[]): Task[] {
+  return events
     .filter(
       (event) =>
         event &&
@@ -58,7 +59,30 @@ export function findMostRecentTasks(events: GCalEvent[]) {
     )
     .sort((a, b) =>
       (a?.start?.dateTime ?? 0) > (b?.start?.dateTime ?? 0) ? -1 : 1
-    );
+    ) as Task[];
+}
 
-  return events.slice(0, Math.min(10, events.length));
+// Returns a map from dates to lists of events on that date.
+// Eg. groupEventsByDate["Fri Apr 14 2023"] = [{...}, {...}, {...}]
+export function groupEventsByDate(events: GCalEvent[]) {
+  return _(filterAndSortEvents(events))
+    .groupBy((event) => new Date(event.start.dateTime).toDateString())
+    .valueOf();
+}
+
+// Retrives the total time logged today in milliseconds.
+export function getTimeLoggedToday(events: GCalEvent[]) {
+  return (
+    1000 *
+    groupEventsByDate(events)[new Date().toDateString()]?.reduce(
+      (a, b) => a + duration(b),
+      0
+    )
+  );
+}
+
+// This function accepts an array of GCalEvents and finds
+//  the most recent (up to) 10 tasks completed using next-right-thing.
+export function findMostRecentTasks(events: GCalEvent[]) {
+  return filterAndSortEvents(events).slice(0, Math.min(10, events.length));
 }
