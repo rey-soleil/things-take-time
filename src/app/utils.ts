@@ -1,4 +1,10 @@
-import { Task } from "./components/RecentTasks";
+import { GCalEvent } from "./insights/page";
+
+type Task = {
+  start: { dateTime: string };
+  end: { dateTime: string };
+  description: string;
+};
 
 // Converts a time in milliseconds to a string in the format HH:MM:SS
 export function formatAsString(time: number) {
@@ -34,4 +40,25 @@ export function date(task: Task) {
   return `${startTime.toDateString().slice(0, 3)} ${startTime
     .toDateString()
     .slice(4, 10)}`;
+}
+
+// This function accepts an array of GCalEvents and finds
+//  the most recent (up to) 10 tasks completed using next-right-thing.
+export function findMostRecentTasks(events: GCalEvent[]) {
+  events = events
+    .filter(
+      (event) =>
+        event &&
+        event.start &&
+        event.start.dateTime &&
+        event.end &&
+        event.end.dateTime &&
+        event.description &&
+        event.description === "made with next-right-thing"
+    )
+    .sort((a, b) =>
+      (a?.start?.dateTime ?? 0) > (b?.start?.dateTime ?? 0) ? -1 : 1
+    );
+
+  return events.slice(0, Math.min(10, events.length));
 }
