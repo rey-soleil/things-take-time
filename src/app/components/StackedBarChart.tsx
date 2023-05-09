@@ -64,7 +64,15 @@ export default function StackedBarChart({
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />
-        <Tooltip />
+        <Tooltip
+          formatter={(value) =>
+            (value as number) > 60
+              ? `${Math.floor((value as number) / 60)}h ${
+                  (value as number) % 60
+                }m`
+              : `${value}m`
+          }
+        />
         <Legend />
         {mostCommonTasks.map((task, i) => (
           <Bar key={task} dataKey={task} stackId="a" fill={colors[i]} />
