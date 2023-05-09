@@ -13,7 +13,7 @@ export type GCalEvent = {
 };
 
 /*
- * TODO: fill out
+ * Insights is a page with multiple components giving users insights into their time management.
  */
 export default function Insights() {
   // events: an array of events obtained by calling the Google Calendar API
@@ -29,8 +29,6 @@ export default function Insights() {
   useEffect(() => {
     loadEvents();
   }, []);
-
-  console.log("in insights.tsx, events = ", events);
 
   return (
     <div className="flex flex-col items-center m-6">

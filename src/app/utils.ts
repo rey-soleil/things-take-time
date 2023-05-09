@@ -1,5 +1,6 @@
 import { Task } from "./components/RecentTasks";
 
+// Converts a time in milliseconds to a string in the format HH:MM:SS
 export function formatAsString(time: number) {
   const seconds = Math.floor(time / 1000);
   const minutes = Math.floor(seconds / 60);
@@ -13,13 +14,14 @@ export function formatAsString(time: number) {
   );
 }
 
+// Compute a duration in minutes given a startTime and endTime
 export function duration(task: Task) {
-  // Compute a duration in minutes given a startTime and endTime
   const startTime = new Date(task.start.dateTime);
   const endTime = new Date(task.end.dateTime);
   return Math.floor((endTime.getTime() - startTime.getTime()) / 1000 / 60);
 }
 
+// Given a task with a date, formats its date like "Mon Jun 4"
 export function date(task: Task) {
   const startTime = new Date(task.start.dateTime);
   if (startTime.toDateString() === new Date().toDateString()) {
@@ -29,7 +31,6 @@ export function date(task: Task) {
   ) {
     return "yesterday";
   }
-  // Format date like Mon Jun 4
   return `${startTime.toDateString().slice(0, 3)} ${startTime
     .toDateString()
     .slice(4, 10)}`;
