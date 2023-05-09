@@ -5,7 +5,27 @@ type Task = {
   start: { dateTime: string };
   end: { dateTime: string };
   description: string;
+  summary: string;
 };
+
+/* Cluster related event summaries,
+ * e.g. "meditate ☀️", "meditate" => "meditate"
+ * This is obviously unique to Rey and needs to be adapted for other users.
+ */
+export function cluster(summary: string) {
+  if (summary === undefined) return "";
+  if (summary.startsWith("meditate")) return "meditate";
+  if (summary === "gym" || summary.startsWith("exercise")) return "exercise";
+  if (summary.startsWith("read")) return "read";
+  if (summary.startsWith("journal")) return "journal";
+  if (summary.includes("dinner")) return "dinner";
+  if (summary.startsWith("code")) return "code";
+  if (summary.includes("piano")) return "piano";
+  if (summary.includes("walk")) return "walk";
+  if (summary.includes(" w ")) return "social";
+  if (summary.startsWith("climb")) return "climb";
+  return summary;
+}
 
 // Converts a time in milliseconds to a string in the format HH:MM:SS
 export function formatAsString(time: number) {
@@ -67,6 +87,24 @@ export function filterAndSortEvents(events: GCalEvent[]): Task[] {
 export function groupEventsByDate(events: GCalEvent[]) {
   return _(filterAndSortEvents(events))
     .groupBy((event) => new Date(event.start.dateTime).toDateString())
+    .valueOf();
+}
+
+// Returns a map from dates to a map from task category to its duration.
+// Eg. getTaskDurationByDate["Fri Apr 14 2023"] = { "meditate": 65000, "code": 120000 }
+export function getTaskDurationByDate(events: GCalEvent[]) {
+  return _(groupEventsByDate(events))
+    .mapValues((events) => {
+      const taskClusters = new Map<string, number>();
+      events.forEach((event) => {
+        const taskCluster = cluster(event.summary);
+        taskClusters.set(
+          taskCluster,
+          (taskClusters.get(taskCluster) || 0) + duration(event)
+        );
+      });
+      return taskClusters;
+    })
     .valueOf();
 }
 
