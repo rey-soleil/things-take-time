@@ -91,17 +91,15 @@ export function groupEventsByDate(events: GCalEvent[]) {
 }
 
 // Returns a map from dates to a map from task category to its duration.
-// Eg. getTaskDurationByDate["Fri Apr 14 2023"] = { "meditate": 65000, "code": 120000 }
+// Eg. getTaskDurationByDate["Fri Apr 14 2023"] = { "meditate": 65, "code": 120 }
 export function getTaskDurationByDate(events: GCalEvent[]) {
   return _(groupEventsByDate(events))
     .mapValues((events) => {
-      const taskClusters = new Map<string, number>();
+      const taskClusters = {};
       events.forEach((event) => {
         const taskCluster = cluster(event.summary);
-        taskClusters.set(
-          taskCluster,
-          (taskClusters.get(taskCluster) || 0) + duration(event)
-        );
+        (taskClusters as any)[taskCluster] =
+          ((taskClusters as any)[taskCluster] || 0) + duration(event);
       });
       return taskClusters;
     })

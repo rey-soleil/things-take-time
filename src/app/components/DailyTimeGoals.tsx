@@ -7,6 +7,7 @@ import {
   getTaskDurationByDate,
   getTimeLoggedToday,
 } from "../utils";
+import StackedBarChart from "./StackedBarChart";
 
 type DailyTimeGoalsProps = {
   events: GCalEvent[];
@@ -16,6 +17,7 @@ export default function DailyTimeGoals({ events }: DailyTimeGoalsProps) {
   // This is the total time logged today, in milliseconds.
   const [timeLoggedToday, setTimeLoggedToday] = useState(0);
 
+  // eg. taskDurationByDate["Fri Apr 14 2023"] = { "meditate": 65, "code": 120 }
   const [taskDurationByDate, setTaskDurationByDate] = useState({});
 
   useEffect(() => {
@@ -23,18 +25,12 @@ export default function DailyTimeGoals({ events }: DailyTimeGoalsProps) {
     setTaskDurationByDate(getTaskDurationByDate(events));
   }, [events]);
 
-  console.log({
-    taskDurationByDate,
-    today: new Date().toDateString(),
-    values: taskDurationByDate[new Date().toDateString()],
-  });
-
   return (
     <>
       <div className="text-6xl">
         You&apos;ve logged {formatAsString(timeLoggedToday)} today
       </div>
-      <div>{JSON.stringify(taskDurationByDate[new Date().toDateString()])}</div>
+      <StackedBarChart taskDurationByDate={taskDurationByDate} />
     </>
   );
 }
