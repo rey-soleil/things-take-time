@@ -7,7 +7,7 @@ import {
   getTaskDurationByDate,
   getTimeLoggedToday,
 } from "../utils";
-import StackedBarChart from "./StackedBarChart";
+import ActivitiesFromLast7Days from "./ActivitiesFromLast7Days";
 
 type DailyTimeGoalsProps = {
   events: GCalEvent[];
@@ -30,7 +30,7 @@ export default function DailyTimeGoals({ events }: DailyTimeGoalsProps) {
       <div className="text-6xl">
         You&apos;ve logged {formatAsString(timeLoggedToday)} today
       </div>
-      <StackedBarChart taskDurationByDate={taskDurationByDate} />
+      <ActivitiesFromLast7Days taskDurationByDate={taskDurationByDate} />
     </>
   );
 }
