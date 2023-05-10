@@ -27,7 +27,7 @@ export default function ActivitiesFromLast7Days({
   const [tasks, setTasks] = useState<string[]>([]);
 
   useEffect(() => {
-    // durationByTask: array of (activity, duration) pairs
+    // durationByTask: dict from task => its duration
     const durationByTask = {};
     Object.keys(taskDurationByDate).forEach((date) => {
       Object.keys(taskDurationByDate[date]).forEach((task) => {
@@ -65,7 +65,7 @@ export default function ActivitiesFromLast7Days({
     setTasks(Array.from(tasks));
   }, [taskDurationByDate]);
 
-  console.log({ data });
+  // console.log({ data });
 
   return (
     <div className="h-96 max-w-full">
@@ -90,7 +90,12 @@ export default function ActivitiesFromLast7Days({
           />
           <Legend />
           {tasks.map((task, i) => (
-            <Bar key={task} dataKey={task} stackId="a" fill={colors[i]} />
+            <Bar
+              key={task}
+              dataKey={task}
+              stackId="a"
+              fill={colors[i % colors.length]}
+            />
           ))}
         </BarChart>
       </ResponsiveContainer>
