@@ -1,3 +1,4 @@
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
 export const metadata = {
@@ -5,13 +6,19 @@ export const metadata = {
   description: "created by rey barceló",
 };
 
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: "700",
+  variable: "--font-roboto",
+});
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${roboto.variable}`}>
       <body>{children}</body>
     </html>
   );

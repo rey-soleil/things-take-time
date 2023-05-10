@@ -2,13 +2,10 @@
 
 import { Task } from "@doist/todoist-api-typescript";
 import Input from "@mui/material/Input";
-import { Roboto } from "next/font/google";
 import Link from "next/link";
 import { useState } from "react";
 import Todoist from "./components/Todoist";
 import styles from "./page.module.css";
-
-const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 
 export default function Home() {
   const [eventName, setEventName] = useState<string | undefined>();
@@ -18,7 +15,9 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <h2 className={roboto.className}>What&apos;s the next right thing?</h2>
+      <div className="text-5xl font-mono text-center">
+        What&apos;s the next right thing?
+      </div>
       {!selectingTodoistTasks && (
         <Input
           placeholder="type it here"
@@ -29,11 +28,11 @@ export default function Home() {
       )}
       {!eventName && !selectingTodoistTasks && (
         <>
-          <h2 className={roboto.className}>
+          <div className="text-5xl font-mono">
             <i>or</i>
-          </h2>
+          </div>
           <div
-            className={`${roboto.className} ${styles.todoistButton}`}
+            className={`font-mono ${styles.todoistButton}`}
             onClick={() => setSelectingTodoistTasks(true)}
           >
             <p className={styles.todoistButtonText}>
@@ -49,7 +48,7 @@ export default function Home() {
         />
       )}
       {(eventName || selectedTask) && (
-        <div className={`${roboto.className} ${styles.todoistButton}`}>
+        <div className={`font-mono ${styles.todoistButton}`}>
           <Link
             href={`/stopwatch?eventName=${eventName}&task=${JSON.stringify(
               selectedTask

@@ -2,14 +2,12 @@
 
 import { TodoistApi } from "@doist/todoist-api-typescript";
 import CheckIcon from "@mui/icons-material/Check";
-import { Roboto } from "next/font/google";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import styles from "../page.module.css";
 
-const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
 
 export default function Calendars() {
@@ -71,7 +69,7 @@ export default function Calendars() {
           ) : (
             <ClipLoader color="white" />
           )}
-          <h1 className={roboto.className}>Adding to Google Calendar</h1>
+          <div className="text-3xl font-mono">Adding to Google Calendar</div>
         </div>
         {task && taskComplete && (
           <div className={styles.calendarUpdateRow}>
@@ -80,18 +78,20 @@ export default function Calendars() {
             ) : (
               <ClipLoader color="white" />
             )}{" "}
-            <h1 className={roboto.className}>Marking Todoist task complete</h1>
+            <div className="text-3xl font-mono">
+              Marking Todoist task complete
+            </div>
           </div>
         )}
         {addedToGoogleCalendar &&
           (!task || (task && !taskComplete) || addedToTodoist) && (
-            <h1 className={roboto.className}>
+            <div className="text-3xl font-mono">
               Congratulations! You’ve completed your task.
-            </h1>
+            </div>
           )}
         {addedToGoogleCalendar &&
           (!task || (task && !taskComplete) || addedToTodoist) && (
-            <div className={`${roboto.className} ${styles.todoistButton}`}>
+            <div className={`font-mono ${styles.todoistButton}`}>
               <Link href={`/`}>
                 <p className={styles.todoistButtonText}>do another</p>
               </Link>

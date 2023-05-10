@@ -1,14 +1,11 @@
 "use client";
 
 import { Checkbox, FormControlLabel } from "@mui/material";
-import { Roboto } from "next/font/google";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import styles from "../page.module.css";
 import { formatAsString } from "../utils";
-
-const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 
 export default function Confirm() {
   const [taskComplete, setTaskComplete] = useState(true);
@@ -27,22 +24,18 @@ export default function Confirm() {
 
   return (
     <main className={styles.main}>
-      <div>
-        <h1 className={roboto.className}>You did</h1>
-      </div>
+      <div className="text-6xl font-mono">You did</div>
       <div className={styles.eventNameChip}>
-        <h1 className={roboto.className}>
+        <div className="text-6xl font-mono">
           {eventName ? eventName : task ? task.content : ""}
-        </h1>
+        </div>
       </div>
-      <div>
-        <h1 className={roboto.className}>for</h1>
-      </div>
-      <div className={`${roboto.className} ${styles.bigClockText}`}>
+      <div className="text-6xl font-mono">for</div>
+      <div className={`font-mono ${styles.bigClockText}`}>
         {formatAsString(timeElapsed)}
       </div>
       {task && (
-        <div className={`${roboto.className}`}>
+        <div className="font-mono">
           <FormControlLabel
             label="This task is complete"
             control={
@@ -52,7 +45,7 @@ export default function Confirm() {
           />
         </div>
       )}
-      <div className={`${roboto.className} ${styles.todoistButton}`}>
+      <div className={`font-mono ${styles.todoistButton}`}>
         <Link
           href={`calendars?startTime=${startTime}&eventName=${eventName}&task=${JSON.stringify(
             task
