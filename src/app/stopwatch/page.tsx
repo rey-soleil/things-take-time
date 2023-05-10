@@ -1,13 +1,10 @@
 "use client";
 
-import { Roboto } from "next/font/google";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "../page.module.css";
 import { formatAsString } from "../utils";
-
-const roboto = Roboto({ subsets: ["latin"], weight: "700" });
 
 export default function Stopwatch() {
   const [startTime, setStartTime] = useState<number | null>();
@@ -56,17 +53,15 @@ export default function Stopwatch() {
   return (
     <main className={styles.main}>
       <div className={styles.eventNameChip}>
-        <h1 className={roboto.className}>
-          <div className="text-3xl">
-            {eventName ? eventName : task ? task.content : ""}
-          </div>
-        </h1>
+        <div className="font-mono text-3xl">
+          {eventName ? eventName : task ? task.content : ""}
+        </div>
       </div>
-      <div className={`${roboto.className} ${styles.bigClockText}`}>
+      <div className={`font-mono ${styles.bigClockText}`}>
         {formatAsString(timeElapsed)}
       </div>
       {!startTime && (
-        <div className={`${roboto.className} ${styles.todoistButton}`}>
+        <div className={`font-mono ${styles.todoistButton}`}>
           <p className={styles.todoistButtonText} onClick={startStopwatch}>
             start
           </p>
@@ -74,12 +69,12 @@ export default function Stopwatch() {
       )}
       {startTime && (
         <div className={styles.stopwatchButtons}>
-          <div className={`${roboto.className} ${styles.todoistButton}`}>
+          <div className={`$font-mono ${styles.todoistButton}`}>
             <p className={styles.todoistButtonText} onClick={clearStopwatch}>
               clear
             </p>
           </div>
-          <div className={`${roboto.className} ${styles.todoistButton}`}>
+          <div className={`$font-mono ${styles.todoistButton}`}>
             <Link
               href={`confirm?startTime=${startTime}&timeElapsed=${timeElapsed}&eventName=${eventName}&task=${JSON.stringify(
                 task
