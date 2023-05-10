@@ -11,18 +11,20 @@ import {
 } from "recharts";
 
 type StackedBarCharProps = {
+  // TODO: specify taskDurationByDate type
   taskDurationByDate: any;
 };
 
 const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
 
 const DEFAULT_NUM_DAYS = 7;
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export default function ActivitiesFromLast7Days({
   taskDurationByDate,
 }: StackedBarCharProps) {
   const [data, setData] = useState<any[]>([]);
-  const [mostCommonTasks, setMostCommonTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<string[]>([]);
 
   useEffect(() => {
     // durationByTask: array of (activity, duration) pairs
@@ -35,30 +37,35 @@ export default function ActivitiesFromLast7Days({
     });
 
     // mostCommonTasks: the 5 tasks with the most cumulative duration
-    const mostCommonTasks = Object.entries(durationByTask)
-      .sort((a, b) => (a[1] as number) - (b[1] as number))
-      .reverse()
-      .map((a) => a[0])
-      .slice(0, Math.min(5, Object.keys(durationByTask).length));
-    setMostCommonTasks(mostCommonTasks);
+    // const mostCommonTasks = Object.entries(durationByTask)
+    //   .sort((a, b) => (a[1] as number) - (b[1] as number))
+    //   .reverse()
+    //   .map((a) => a[0])
+    //   .slice(0, Math.min(5, Object.keys(durationByTask).length));
+    // setMostCommonTasks(mostCommonTasks);
 
     // data: array of bar chart data for rechart
     // eg. data[0] = { "name": "Wed May 03 2023", "meditate": 66, "read": 91, "walk": 97}
     const data = Array(DEFAULT_NUM_DAYS);
+    const tasks = new Set<string>();
+
     for (let i = 0; i < DEFAULT_NUM_DAYS; i++) {
-      const date = new Date(
-        Date.now() - i * 24 * 60 * 60 * 1000
-      ).toDateString();
+      const date = new Date(Date.now() - i * MS_PER_DAY).toDateString();
       data[i] = {
         name: date,
       };
-      mostCommonTasks.forEach((task) => {
-        (data[i] as any)[task] = taskDurationByDate[date][task];
-      });
+      taskDurationByDate[date] &&
+        Object.keys(taskDurationByDate[date]).forEach((task) => {
+          tasks.add(task);
+          (data[i] as any)[task] = taskDurationByDate[date][task];
+        });
     }
     data.reverse();
     setData(data);
+    setTasks(Array.from(tasks));
   }, [taskDurationByDate]);
+
+  console.log({ data });
 
   return (
     <div className="h-96 max-w-full">
@@ -82,7 +89,7 @@ export default function ActivitiesFromLast7Days({
             }
           />
           <Legend />
-          {mostCommonTasks.map((task, i) => (
+          {tasks.map((task, i) => (
             <Bar key={task} dataKey={task} stackId="a" fill={colors[i]} />
           ))}
         </BarChart>

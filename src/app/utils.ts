@@ -14,6 +14,7 @@ type Task = {
  */
 export function cluster(summary: string) {
   if (summary === undefined) return "";
+  if (summary.includes("leetcode")) return "leetcode";
   if (summary.startsWith("meditate")) return "meditate";
   if (summary === "gym" || summary.startsWith("exercise")) return "exercise";
   if (summary.startsWith("read")) return "read";

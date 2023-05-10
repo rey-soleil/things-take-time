@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import DailyTimeGoals from "../components/DailyTimeGoals";
 import RecentTasks from "../components/RecentTasks";
+import WhenYouDoEachActivity from "../components/WhenYouDoEachActivity";
 
 export type GCalEvent = {
   id: string;
@@ -33,7 +34,7 @@ export default function Insights() {
   return (
     <div className="flex flex-col items-center m-6">
       <DailyTimeGoals events={events || []} />
-      {/* <WhenYouDoEachActivity /> */}
+      <WhenYouDoEachActivity />
       <RecentTasks events={events || []} />
     </div>
   );
