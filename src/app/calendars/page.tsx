@@ -90,13 +90,17 @@ export default function Calendars() {
             </div>
           )}
         {addedToGoogleCalendar &&
-          (!task || (task && !taskComplete) || addedToTodoist) && (
-            <div className={`font-mono ${styles.todoistButton}`}>
-              <Link href={`/`}>
-                <p className={styles.todoistButtonText}>do another</p>
+          (!task || (task && !taskComplete) || addedToTodoist) &&
+          [
+            { link: "/", text: "do another" },
+            { link: "/insights", text: "show me insights" },
+          ].map(({ link, text }) => (
+            <div className={`font-mono ${styles.todoistButton}`} key={link}>
+              <Link href={link}>
+                <p className={styles.todoistButtonText}>{text}</p>
               </Link>
             </div>
-          )}
+          ))}
       </div>
     </main>
   );
