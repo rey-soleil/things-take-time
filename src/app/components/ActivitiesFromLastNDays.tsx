@@ -115,7 +115,7 @@ export default function ActivitiesFromLastNDays({
             }}
           />
           <FormControlLabel
-            key={"form_control_deselect"}
+            key={"form_control_select"}
             control={<Checkbox />}
             label="select all"
             checked={selectedTasks.size === tasks.length}
