@@ -1,3 +1,4 @@
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   Bar,
@@ -25,6 +26,7 @@ export default function ActivitiesFromLast7Days({
 }: StackedBarCharProps) {
   const [data, setData] = useState<any[]>([]);
   const [tasks, setTasks] = useState<string[]>([]);
+  const [selectedTasks, setSelectedTasks] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     // durationByTask: dict from task => its duration
@@ -57,6 +59,7 @@ export default function ActivitiesFromLast7Days({
       taskDurationByDate[date] &&
         Object.keys(taskDurationByDate[date]).forEach((task) => {
           tasks.add(task);
+          selectedTasks?.add(task);
           (data[i] as any)[task] = taskDurationByDate[date][task];
         });
     }
@@ -66,9 +69,28 @@ export default function ActivitiesFromLast7Days({
   }, [taskDurationByDate]);
 
   // console.log({ data });
+  console.log({ selectedTasks });
 
   return (
-    <div className="h-96 max-w-full">
+    <div className="h-96 max-w-full flex flex-row">
+      <FormGroup>
+        {tasks.map((task) => (
+          <FormControlLabel
+            key={task}
+            control={<Checkbox defaultChecked />}
+            label={task}
+            checked={selectedTasks.has(task)}
+            onChange={() => {
+              if (selectedTasks.has(task)) {
+                selectedTasks.delete(task);
+              } else {
+                selectedTasks.add(task);
+              }
+              setSelectedTasks(new Set(selectedTasks));
+            }}
+          />
+        ))}
+      </FormGroup>
       <ResponsiveContainer
         minWidth={350}
         minHeight={100}
@@ -89,7 +111,7 @@ export default function ActivitiesFromLast7Days({
             }
           />
           <Legend />
-          {tasks.map((task, i) => (
+          {Array.from(selectedTasks).map((task, i) => (
             <Bar
               key={task}
               dataKey={task}
