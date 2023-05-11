@@ -7,7 +7,7 @@ import {
   getTaskDurationByDate,
   getTimeLoggedToday,
 } from "../utils";
-import ActivitiesFromLast7Days from "./ActivitiesFromLast7Days";
+import ActivitiesFromLastNDays from "./ActivitiesFromLastNDays";
 
 type DailyTimeGoalsProps = {
   events: GCalEvent[];
@@ -30,7 +30,7 @@ export default function DailyTimeGoals({ events }: DailyTimeGoalsProps) {
       <div className="text-6xl">
         You&apos;ve logged {formatAsString(timeLoggedToday)} today
       </div>
-      <ActivitiesFromLast7Days taskDurationByDate={taskDurationByDate} />
+      <ActivitiesFromLastNDays taskDurationByDate={taskDurationByDate} />
     </>
   );
 }
