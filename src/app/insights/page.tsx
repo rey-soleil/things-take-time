@@ -23,7 +23,9 @@ export default function Insights() {
   // This is where we fetch Google Calendar events. This may be moved to a util
   // function if it's repeatedly used.
   async function loadEvents() {
-    const events = await fetch("api/insights").then((res) => res.json());
+    const events = await fetch("api/insights", { cache: "no-store" }).then(
+      (res) => res.json()
+    );
     setEvents(events);
   }
 
