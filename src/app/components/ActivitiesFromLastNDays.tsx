@@ -21,9 +21,10 @@ const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
 const DEFAULT_NUM_DAYS = 7;
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-export default function ActivitiesFromLast7Days({
+export default function ActivitiesFromLastNDays({
   taskDurationByDate,
 }: StackedBarCharProps) {
+  const [numDays, setNumDays] = useState(DEFAULT_NUM_DAYS);
   const [data, setData] = useState<any[]>([]);
   const [tasks, setTasks] = useState<string[]>([]);
   const [selectedTasks, setSelectedTasks] = useState<Set<string>>(new Set());
@@ -48,10 +49,10 @@ export default function ActivitiesFromLast7Days({
 
     // data: array of bar chart data for rechart
     // eg. data[0] = { "name": "Wed May 03 2023", "meditate": 66, "read": 91, "walk": 97}
-    const data = Array(DEFAULT_NUM_DAYS);
+    const data = Array(numDays);
     const tasks = new Set<string>();
 
-    for (let i = 0; i < DEFAULT_NUM_DAYS; i++) {
+    for (let i = 0; i < numDays; i++) {
       const date = new Date(Date.now() - i * MS_PER_DAY).toDateString();
       data[i] = {
         name: date,
@@ -59,68 +60,80 @@ export default function ActivitiesFromLast7Days({
       taskDurationByDate[date] &&
         Object.keys(taskDurationByDate[date]).forEach((task) => {
           tasks.add(task);
-          selectedTasks?.add(task);
+          selectedTasks.add(task);
           (data[i] as any)[task] = taskDurationByDate[date][task];
         });
     }
     data.reverse();
     setData(data);
     setTasks(Array.from(tasks));
-  }, [taskDurationByDate]);
+  }, [taskDurationByDate, numDays]);
 
   // console.log({ data });
-  console.log({ selectedTasks });
 
   return (
-    <div className="h-96 max-w-full flex flex-row">
-      <FormGroup>
-        {tasks.map((task) => (
-          <FormControlLabel
-            key={task}
-            control={<Checkbox defaultChecked />}
-            label={task}
-            checked={selectedTasks.has(task)}
-            onChange={() => {
-              if (selectedTasks.has(task)) {
-                selectedTasks.delete(task);
-              } else {
-                selectedTasks.add(task);
-              }
-              setSelectedTasks(new Set(selectedTasks));
-            }}
-          />
-        ))}
-      </FormGroup>
-      <ResponsiveContainer
-        minWidth={350}
-        minHeight={100}
-        width="100%"
-        height="100%"
-      >
-        <BarChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip
-            formatter={(value) =>
-              (value as number) > 60
-                ? `${Math.floor((value as number) / 60)}h ${
-                    (value as number) % 60
-                  }m`
-                : `${value}m`
-            }
-          />
-          <Legend />
-          {Array.from(selectedTasks).map((task, i) => (
-            <Bar
+    <div>
+      <div>
+        Show me the last{" "}
+        <input
+          type="number"
+          value={numDays}
+          onChange={({ target }) => setNumDays(target.value as number)}
+          min="1"
+          max="30"
+        />{" "}
+        days
+      </div>
+      <div className="h-96 max-w-full flex flex-row">
+        <FormGroup>
+          {tasks.map((task) => (
+            <FormControlLabel
               key={task}
-              dataKey={task}
-              stackId="a"
-              fill={colors[i % colors.length]}
+              control={<Checkbox defaultChecked />}
+              label={task}
+              checked={selectedTasks.has(task)}
+              onChange={() => {
+                if (selectedTasks.has(task)) {
+                  selectedTasks.delete(task);
+                } else {
+                  selectedTasks.add(task);
+                }
+                setSelectedTasks(new Set(selectedTasks));
+              }}
             />
           ))}
-        </BarChart>
-      </ResponsiveContainer>
+        </FormGroup>
+        <ResponsiveContainer
+          minWidth={350}
+          minHeight={100}
+          width="100%"
+          height="100%"
+        >
+          <BarChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip
+              formatter={(value) =>
+                (value as number) > 60
+                  ? `${Math.floor((value as number) / 60)}h ${
+                      (value as number) % 60
+                    }m`
+                  : `${value}m`
+              }
+            />
+            <Legend />
+            {Array.from(selectedTasks).map((task, i) => (
+              <Bar
+                key={task}
+                dataKey={task}
+                stackId="a"
+                fill={colors[i % colors.length]}
+              />
+            ))}
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
