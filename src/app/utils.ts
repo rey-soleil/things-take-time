@@ -25,6 +25,7 @@ export function cluster(summary: string) {
   if (summary.includes("walk")) return "walk";
   if (summary.includes(" w ")) return "social";
   if (summary.startsWith("climb")) return "climb";
+  if (summary.startsWith("job search")) return "job search";
   return summary;
 }
 
