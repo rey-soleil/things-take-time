@@ -14,7 +14,8 @@ export async function GET(request: Request) {
   const selectedNumDays = Number(searchParams.get("selectedNumDays") || "7");
 
   const startDate = new Date();
-  startDate.setDate(startDate.getDate() - selectedNumDays);
+  startDate.setDate(startDate.getDate() + 1 - selectedNumDays);
+  startDate.setHours(0, 0, 0, 0);
 
   const timeMin = startDate.toISOString();
   const timeMax = new Date().toISOString();
