@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { GCalEvent } from "./insights/page";
 
 export type Task = {
   start: { dateTime: string };
@@ -106,7 +105,7 @@ export function getTaskDurationByDate(events: GCalEvent[]) {
     .mapValues((events) => {
       const taskClusters = {};
       events.forEach((event) => {
-        const taskCluster = cluster(event.summary);
+        const taskCluster = getTaskType(event.summary);
         (taskClusters as any)[taskCluster] =
           ((taskClusters as any)[taskCluster] || 0) + getDuration(event);
       });
