@@ -1,16 +1,11 @@
 "use client";
 import { useState } from "react";
-import { Task, date, getDuration } from "../../utils";
+import { ClusteredTasks, Task, date, getDuration } from "../../utils";
 import GroupBySelector, { GroupBy } from "./GroupBySelector";
 
 type RecentTasksProps = {
   tasks?: Task[];
-  clusteredTasks: {
-    [key: string]: {
-      duration: number;
-      instances: Task[];
-    };
-  };
+  clusteredTasks: ClusteredTasks;
 };
 
 export default function RecentTasks({
