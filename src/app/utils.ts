@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { GCalEvent } from "./insights/page";
 
-type Task = {
+export type Task = {
   start: { dateTime: string };
   end: { dateTime: string };
   description: string;
@@ -26,6 +26,7 @@ export function cluster(summary: string) {
   if (summary.includes(" w ")) return "social";
   if (summary.startsWith("climb")) return "climb";
   if (summary.startsWith("job search")) return "job search";
+  if (summary.includes(":")) return summary.split(":")[0];
   return summary;
 }
 
@@ -79,9 +80,7 @@ export function filterAndSortEvents(events: GCalEvent[]): Task[] {
         event.description &&
         event.description === "made with next-right-thing"
     )
-    .sort((a, b) =>
-      (a?.start?.dateTime ?? 0) > (b?.start?.dateTime ?? 0) ? -1 : 1
-    ) as Task[];
+    .reverse() as Task[];
 }
 
 // Returns a map from dates to lists of events on that date.
