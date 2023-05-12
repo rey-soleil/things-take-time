@@ -1,6 +1,6 @@
 export enum GroupBy {
   Date,
-  Activity,
+  Task,
 }
 
 type GroupBySelectorProps = {
@@ -25,11 +25,11 @@ export default function GroupBySelector({
       |{" "}
       <span
         className={`${
-          groupBy === GroupBy.Activity && "underline"
+          groupBy === GroupBy.Task && "underline"
         } hover:cursor-pointer`}
-        onClick={() => setGroupBy(GroupBy.Activity)}
+        onClick={() => setGroupBy(GroupBy.Task)}
       >
-        by activity
+        by task
       </span>
     </div>
   );
