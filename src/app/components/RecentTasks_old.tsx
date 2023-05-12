@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { GCalEvent } from "../insights/page";
-import { date, duration, findMostRecentTasks } from "../utils";
+import { date, findMostRecentTasks } from "../utils";
 
 type RecentTasksProps = {
   events: GCalEvent[];
@@ -22,7 +22,7 @@ export default function RecentTasks({ events }: RecentTasksProps) {
       <h2>Your last {recentTasks?.length} tasks:</h2>
       {recentTasks?.map((task) => (
         <div key={task.id}>
-          <b>{task.summary}</b> ({duration(task)} min, {date(task)})
+          <b>{task.summary}</b> ({getDuration(task)} min, {date(task)})
         </div>
       ))}
     </div>

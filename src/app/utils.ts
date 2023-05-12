@@ -8,11 +8,19 @@ export type Task = {
   summary: string;
 };
 
+export type GCalEvent = {
+  id: string;
+  summary: string;
+  start?: { dateTime: string };
+  end?: { dateTime: string };
+  description: string;
+};
+
 /* Cluster related event summaries,
  * e.g. "meditate ☀️", "meditate" => "meditate"
  * This is obviously unique to Rey and needs to be adapted for other users.
  */
-export function cluster(summary: string) {
+export function getTaskType(summary: string) {
   if (summary === undefined) return "";
   if (summary.includes("leetcode")) return "leetcode";
   if (summary.startsWith("meditate")) return "meditate";
@@ -45,7 +53,7 @@ export function formatAsString(time: number) {
 }
 
 // Compute a duration in minutes given a startTime and endTime
-export function duration(task: Task) {
+export function getDuration(task: Task) {
   const startTime = new Date(task.start.dateTime);
   const endTime = new Date(task.end.dateTime);
   return Math.floor((endTime.getTime() - startTime.getTime()) / 1000 / 60);
@@ -100,7 +108,7 @@ export function getTaskDurationByDate(events: GCalEvent[]) {
       events.forEach((event) => {
         const taskCluster = cluster(event.summary);
         (taskClusters as any)[taskCluster] =
-          ((taskClusters as any)[taskCluster] || 0) + duration(event);
+          ((taskClusters as any)[taskCluster] || 0) + getDuration(event);
       });
       return taskClusters;
     })
@@ -112,7 +120,7 @@ export function getTimeLoggedToday(events: GCalEvent[]) {
   return (
     1000 *
     groupEventsByDate(events)[new Date().toDateString()]?.reduce(
-      (a, b) => a + duration(b),
+      (a, b) => a + getDuration(b),
       0
     )
   );
@@ -122,4 +130,22 @@ export function getTimeLoggedToday(events: GCalEvent[]) {
 //  the most recent (up to) 10 tasks completed using next-right-thing.
 export function findMostRecentTasks(events: GCalEvent[]) {
   return filterAndSortEvents(events).slice(0, Math.min(10, events.length));
+}
+
+// This function converts an array of tasks to a map from task type to
+// its duration and instances.
+// eg. clusteredTasks["code"] = { duration: 546, instances: Array(5)}
+export function convertToCluster(tasks?: Task[]) {
+  if (!tasks) return {};
+  return tasks.reduce((acc, event) => {
+    const taskType = getTaskType(event.summary);
+    let { duration, instances } = acc[taskType] ?? {
+      duration: 0,
+      instances: [],
+    };
+    duration += getDuration(event);
+    instances.push(event);
+    acc[taskType] = { duration, instances };
+    return acc;
+  }, {} as { [key: string]: { duration: number; instances: Task[] } });
 }

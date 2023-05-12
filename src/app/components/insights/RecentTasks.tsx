@@ -1,18 +1,34 @@
 "use client";
-import { Task, date, duration } from "../../utils";
+import { useState } from "react";
+import { Task, date, getDuration } from "../../utils";
+import GroupBySelector, { GroupBy } from "./GroupBySelector";
 
 type RecentTasksProps = {
-  events?: Task[];
+  tasks?: Task[];
+  clusteredTasks: {
+    [key: string]: {
+      duration: number;
+      instances: Task[];
+    };
+  };
 };
 
-export default function RecentTasks({ events }: RecentTasksProps) {
+export default function RecentTasks({
+  tasks,
+  clusteredTasks,
+}: RecentTasksProps) {
+  const [groupBy, setGroupBy] = useState<GroupBy>(GroupBy.Date);
+
   return (
     <div className="flex flex-col items-start">
-      {events?.map((task) => (
-        <div key={task.start.dateTime}>
-          <b>{task.summary}</b> ({duration(task)} min, {date(task)})
-        </div>
-      ))}
+      <GroupBySelector groupBy={groupBy} setGroupBy={setGroupBy} />
+      {groupBy === GroupBy.Date &&
+        tasks?.map((task) => (
+          <div key={task.start.dateTime}>
+            <b>{task.summary}</b> ({getDuration(task)} min, {date(task)})
+          </div>
+        ))}
+      {/* TODO: implement group by activity */}
     </div>
   );
 }
