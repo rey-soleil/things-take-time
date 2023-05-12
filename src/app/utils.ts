@@ -15,6 +15,13 @@ export type GCalEvent = {
   description: string;
 };
 
+export type ClusteredTasks = {
+  [key: string]: {
+    duration: number;
+    instances: Task[];
+  };
+};
+
 /* Cluster related event summaries,
  * e.g. "meditate ☀️", "meditate" => "meditate"
  * This is obviously unique to Rey and needs to be adapted for other users.
@@ -147,4 +154,13 @@ export function convertToCluster(tasks?: Task[]) {
     acc[taskType] = { duration, instances };
     return acc;
   }, {} as { [key: string]: { duration: number; instances: Task[] } });
+}
+
+// This function takes timeLogged, in minutes, and formats it as
+// a string in the format "1h 30m".
+export function formatAsHourAndMinutes(timeLogged: number) {
+  const hours = Math.floor(timeLogged / 60);
+  const minutes = timeLogged % 60;
+  if (hours === 0) return `${minutes}m`;
+  return `${hours}h ${minutes}m`;
 }
