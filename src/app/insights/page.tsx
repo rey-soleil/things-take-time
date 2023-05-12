@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import DailyTimeGoals from "../components/DailyTimeGoals";
-import RecentTasks from "../components/RecentTasks";
-import WhenYouDoEachActivity from "../components/WhenYouDoEachActivity";
+import NumDaysSelector from "../components/insights/NumDaysSelector";
 
 export type GCalEvent = {
   id: string;
@@ -20,6 +18,9 @@ export default function Insights() {
   // events: an array of events obtained by calling the Google Calendar API
   const [events, setEvents] = useState<GCalEvent[]>();
 
+  // selectedNumDays: the number of days to show insights for
+  const [selectedNumDays, setSelectedNumDays] = useState<number>(7);
+
   // This is where we fetch Google Calendar events. This may be moved to a util
   // function if it's repeatedly used.
   async function loadEvents() {
@@ -34,10 +35,11 @@ export default function Insights() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center m-6">
-      <DailyTimeGoals events={events || []} />
-      <WhenYouDoEachActivity />
-      <RecentTasks events={events || []} />
+    <div className="">
+      <NumDaysSelector
+        selectedNumDays={selectedNumDays}
+        setSelectedNumDays={setSelectedNumDays}
+      />
     </div>
   );
 }
