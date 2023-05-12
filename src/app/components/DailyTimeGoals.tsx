@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { GCalEvent } from "../insights/page";
 import {
+  GCalEvent,
   formatAsString,
   getTaskDurationByDate,
   getTimeLoggedToday,
