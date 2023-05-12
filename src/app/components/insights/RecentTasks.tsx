@@ -1,6 +1,12 @@
 "use client";
 import { useState } from "react";
-import { ClusteredTasks, Task, date, getDuration } from "../../utils";
+import {
+  ClusteredTasks,
+  Task,
+  date,
+  formatAsHourAndMinutes,
+  getDuration,
+} from "../../utils";
 import GroupBySelector, { GroupBy } from "./GroupBySelector";
 
 type RecentTasksProps = {
@@ -20,10 +26,29 @@ export default function RecentTasks({
       {groupBy === GroupBy.Date &&
         tasks?.map((task) => (
           <div key={task.start.dateTime}>
-            <b>{task.summary}</b> ({getDuration(task)} min, {date(task)})
+            <b>{task.summary}</b> ({formatAsHourAndMinutes(getDuration(task))} ,{" "}
+            {date(task)})
           </div>
         ))}
-      {/* TODO: implement group by activity */}
+      {groupBy === GroupBy.Task &&
+        Object.entries(clusteredTasks)
+          .sort((a, b) => b[1].duration - a[1].duration)
+          .map(([task, { duration, instances }]) => (
+            <div key={task} className="my-5">
+              <div className="text-3xl">
+                {task} ({formatAsHourAndMinutes(duration)})
+              </div>
+              <ul>
+                {instances.map((instance) => (
+                  <li key={instance.start.dateTime} className="ml-6">
+                    {instance.summary} (
+                    {formatAsHourAndMinutes(getDuration(instance))},{" "}
+                    {date(instance)})
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
     </div>
   );
 }
