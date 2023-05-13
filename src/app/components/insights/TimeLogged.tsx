@@ -10,7 +10,6 @@ export default function TimeLogged({
   clusteredTasks,
   selectedTasks,
 }: TimeLoggedProps) {
-  // TODO: make timeLogged responsive to selectedTasks
   const timeLogged = useMemo(
     () =>
       Array.from(selectedTasks).reduce(
