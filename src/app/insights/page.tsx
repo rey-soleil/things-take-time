@@ -61,6 +61,7 @@ export default function Insights() {
     loadTasks();
   }, [selectedNumDays]);
 
+  // TODO: implement a loading spinner
   if (isLoading) return <div>Loading...</div>;
 
   return (
