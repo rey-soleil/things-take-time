@@ -22,6 +22,10 @@ export type ClusteredTasks = {
   };
 };
 
+export type TasksByDate = {
+  [key: string]: any;
+};
+
 /* Cluster related event summaries,
  * e.g. "meditate ☀️", "meditate" => "meditate"
  * This is obviously unique to Rey and needs to be adapted for other users.
@@ -153,7 +157,7 @@ export function convertToCluster(tasks?: Task[]) {
     instances.push(event);
     acc[taskType] = { duration, instances };
     return acc;
-  }, {} as { [key: string]: { duration: number; instances: Task[] } });
+  }, {} as ClusteredTasks);
 }
 
 // This function takes timeLogged, in minutes, and formats it as
@@ -163,4 +167,25 @@ export function formatAsHourAndMinutes(timeLogged: number) {
   const minutes = timeLogged % 60;
   if (hours === 0) return `${minutes}m`;
   return `${hours}h ${minutes}m`;
+}
+
+// tasksByDate is in the form rechart expects
+// its entries look like this:
+// { day: "Fri Apr 14 2023", code: 120, meditate: 65 }
+export function convertToTasksByDate(tasks?: Task[]) {
+  if (!tasks) return [];
+  return tasks
+    .reduce((acc, task) => {
+      const dayOfTask = new Date(task.start.dateTime).toDateString();
+      const taskType = getTaskType(task.summary);
+      const duration = getDuration(task);
+      if (acc.length === 0 || acc[acc.length - 1].day !== dayOfTask) {
+        acc.push({ day: dayOfTask });
+      }
+      acc[acc.length - 1][taskType] =
+        duration + (acc[acc.length - 1][taskType] || 0);
+      return acc;
+      //   TODO: specify accumulator type
+    }, [] as any)
+    .reverse();
 }

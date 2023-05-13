@@ -34,7 +34,7 @@ export default function RecentTasks({
         Object.entries(clusteredTasks)
           .sort((a, b) => b[1].duration - a[1].duration)
           .map(([task, { duration, instances }]) => (
-            <div key={task} className="my-5">
+            <div key={task} className="mb-5">
               <div className="text-3xl">
                 {task} ({formatAsHourAndMinutes(duration)})
               </div>

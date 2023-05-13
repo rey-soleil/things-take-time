@@ -3,8 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import NumDaysSelector from "../components/insights/NumDaysSelector";
 import RecentTasks from "../components/insights/RecentTasks";
+import TaskChart from "../components/insights/TaskChart";
+import TaskSelector from "../components/insights/TaskSelector";
 import TimeLogged from "../components/insights/TimeLogged";
 import { Task, convertToCluster, filterAndSortEvents } from "../utils";
+
+const INITIAL_SELECTED_TASKS = 5;
 
 /*
  * Insights is a page with multiple components giving users insights into their time management.
@@ -22,6 +26,22 @@ export default function Insights() {
   // clusteredTasks: map of tasks grouped by type
   // eg. clusteredTasks["code"] = { duration: 546, instances: Array(5)}
   const clusteredTasks = useMemo(() => convertToCluster(tasks), [tasks]);
+
+  const taskLabels = useMemo(
+    () =>
+      Object.entries(clusteredTasks)
+        .sort((a, b) => b[1].duration - a[1].duration)
+        .map((a) => a[0]),
+    [clusteredTasks]
+  );
+  const [selectedTasks, setSelectedTasks] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (taskLabels.length > 0) {
+      const sliceLength = Math.min(taskLabels.length, INITIAL_SELECTED_TASKS);
+      setSelectedTasks(new Set(taskLabels.slice(0, sliceLength)));
+    }
+  }, [taskLabels]);
 
   // This is where we fetch Google Calendar events going back selectedNumDays.
   async function loadTasks() {
@@ -50,11 +70,18 @@ export default function Insights() {
           selectedNumDays={selectedNumDays}
           setSelectedNumDays={setSelectedNumDays}
         />
-        {/* TODO: implement TaskSelector */}
-        {/* <TaskSelector /> */}
+        <TaskSelector
+          taskLabels={taskLabels}
+          selectedTasks={selectedTasks}
+          setSelectedTasks={setSelectedTasks}
+        />
       </div>
       <div className="flex flex-col">
-        <TimeLogged clusteredTasks={clusteredTasks} />
+        <TimeLogged
+          clusteredTasks={clusteredTasks}
+          selectedTasks={selectedTasks}
+        />
+        <TaskChart tasks={tasks} selectedTasks={selectedTasks} />
         <RecentTasks tasks={tasks} clusteredTasks={clusteredTasks} />
       </div>
     </div>
