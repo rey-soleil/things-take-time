@@ -46,8 +46,9 @@ export default function Insights() {
   // This is where we fetch Google Calendar events going back selectedNumDays.
   async function loadTasks() {
     setIsLoading(true);
+    const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
     const events = await fetch(
-      `api/insights?selectedNumDays=${selectedNumDays}`,
+      `api/insights?selectedNumDays=${selectedNumDays}&timeZone=${timeZone}`,
       {
         method: "GET",
         cache: "no-store",

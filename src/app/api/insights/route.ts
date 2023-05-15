@@ -12,6 +12,13 @@ const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const selectedNumDays = Number(searchParams.get("selectedNumDays") || "7");
+  const timeZone = searchParams.get("timeZone");
+
+  console.log("client timeZone", timeZone);
+  console.log(
+    "server timeZone",
+    Intl.DateTimeFormat().resolvedOptions().timeZone
+  );
 
   const startDate = new Date();
   startDate.setDate(startDate.getDate() + 1 - selectedNumDays);
@@ -24,6 +31,7 @@ export async function GET(request: Request) {
     calendarId: process.env.PERSONAL_CALENDAR_ID,
     timeMin,
     timeMax,
+    timeZone,
     maxResults: 1000,
   });
   return new Response(JSON.stringify(calendarResponse.data.items));
