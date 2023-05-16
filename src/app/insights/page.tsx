@@ -46,9 +46,14 @@ export default function Insights() {
   // This is where we fetch Google Calendar events going back selectedNumDays.
   async function loadTasks() {
     setIsLoading(true);
-    const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
+
+    // timeMin is midnight on the start of the day selectedNumDays ago
+    const timeMin = new Date();
+    timeMin.setDate(timeMin.getDate() + 1 - selectedNumDays);
+    timeMin.setHours(0, 0, 0, 0);
+
     const events = await fetch(
-      `api/insights?selectedNumDays=${selectedNumDays}&timeZone=${timeZone}`,
+      `api/insights?timeMin=${timeMin.toISOString()}`,
       {
         method: "GET",
         cache: "no-store",
