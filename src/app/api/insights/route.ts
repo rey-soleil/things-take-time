@@ -34,5 +34,8 @@ export async function GET(request: Request) {
     timeZone,
     maxResults: 1000,
   });
+
+  console.log("calendarResponse", JSON.stringify(calendarResponse));
+
   return new Response(JSON.stringify(calendarResponse.data.items));
 }
