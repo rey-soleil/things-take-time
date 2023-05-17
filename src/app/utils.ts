@@ -44,7 +44,7 @@ export function getTaskType(summary: string) {
   if (summary.includes(" w ")) return "social";
   if (summary.startsWith("climb")) return "climb";
   if (summary.startsWith("job search")) return "job search";
-  if (summary.includes(":")) return summary.split(":")[0];
+  if (summary.includes(":")) return summary.split(":")[0].toLowerCase();
   return summary;
 }
 
