@@ -1,38 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# the next right thing
 
-## Getting Started
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/68834278/239098242-efcc805b-84ef-4777-b0f1-83023108081d.gif" width="640" height="400"/>
 
-First, run the development server:
+## About
+**the next right thing** (NRT) is a web app to help you decide what to do next. 
+
+It's a combination stopwatch, to-do list, and analytics page, and it integrates with Google Calendar and Todoist.
+
+## Frameworks
+
+NRT is build with Next.js and deployed to Vercel.
+
+It uses Tailwind for inline CSS and recharts for the insights page.
+
+It fetches tasks from the Todoist API and reads/writes from/to the Google Calendar API.
+
+## Running Locally
 
 ```bash
+git clone https://github.com/rey-soleil/next-right-thing.git
+cd next-right-thing
+npm i
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
+You'll need to `cp .env.example .env.local` and fill in the environment variables there.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can get your Google Calendar API key using the process described [here](https://support.google.com/googleapi/answer/6158862?hl=en)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+You can get your Todoist API key using the process described [here](https://developer.todoist.com/guides/#developing-with-todoist)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### About the Name
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+> If you do with conviction the next and most necessary thing, you are always doing something meaningful and intended by fate. 
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-- Carl Jung
