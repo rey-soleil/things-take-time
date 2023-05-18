@@ -31,7 +31,7 @@ You can get your Google Calendar API key using the process described [here](http
 
 You can get your Todoist API key using the process described [here](https://developer.todoist.com/guides/#developing-with-todoist)
 
-### About the Name
+## About the Name
 
 > If you do with conviction the next and most necessary thing, you are always doing something meaningful and intended by fate. 
 
