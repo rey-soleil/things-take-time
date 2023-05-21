@@ -16,9 +16,9 @@ export default function NumDaysSelector({
   setSelectedNumDays,
 }: TaskSelectorProps) {
   return (
-    <div className="flex flex-col">
+    <div className="my-5 flex flex-col">
       <div>
-        Insights for the last{" "}
+        logged this{" "}
         <select
           value={selectedNumDays}
           onChange={({ target }) => setSelectedNumDays(Number(target.value))}

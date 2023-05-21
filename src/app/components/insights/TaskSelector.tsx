@@ -13,10 +13,10 @@ export default function TaskSelector({
   selectedTasks,
   setSelectedTasks,
 }: TaskSelectorProps) {
-
-    return (
-    <div>
-      <FormGroup>
+  return (
+    <div className="hidden md:block">
+      <h3 className="text-3xl">Tasks</h3>
+      <FormGroup className="flex flex-row md:flex-col">
         {taskLabels.map((task) => (
           <FormControlLabel
             key={task}

@@ -71,22 +71,22 @@ export default function Insights() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col md:flex-row p-4">
+    <div className="m-4 flex flex-col md:flex-row">
       <div className="flex flex-col md:p-4">
-        <NumDaysSelector
-          selectedNumDays={selectedNumDays}
-          setSelectedNumDays={setSelectedNumDays}
-        />
         <TaskSelector
           taskLabels={taskLabels}
           selectedTasks={selectedTasks}
           setSelectedTasks={setSelectedTasks}
         />
       </div>
-      <div className="flex flex-col">
+      <div className="m-5 flex flex-col">
         <TimeLogged
           clusteredTasks={clusteredTasks}
           selectedTasks={selectedTasks}
+        />
+        <NumDaysSelector
+          selectedNumDays={selectedNumDays}
+          setSelectedNumDays={setSelectedNumDays}
         />
         <TaskChart tasks={tasks} selectedTasks={selectedTasks} />
         <RecentTasks tasks={tasks} clusteredTasks={clusteredTasks} />

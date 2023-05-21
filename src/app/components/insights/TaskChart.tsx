@@ -2,8 +2,6 @@ import {
   Task,
   convertToTasksByDate,
   formatAsHourAndMinutes,
-  getDuration,
-  getTaskType,
 } from "@/app/utils";
 import { useMemo } from "react";
 import {
@@ -29,11 +27,11 @@ export default function TaskChart({ tasks, selectedTasks }: TaskChartProps) {
   const tasksByDate = useMemo(() => convertToTasksByDate(tasks), [tasks]);
 
   return (
-    <ResponsiveContainer minWidth={350} minHeight={400}>
+    <ResponsiveContainer width="100%" height={400} className="flex items-start">
       <BarChart data={tasksByDate}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="day" />
-        <YAxis />
+        <YAxis width={40} />
         <Tooltip
           labelStyle={{ color: "black" }}
           formatter={(value) => formatAsHourAndMinutes(Number(value))}
