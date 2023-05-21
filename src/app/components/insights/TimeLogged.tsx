@@ -19,7 +19,5 @@ export default function TimeLogged({
     [clusteredTasks, selectedTasks]
   );
 
-  return (
-    <div className="mb-5 text-7xl">{formatAsHourAndMinutes(timeLogged)}</div>
-  );
+  return <div className="text-7xl">{formatAsHourAndMinutes(timeLogged)}</div>;
 }

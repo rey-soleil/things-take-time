@@ -2,6 +2,7 @@
 
 import CloseIcon from "@mui/icons-material/Close";
 import { useEffect, useMemo, useState } from "react";
+import { ClipLoader } from "react-spinners";
 import NumDaysSelector from "../components/insights/NumDaysSelector";
 import RecentTasks from "../components/insights/RecentTasks";
 import TaskChart from "../components/insights/TaskChart";
@@ -69,7 +70,12 @@ export default function Insights() {
   }, [selectedNumDays]);
 
   // TODO: implement a loading spinner
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="absolute left-1/2 top-1/2">
+        <ClipLoader color="white" />
+      </div>
+    );
 
   return (
     <div className="m-4 flex flex-col md:flex-row">
