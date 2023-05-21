@@ -1,5 +1,6 @@
 "use client";
 
+import CloseIcon from "@mui/icons-material/Close";
 import { useEffect, useMemo, useState } from "react";
 import NumDaysSelector from "../components/insights/NumDaysSelector";
 import RecentTasks from "../components/insights/RecentTasks";
@@ -91,6 +92,13 @@ export default function Insights() {
         <TaskChart tasks={tasks} selectedTasks={selectedTasks} />
         <RecentTasks tasks={tasks} clusteredTasks={clusteredTasks} />
       </div>
+      <a
+        className="absolute right-8 top-8"
+        href="/"
+        title="go back to homepage"
+      >
+        <CloseIcon />
+      </a>
     </div>
   );
 }
