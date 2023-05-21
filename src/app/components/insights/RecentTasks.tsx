@@ -21,7 +21,7 @@ export default function RecentTasks({
   const [groupBy, setGroupBy] = useState<GroupBy>(GroupBy.Date);
 
   return (
-    <div className="flex flex-col items-start">
+    <div className="mt-5 flex flex-col items-start">
       <GroupBySelector groupBy={groupBy} setGroupBy={setGroupBy} />
       {groupBy === GroupBy.Date &&
         tasks?.map((task) => (
