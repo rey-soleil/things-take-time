@@ -1,5 +1,6 @@
 const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
+
 const oAuth2Client = new OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET
@@ -11,14 +12,12 @@ const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const selectedNumDays = Number(searchParams.get("selectedNumDays") || "7");
   const timeMin = searchParams.get("timeMin");
-  const timeMax = new Date().toISOString();
 
   const calendarResponse = await calendar.events.list({
     calendarId: process.env.PERSONAL_CALENDAR_ID,
     timeMin,
-    timeMax,
+    timeMax: new Date().toISOString(),
     maxResults: 1000,
   });
 
