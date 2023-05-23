@@ -69,7 +69,7 @@ export default function Calendars() {
           ) : (
             <ClipLoader color="white" />
           )}
-          <div className="text-3xl font-mono">Adding to Google Calendar</div>
+          <div className="font-mono text-3xl">Adding to Google Calendar</div>
         </div>
         {task && taskComplete && (
           <div className={styles.calendarUpdateRow}>
@@ -78,14 +78,14 @@ export default function Calendars() {
             ) : (
               <ClipLoader color="white" />
             )}{" "}
-            <div className="text-3xl font-mono">
+            <div className="font-mono text-3xl">
               Marking Todoist task complete
             </div>
           </div>
         )}
         {addedToGoogleCalendar &&
           (!task || (task && !taskComplete) || addedToTodoist) && (
-            <div className="text-3xl font-mono">
+            <div className="font-mono text-3xl">
               Congratulations! You’ve completed your task.
             </div>
           )}
@@ -95,10 +95,12 @@ export default function Calendars() {
             { link: "/", text: "do another" },
             { link: "/insights", text: "show me insights" },
           ].map(({ link, text }) => (
-            <div className={`font-mono ${styles.todoistButton}`} key={link}>
-              <Link href={link}>
-                <p className={styles.todoistButtonText}>{text}</p>
-              </Link>
+            <div key={link} className="flex justify-center">
+              <div className={`font-mono ${styles.todoistButton}`}>
+                <Link href={link}>
+                  <p className={styles.todoistButtonText}>{text}</p>
+                </Link>
+              </div>
             </div>
           ))}
       </div>
