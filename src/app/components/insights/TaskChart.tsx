@@ -20,16 +20,23 @@ type TaskChartProps = {
 };
 
 // TODO: rethink colors
-export const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
+export const colors = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "red",
+  "pink",
+];
 
 export default function TaskChart({ tasks, selectedTasks }: TaskChartProps) {
   const tasksByDate = useMemo(
     () =>
-      convertToTasksForASingleDay(tasks).map((bar, i) => ({
+      convertToTasksForASingleDay(selectedTasks, tasks).map((bar, i) => ({
         ...bar,
         fill: colors[i % colors.length],
       })),
-    [tasks]
+    [tasks, selectedTasks]
   );
 
   return (

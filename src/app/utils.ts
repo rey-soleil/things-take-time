@@ -194,20 +194,16 @@ export function convertToTasksByDate(tasks?: Task[]) {
 // each task as its own bar rather than stack them.
 // A typical entry looks like this:
 // { taskType: "code", duration: 120 }
-export function convertToTasksForASingleDay(tasks?: Task[]) {
+export function convertToTasksForASingleDay(
+  selectedTasks: Set<string>,
+  tasks?: Task[]
+) {
   if (!tasks) return [];
-  return tasks
-    .filter((task) => {
-      // date is today
-      return (
-        new Date(task.start.dateTime).toDateString() ===
-        new Date().toDateString()
-      );
-    })
-    .map((task) => {
-      const taskType = getTaskType(task.summary);
-      const duration = getDuration(task);
-      return { taskType, duration };
-    })
+  return Object.entries(convertToCluster(tasks))
+    .map((a) => ({
+      taskType: a[0],
+      duration: a[1].duration,
+    }))
+    .filter((a) => selectedTasks.has(a.taskType))
     .sort((a, b) => b.duration - a.duration);
 }
