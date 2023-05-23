@@ -5,11 +5,11 @@ import { useEffect, useMemo, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import NumDaysSelector from "../components/insights/NumDaysSelector";
 import RecentTasks from "../components/insights/RecentTasks";
+import StackedTaskChart from "../components/insights/StackedTaskChart";
 import TaskChart from "../components/insights/TaskChart";
 import TaskSelector from "../components/insights/TaskSelector";
 import TimeLogged from "../components/insights/TimeLogged";
 import { Task, convertToCluster, filterAndSortEvents } from "../utils";
-import StackedTaskChart from "../components/insights/StackedTaskChart";
 
 const INITIAL_SELECTED_TASKS = 5;
 
@@ -24,7 +24,7 @@ export default function Insights() {
   const [tasks, setTasks] = useState<Task[]>();
 
   // selectedNumDays: the number of days to show insights for
-  const [selectedNumDays, setSelectedNumDays] = useState<number>(7);
+  const [selectedNumDays, setSelectedNumDays] = useState<number>(1);
 
   // clusteredTasks: map of tasks grouped by type
   // eg. clusteredTasks["code"] = { duration: 546, instances: Array(5)}
