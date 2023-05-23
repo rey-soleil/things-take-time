@@ -20,7 +20,7 @@ type TaskChartProps = {
 };
 
 // TODO: rethink colors
-const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
+export const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
 
 export default function TaskChart({ tasks, selectedTasks }: TaskChartProps) {
   const tasksByDate = useMemo(

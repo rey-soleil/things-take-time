@@ -14,16 +14,17 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { colors } from "./TaskChart";
 
 type TaskChartProps = {
   tasks?: Task[];
   selectedTasks: Set<string>;
 };
 
-// TODO: rethink colors
-const colors = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "red", "pink"];
-
-export default function StackedTaskChart({ tasks, selectedTasks }: TaskChartProps) {
+export default function StackedTaskChart({
+  tasks,
+  selectedTasks,
+}: TaskChartProps) {
   const tasksByDate = useMemo(() => convertToTasksByDate(tasks), [tasks]);
 
   return (
