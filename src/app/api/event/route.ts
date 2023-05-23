@@ -1,4 +1,4 @@
-const { google } = require("googleapis");
+import { google } from "googleapis";
 const { OAuth2 } = google.auth;
 
 const oAuth2Client = new OAuth2(
@@ -8,6 +8,7 @@ const oAuth2Client = new OAuth2(
 oAuth2Client.setCredentials({
   refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
 });
+
 const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
 export async function POST(request: Request) {
