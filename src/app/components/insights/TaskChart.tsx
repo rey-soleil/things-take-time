@@ -33,7 +33,7 @@ export default function TaskChart({ tasks, selectedTasks }: TaskChartProps) {
   );
 
   return (
-    <ResponsiveContainer width="100%" height={400} className="flex items-start">
+    <ResponsiveContainer width="100%" height={300} className="flex items-start">
       <BarChart data={tasksByDate}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="taskType" />
