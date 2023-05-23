@@ -9,6 +9,7 @@ import TaskChart from "../components/insights/TaskChart";
 import TaskSelector from "../components/insights/TaskSelector";
 import TimeLogged from "../components/insights/TimeLogged";
 import { Task, convertToCluster, filterAndSortEvents } from "../utils";
+import StackedTaskChart from "../components/insights/StackedTaskChart";
 
 const INITIAL_SELECTED_TASKS = 5;
 
@@ -95,7 +96,12 @@ export default function Insights() {
           selectedNumDays={selectedNumDays}
           setSelectedNumDays={setSelectedNumDays}
         />
-        <TaskChart tasks={tasks} selectedTasks={selectedTasks} />
+        {selectedNumDays > 1 && (
+          <StackedTaskChart tasks={tasks} selectedTasks={selectedTasks} />
+        )}
+        {selectedNumDays === 1 && (
+          <TaskChart tasks={tasks} selectedTasks={selectedTasks} />
+        )}
         <RecentTasks tasks={tasks} clusteredTasks={clusteredTasks} />
       </div>
       <a

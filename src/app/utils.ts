@@ -189,3 +189,25 @@ export function convertToTasksByDate(tasks?: Task[]) {
     }, [] as any)
     .reverse();
 }
+
+// When charting tasks for a single day, we'd rather display
+// each task as its own bar rather than stack them.
+// A typical entry looks like this:
+// { taskType: "code", duration: 120 }
+export function convertToTasksForASingleDay(tasks?: Task[]) {
+  if (!tasks) return [];
+  return tasks
+    .filter((task) => {
+      // date is today
+      return (
+        new Date(task.start.dateTime).toDateString() ===
+        new Date().toDateString()
+      );
+    })
+    .map((task) => {
+      const taskType = getTaskType(task.summary);
+      const duration = getDuration(task);
+      return { taskType, duration };
+    })
+    .sort((a, b) => b.duration - a.duration);
+}
