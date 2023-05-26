@@ -24,13 +24,13 @@ export default function Confirm() {
 
   return (
     <main className={styles.main}>
-      <div className="text-6xl font-mono">You did</div>
+      <div className="font-mono text-6xl">You did</div>
       <div className={styles.eventNameChip}>
-        <div className="text-6xl font-mono">
+        <div className="font-mono text-3xl">
           {eventName ? eventName : task ? task.content : ""}
         </div>
       </div>
-      <div className="text-6xl font-mono">for</div>
+      <div className="font-mono text-6xl">for</div>
       <div className={`font-mono ${styles.bigClockText}`}>
         {formatAsString(timeElapsed)}
       </div>
