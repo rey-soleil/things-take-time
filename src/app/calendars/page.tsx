@@ -27,14 +27,16 @@ export default function Calendars() {
   if (task === "undefined") task = undefined;
   if (task) task = JSON.parse(task);
 
-  // console.log({ startTime, eventName, task, taskComplete });
+  // TODO: store calendarId in session rather than local storage
+  const calendarId = window.localStorage.getItem("calendarId");
+  console.log({ calendarId });
 
   async function createEvent() {
     const body = JSON.stringify({
       startTime: Number(startTime),
       eventName: eventName ? eventName : task ? task.content : "",
+      calendarId,
     });
-    // console.log({ body });
     const response = await fetch("/api/event", {
       method: "POST",
       headers: {
