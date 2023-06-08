@@ -1,45 +1,47 @@
+// TODO: change to imports
 const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
 
+// The color of the event in the calendar. This one is green.
+// See https://lukeboyle.com/blog/posts/google-calendar-api-color-id
+const COLOR_ID = 2;
+
+const oAuth2Client = new OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET
+);
+
+oAuth2Client.setCredentials({
+  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
+});
+const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
+const calendarId = process.env.PERSONAL_CALENDAR_ID;
+
 export async function POST(request: Request) {
-  const body = await request.json();
-
-  const oAuth2Client = new OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET
-  );
-
-  console.log({ oAuth2Client });
-
-  oAuth2Client.setCredentials({
-    refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
-  });
-  const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
-
-  console.log({ oAuth2Client, calendar });
+  const { eventName, startTime } = await request.json();
 
   const event = {
-    summary: body.eventName,
+    summary: eventName,
     description: "made with next-right-thing",
     start: {
-      dateTime: new Date(body.startTime),
+      dateTime: new Date(startTime),
     },
+    // TODO: pass in endTime so that the GCal event is more accurate
     end: {
       dateTime: new Date(),
     },
-    // This color is green
-    // See https://lukeboyle.com/blog/posts/google-calendar-api-color-id
-    colorId: 2,
+    colorId: COLOR_ID,
   };
 
-  console.log({ event });
+  try {
+    const calendarResponse = await calendar.events.insert({
+      calendarId,
+      resource: event,
+    });
 
-  const calendarResponse = await calendar.events.insert({
-    calendarId: process.env.PERSONAL_CALENDAR_ID,
-    resource: event,
-  });
-
-  console.log({ calendarResponse });
-
-  return new Response(JSON.stringify(calendarResponse));
+    return new Response(JSON.stringify(calendarResponse));
+  } catch (error) {
+    console.error(error);
+    return new Response(JSON.stringify(error));
+  }
 }
