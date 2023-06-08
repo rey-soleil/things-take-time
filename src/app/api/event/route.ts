@@ -2,10 +2,6 @@
 const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
 
-// The color of the event in the calendar. This one is green.
-// See https://lukeboyle.com/blog/posts/google-calendar-api-color-id
-const COLOR_ID = 2;
-
 const oAuth2Client = new OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET
@@ -14,15 +10,17 @@ const oAuth2Client = new OAuth2(
 oAuth2Client.setCredentials({
   refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
 });
+
 const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 const calendarId = process.env.PERSONAL_CALENDAR_ID;
 
 export async function POST(request: Request) {
-  const { eventName, startTime } = await request.json();
+  const { eventName, startTime, calendarId } = await request.json();
 
   const event = {
     summary: eventName,
-    description: "made with next-right-thing",
+    // TODO: if Todoist description, use Todoist description
+    description: "",
     start: {
       dateTime: new Date(startTime),
     },
@@ -30,7 +28,6 @@ export async function POST(request: Request) {
     end: {
       dateTime: new Date(),
     },
-    colorId: COLOR_ID,
   };
 
   try {
@@ -42,6 +39,6 @@ export async function POST(request: Request) {
     return new Response(JSON.stringify(calendarResponse));
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify(error));
+    return new Response(JSON.stringify(error), { status: 500 });
   }
 }
