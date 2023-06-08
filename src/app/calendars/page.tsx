@@ -42,6 +42,7 @@ export default function Calendars() {
       },
       body,
     });
+    // TODO: if response returns an error, fail gracefully
     setAddedToGoogleCalendar(true);
     // console.log(
     //   "Attempted to create Google Calendar event. Response is ",
