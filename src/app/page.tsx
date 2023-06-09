@@ -18,8 +18,6 @@ export default function Home() {
   const router = useRouter();
   // const { data: session } = useSession();
 
-  console.log({ session });
-
   const [eventName, setEventName] = useState<string | undefined>();
 
   const [selectingTodoistTasks, setSelectingTodoistTasks] = useState(false);
@@ -31,7 +29,7 @@ export default function Home() {
   // If the user has a calendarId in session, use that. If not, create a
   // calendarId (by calling api/calendar) and store it in session.
   async function setCalendarIdInSession() {
-    if (session.user.calendarId) {
+    if (session?.user?.calendarId) {
       setCalendarId(session.user.calendarId);
       return;
     }

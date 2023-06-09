@@ -2,14 +2,14 @@
 
 import { TodoistApi } from "@doist/todoist-api-typescript";
 import CheckIcon from "@mui/icons-material/Check";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
 import { ClipLoader } from "react-spinners";
 import styles from "../page.module.css";
-import CopyToClipboard from "react-copy-to-clipboard";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
 
@@ -110,14 +110,16 @@ export default function Calendars() {
             </div>
           ))}
       </div>
-      <div className="absolute bottom-0">
-        Your calendar id: {calendarId}{" "}
-        <CopyToClipboard text={calendarId}>
-          <button>
-            <ContentCopyIcon />
-          </button>
-        </CopyToClipboard>
-      </div>
+      {calendarId && (
+        <div className="absolute bottom-0">
+          Your calendar id: {calendarId}{" "}
+          <CopyToClipboard text={calendarId}>
+            <button>
+              <ContentCopyIcon />
+            </button>
+          </CopyToClipboard>
+        </div>
+      )}
     </main>
   );
 }
