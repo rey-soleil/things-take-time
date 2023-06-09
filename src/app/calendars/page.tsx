@@ -29,7 +29,6 @@ export default function Calendars() {
 
   // TODO: store calendarId in session rather than local storage
   const calendarId = window.localStorage.getItem("calendarId");
-  console.log({ calendarId });
 
   async function createEvent() {
     const body = JSON.stringify({
