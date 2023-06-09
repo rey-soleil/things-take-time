@@ -47,7 +47,10 @@ export default function Insights() {
   }, [taskLabels]);
 
   // TODO: store calendarId in session rather than local storage
-  const calendarId = window.localStorage.getItem("calendarId");
+  let calendarId = "";
+  if (typeof window !== "undefined") {
+    calendarId = window.localStorage.getItem("calendarId") || "";
+  }
   console.log({ calendarId });
 
   // This is where we fetch Google Calendar events going back selectedNumDays.
