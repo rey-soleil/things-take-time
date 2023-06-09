@@ -18,7 +18,6 @@ async function init() {
 
 export async function updateUser(email: string, update: {}) {
   try {
-    console.log({ update }, typeof update);
     if (!users) await init();
 
     await users.updateOne({ email }, { $set: update });
