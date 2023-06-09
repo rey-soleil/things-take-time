@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   try {
     const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
     const body = {
-      summary: "Next Right Thing",
+      summary: `Next Right Thing (${email})`,
       // TODO: should this have a timezone?
     };
     const createdCalendar = await calendar.calendars.insert({
