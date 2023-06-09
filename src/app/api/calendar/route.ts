@@ -11,20 +11,19 @@ oAuth2Client.setCredentials({
 });
 
 /*
- * Create a new Google Calendar and return its calendarId
+ * Create a new Google Calendar and return its calendarId.
+ * Body: { email: string }
  */
 export async function POST(request: Request) {
-  const body = await request.json();
-  const email = body.email;
+  const { email } = await request.json();
 
   try {
     const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
-    const body = {
+    const requestBody = {
       summary: `Next Right Thing (${email})`,
-      // TODO: should this have a timezone?
     };
     const createdCalendar = await calendar.calendars.insert({
-      requestBody: body,
+      requestBody,
     });
     const calendarId = createdCalendar.data.id;
 
@@ -46,5 +45,4 @@ export async function POST(request: Request) {
     console.error(error);
     return new Response(JSON.stringify(error), { status: 500 });
   }
-  return new Response("Hello world");
 }
