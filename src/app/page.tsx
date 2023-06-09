@@ -3,22 +3,55 @@
 import { Task } from "@doist/todoist-api-typescript";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Input from "@mui/material/Input";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { updateCalendarId } from "./_actions";
 import Todoist from "./components/Todoist";
 import styles from "./page.module.css";
 
 export default function Home() {
+  const { data: session } = useSession({ required: true });
+  const router = useRouter();
+  // const { data: session } = useSession();
+
+  console.log({ session });
+
   const [eventName, setEventName] = useState<string | undefined>();
 
   const [selectingTodoistTasks, setSelectingTodoistTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task>();
 
-  let calendarId = "";
-  if (typeof window !== "undefined") {
-    calendarId = window.localStorage.getItem("calendarId") || "";
+  const [calendarId, setCalendarId] = useState("");
+
+  // TODO: this code is probably for debugging right now. What we want to do is:
+  // If the user has a calendarId in session, use that. If not, create a
+  // calendarId (by calling api/calendar) and store it in session.
+  async function setCalendarIdInSession() {
+    if (session.user.calendarId) {
+      setCalendarId(session.user.calendarId);
+      return;
+    }
+
+    // If no calendarId, create one using /api/calendar
+    const data = await fetch("/api/calendar", {
+      method: "POST",
+    }).then((res) => {
+      console.log({ res });
+      return res.json();
+    });
+    console.log({ data });
+
+    setCalendarId(data.calendarId);
+    updateCalendarId(session?.user?.email!, data.calendarId);
+    router.refresh();
   }
+
+  useEffect(() => {
+    setCalendarIdInSession();
+  }, [session]);
 
   return (
     <main className={styles.main}>

@@ -5,6 +5,7 @@ import Chip from "@mui/material/Chip";
 import { useEffect, useState } from "react";
 import styles from "../page.module.css";
 
+// TODO: get TODOIST_API_TOKEN from session
 const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
 
 type TodoistTasksProps = {
