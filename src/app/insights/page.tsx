@@ -46,6 +46,10 @@ export default function Insights() {
     }
   }, [taskLabels]);
 
+  // TODO: store calendarId in session rather than local storage
+  const calendarId = window.localStorage.getItem("calendarId");
+  console.log({ calendarId });
+
   // This is where we fetch Google Calendar events going back selectedNumDays.
   async function loadTasks() {
     setIsLoading(true);
@@ -55,13 +59,12 @@ export default function Insights() {
     timeMin.setDate(timeMin.getDate() + 1 - selectedNumDays);
     timeMin.setHours(0, 0, 0, 0);
 
-    const events = await fetch(
-      `api/insights?timeMin=${timeMin.toISOString()}`,
-      {
-        method: "GET",
-        cache: "no-store",
-      }
-    ).then((res) => res.json());
+    const url = `api/insights?timeMin=${timeMin.toISOString()}&calendarId=${calendarId}`;
+
+    const events = await fetch(url, {
+      method: "GET",
+      cache: "no-store",
+    }).then((res) => res.json());
     setTasks(filterAndSortEvents(events));
     setIsLoading(false);
   }
@@ -70,7 +73,6 @@ export default function Insights() {
     loadTasks();
   }, [selectedNumDays]);
 
-  // TODO: implement a loading spinner
   if (isLoading)
     return (
       <div className="absolute left-1/2 top-1/2">
