@@ -1,9 +1,11 @@
 "use client";
 
 import { Task } from "@doist/todoist-api-typescript";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Input from "@mui/material/Input";
 import Link from "next/link";
 import { useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import Todoist from "./components/Todoist";
 import styles from "./page.module.css";
 
@@ -13,9 +15,14 @@ export default function Home() {
   const [selectingTodoistTasks, setSelectingTodoistTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task>();
 
+  let calendarId = "";
+  if (typeof window !== "undefined") {
+    calendarId = window.localStorage.getItem("calendarId") || "";
+  }
+
   return (
     <main className={styles.main}>
-      <div className="text-5xl font-mono text-center">
+      <div className="text-center font-mono text-5xl">
         What&apos;s the next right thing?
       </div>
       {!selectingTodoistTasks && (
@@ -28,7 +35,7 @@ export default function Home() {
       )}
       {!eventName && !selectingTodoistTasks && (
         <>
-          <div className="text-5xl font-mono">
+          <div className="font-mono text-5xl">
             <i>or</i>
           </div>
           <div
@@ -58,6 +65,14 @@ export default function Home() {
           </Link>
         </div>
       )}
+      <div className="absolute bottom-0">
+        Your calendar id: {calendarId}{" "}
+        <CopyToClipboard text={calendarId}>
+          <button>
+            <ContentCopyIcon />
+          </button>
+        </CopyToClipboard>
+      </div>
     </main>
   );
 }
