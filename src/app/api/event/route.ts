@@ -13,6 +13,10 @@ oAuth2Client.setCredentials({
 
 const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
+/*
+ * Add a new event to the user's associated Google Calendar. Its summary comes
+ * from eventName or task.content.
+ */
 export async function POST(request: Request) {
   const { startTime, eventName, task, calendarId } = await request.json();
   const summary = eventName || task.content;
