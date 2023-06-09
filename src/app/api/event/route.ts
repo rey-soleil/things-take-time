@@ -15,12 +15,13 @@ const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 const calendarId = process.env.PERSONAL_CALENDAR_ID;
 
 export async function POST(request: Request) {
-  const { eventName, startTime, calendarId } = await request.json();
+  const { startTime, eventName, task, calendarId } = await request.json();
+  const summary = eventName || task.content;
+  const description = task?.description || '';
 
   const event = {
-    summary: eventName,
-    // TODO: if Todoist description, use Todoist description
-    description: "",
+    summary,
+    description,
     start: {
       dateTime: new Date(startTime),
     },

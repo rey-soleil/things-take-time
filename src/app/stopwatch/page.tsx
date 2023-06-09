@@ -13,6 +13,7 @@ export default function Stopwatch() {
 
   const searchParams = useSearchParams();
 
+  // TODO: give these real types
   let eventName: any = searchParams.get("eventName");
   let task: any = searchParams.get("task");
 

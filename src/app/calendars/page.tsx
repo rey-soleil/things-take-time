@@ -3,6 +3,7 @@
 import { TodoistApi } from "@doist/todoist-api-typescript";
 import CheckIcon from "@mui/icons-material/Check";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -37,7 +38,8 @@ export default function Calendars() {
   async function createEvent() {
     const body = JSON.stringify({
       startTime: Number(startTime),
-      eventName: eventName ? eventName : task ? task.content : "",
+      eventName,
+      task,
       calendarId,
     });
     const response = await fetch("/api/event", {
@@ -60,9 +62,9 @@ export default function Calendars() {
   }
 
   useEffect(() => {
-    createEvent();
+    calendarId && createEvent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [calendarId]);
 
   // console.log({ addedToGoogleCalendar });
 
@@ -118,6 +120,12 @@ export default function Calendars() {
               <ContentCopyIcon />
             </button>
           </CopyToClipboard>
+          <a
+            href={`https://calendar.google.com/calendar/u/0/r?cid=${calendarId}`}
+            target="_blank"
+          >
+            <OpenInNewIcon />
+          </a>
         </div>
       )}
     </main>

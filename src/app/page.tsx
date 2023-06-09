@@ -50,7 +50,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    setCalendarIdInSession();
+    session && setCalendarIdInSession();
   }, [session]);
 
   return (
