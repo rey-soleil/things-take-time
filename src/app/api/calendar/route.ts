@@ -14,6 +14,9 @@ oAuth2Client.setCredentials({
  * Create a new Google Calendar and return its calendarId
  */
 export async function POST(request: Request) {
+  const body = await request.json();
+  const email = body.email;
+
   try {
     const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
     const body = {
@@ -24,6 +27,19 @@ export async function POST(request: Request) {
       requestBody: body,
     });
     const calendarId = createdCalendar.data.id;
+
+    const rule = {
+      scope: {
+        type: "user",
+        value: email,
+      },
+      role: "owner",
+    };
+
+    await calendar.acl.insert({
+      calendarId,
+      requestBody: rule,
+    });
 
     return new Response(JSON.stringify({ calendarId }), { status: 200 });
   } catch (error) {

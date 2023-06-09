@@ -2,11 +2,9 @@
 
 import { Task, TodoistApi } from "@doist/todoist-api-typescript";
 import Chip from "@mui/material/Chip";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styles from "../page.module.css";
-
-// TODO: get TODOIST_API_TOKEN from session
-const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
 
 type TodoistTasksProps = {
   selectedTask: Task | undefined;
@@ -18,10 +16,13 @@ export default function Todoist({
   setSelectedTask,
 }: TodoistTasksProps) {
   const [tasks, setTasks] = useState<Task[]>();
+  const { data: session } = useSession({ required: true });
 
   useEffect(() => {
-    api.getTasks({ filter: "today" }).then((res) => setTasks(res));
-  }, []);
+    if (!session?.user?.todoistAPIToken) return;
+    const todoistApi = new TodoistApi(session.user.todoistAPIToken);
+    todoistApi.getTasks({ filter: "today" }).then((res) => setTasks(res));
+  }, [session]);
 
   return (
     <div className={styles.todoistTasks}>

@@ -18,6 +18,7 @@ export const authOptions = {
     async session({ session, user }: any) {
       session.user.id = user.id;
       session.user.calendarId = user.calendarId;
+      session.user.todoistAPIToken = user.todoistAPIToken;
       return session;
     },
   },

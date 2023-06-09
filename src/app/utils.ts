@@ -94,9 +94,7 @@ export function filterAndSortEvents(events: GCalEvent[]): Task[] {
         event.start &&
         event.start.dateTime &&
         event.end &&
-        event.end.dateTime &&
-        event.description &&
-        event.description === "made with next-right-thing"
+        event.end.dateTime
     )
     .reverse() as Task[];
 }
