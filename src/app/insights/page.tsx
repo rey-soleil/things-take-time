@@ -1,6 +1,7 @@
 "use client";
 
 import CloseIcon from "@mui/icons-material/Close";
+import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import NumDaysSelector from "../components/insights/NumDaysSelector";
@@ -17,6 +18,8 @@ const INITIAL_SELECTED_TASKS = 5;
  * Insights is a page with multiple components giving users insights into their time management.
  */
 export default function Insights() {
+  const { data: session } = useSession({ required: true });
+
   // isLoading: whether we are currently fetching data
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -46,13 +49,6 @@ export default function Insights() {
     }
   }, [taskLabels]);
 
-  // TODO: store calendarId in session rather than local storage
-  let calendarId = "";
-  if (typeof window !== "undefined") {
-    calendarId = window.localStorage.getItem("calendarId") || "";
-  }
-  console.log({ calendarId });
-
   // This is where we fetch Google Calendar events going back selectedNumDays.
   async function loadTasks() {
     setIsLoading(true);
@@ -61,7 +57,7 @@ export default function Insights() {
     const timeMin = new Date();
     timeMin.setDate(timeMin.getDate() + 1 - selectedNumDays);
     timeMin.setHours(0, 0, 0, 0);
-
+    const calendarId = session?.user?.calendarId ?? null;
     const url = `api/insights?timeMin=${timeMin.toISOString()}&calendarId=${calendarId}`;
 
     const events = await fetch(url, {
@@ -73,8 +69,8 @@ export default function Insights() {
   }
 
   useEffect(() => {
-    loadTasks();
-  }, [selectedNumDays]);
+    session?.user.hasOwnProperty("calendarId") && loadTasks();
+  }, [selectedNumDays, session]);
 
   if (isLoading)
     return (

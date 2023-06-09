@@ -2,6 +2,7 @@
 
 import { Task } from "@doist/todoist-api-typescript";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Input from "@mui/material/Input";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -38,6 +39,7 @@ export default function Home() {
     // If no calendarId, create one using /api/calendar
     const data = await fetch("/api/calendar", {
       method: "POST",
+      body: JSON.stringify({ email: session?.user?.email }),
     }).then((res) => {
       console.log({ res });
       return res.json();
@@ -66,21 +68,23 @@ export default function Home() {
           inputProps={{ style: { textAlign: "center" } }}
         ></Input>
       )}
-      {!eventName && !selectingTodoistTasks && (
-        <>
-          <div className="font-mono text-5xl">
-            <i>or</i>
-          </div>
-          <div
-            className={`font-mono ${styles.todoistButton}`}
-            onClick={() => setSelectingTodoistTasks(true)}
-          >
-            <p className={styles.todoistButtonText}>
-              choose from Todoist tasks
-            </p>
-          </div>
-        </>
-      )}
+      {!eventName &&
+        !selectingTodoistTasks &&
+        session?.user?.todoistAPIToken && (
+          <>
+            <div className="font-mono text-5xl">
+              <i>or</i>
+            </div>
+            <div
+              className={`font-mono ${styles.todoistButton}`}
+              onClick={() => setSelectingTodoistTasks(true)}
+            >
+              <p className={styles.todoistButtonText}>
+                choose from Todoist tasks
+              </p>
+            </div>
+          </>
+        )}
       {!eventName && selectingTodoistTasks && (
         <Todoist
           selectedTask={selectedTask}
@@ -105,6 +109,12 @@ export default function Home() {
             <ContentCopyIcon />
           </button>
         </CopyToClipboard>
+        <a
+          href={`https://calendar.google.com/calendar/u/0/r?cid=${calendarId}`}
+          target="_blank"
+        >
+          <OpenInNewIcon />
+        </a>
       </div>
     </main>
   );

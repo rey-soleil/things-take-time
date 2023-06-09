@@ -8,6 +8,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import styles from "../page.module.css";
+import CopyToClipboard from "react-copy-to-clipboard";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
 
@@ -107,6 +109,14 @@ export default function Calendars() {
               </div>
             </div>
           ))}
+      </div>
+      <div className="absolute bottom-0">
+        Your calendar id: {calendarId}{" "}
+        <CopyToClipboard text={calendarId}>
+          <button>
+            <ContentCopyIcon />
+          </button>
+        </CopyToClipboard>
       </div>
     </main>
   );
