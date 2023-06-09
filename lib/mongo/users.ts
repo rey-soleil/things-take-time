@@ -1,10 +1,9 @@
+import { Collection, Db, MongoClient } from "mongodb";
 import clientPromise from "./client";
 
-let client;
-// TODO: use db's actual type
-let db: any | null;
-// TODO: use user's actual type
-let users: any | null;
+let client: MongoClient;
+let db: Db;
+let users: Collection;
 
 async function init() {
   if (db) return;
@@ -17,9 +16,9 @@ async function init() {
   }
 }
 
-// TODO: use update's actual type
-export async function updateUser(email: string, update: any) {
+export async function updateUser(email: string, update: {}) {
   try {
+    console.log({ update }, typeof update);
     if (!users) await init();
 
     await users.updateOne({ email }, { $set: update });
