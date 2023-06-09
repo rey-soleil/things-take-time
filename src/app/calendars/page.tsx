@@ -2,6 +2,7 @@
 
 import { TodoistApi } from "@doist/todoist-api-typescript";
 import CheckIcon from "@mui/icons-material/Check";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,6 +12,8 @@ import styles from "../page.module.css";
 const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
 
 export default function Calendars() {
+  const { data: session } = useSession({ required: true });
+
   const [addedToGoogleCalendar, setAddedToGoogleCalendar] = useState(false);
   const [addedToTodoist, setAddedToTodoist] = useState(false);
 
@@ -27,8 +30,7 @@ export default function Calendars() {
   if (task === "undefined") task = undefined;
   if (task) task = JSON.parse(task);
 
-  // TODO: store calendarId in session rather than local storage
-  const calendarId = window.localStorage.getItem("calendarId");
+  const calendarId = session?.user?.calendarId ?? null;
 
   async function createEvent() {
     const body = JSON.stringify({
