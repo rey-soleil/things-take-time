@@ -9,6 +9,7 @@ const oAuth2Client = new OAuth2(
 oAuth2Client.setCredentials({
   refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
 });
+const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
 /*
  * Create a new Google Calendar and return its calendarId.
@@ -18,7 +19,6 @@ export async function POST(request: Request) {
   const { email } = await request.json();
 
   try {
-    const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
     const requestBody = {
       summary: `Next Right Thing (${email})`,
     };

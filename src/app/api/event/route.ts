@@ -12,14 +12,13 @@ oAuth2Client.setCredentials({
 });
 
 const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
-const calendarId = process.env.PERSONAL_CALENDAR_ID;
 
 export async function POST(request: Request) {
   const { startTime, eventName, task, calendarId } = await request.json();
   const summary = eventName || task.content;
-  const description = task?.description || '';
+  const description = task?.description || "";
 
-  const event = {
+  const resource = {
     summary,
     description,
     start: {
@@ -34,7 +33,7 @@ export async function POST(request: Request) {
   try {
     const calendarResponse = await calendar.events.insert({
       calendarId,
-      resource: event,
+      resource,
     });
 
     return new Response(JSON.stringify(calendarResponse));
