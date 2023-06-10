@@ -4,7 +4,7 @@ import { Task, TodoistApi } from "@doist/todoist-api-typescript";
 import Chip from "@mui/material/Chip";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import styles from "../page.module.css";
+import styles from "src/app/page.module.css";
 
 type TodoistTasksProps = {
   selectedTask: Task | undefined;

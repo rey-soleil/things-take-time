@@ -4,12 +4,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 import { ClipLoader } from "react-spinners";
-import NumDaysSelector from "../components/insights/NumDaysSelector";
-import RecentTasks from "../components/insights/RecentTasks";
-import StackedTaskChart from "../components/insights/StackedTaskChart";
-import TaskChart from "../components/insights/TaskChart";
-import TaskSelector from "../components/insights/TaskSelector";
-import TimeLogged from "../components/insights/TimeLogged";
+import NumDaysSelector from "../../../components/insights/NumDaysSelector";
+import RecentTasks from "../../../components/insights/RecentTasks";
+import StackedTaskChart from "../../../components/insights/StackedTaskChart";
+import TaskChart from "../../../components/insights/TaskChart";
+import TaskSelector from "../../../components/insights/TaskSelector";
+import TimeLogged from "../../../components/insights/TimeLogged";
 import { Task, convertToCluster, filterAndSortEvents } from "../utils";
 
 const INITIAL_SELECTED_TASKS = 5;

@@ -1,5 +1,5 @@
 import { Roboto } from "next/font/google";
-import Provider from "./components/Provider";
+import Provider from "../../components/Provider";
 import "./globals.css";
 
 export const metadata = {

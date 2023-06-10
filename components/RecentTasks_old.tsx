@@ -1,6 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { GCalEvent, date, findMostRecentTasks, getDuration } from "../utils";
+import {
+  GCalEvent,
+  date,
+  findMostRecentTasks,
+  getDuration,
+} from "../src/app/utils";
 
 type RecentTasksProps = {
   events: GCalEvent[];

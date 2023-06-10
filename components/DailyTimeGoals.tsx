@@ -6,7 +6,7 @@ import {
   formatAsString,
   getTaskDurationByDate,
   getTimeLoggedToday,
-} from "../utils";
+} from "../src/app/utils";
 import ActivitiesFromLastNDays from "./ActivitiesFromLastNDays";
 
 type DailyTimeGoalsProps = {
