@@ -9,8 +9,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import Todoist from "../../components/Todoist";
 import { updateCalendarId } from "./_actions";
-import Todoist from "./components/Todoist";
 import styles from "./page.module.css";
 
 export default function Home() {

@@ -6,7 +6,7 @@ import {
   date,
   formatAsHourAndMinutes,
   getDuration,
-} from "../../utils";
+} from "../../src/app/utils";
 import GroupBySelector, { GroupBy } from "./GroupBySelector";
 
 type RecentTasksProps = {

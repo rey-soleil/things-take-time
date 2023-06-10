@@ -72,7 +72,7 @@ export default function ActivitiesFromLastNDays({
   // console.log({ data });
 
   return (
-    <div className="h-96 max-w-full flex flex-row">
+    <div className="flex h-96 max-w-full flex-row">
       <div className="flex flex-col">
         <div>
           Show me the last{" "}
