@@ -110,15 +110,17 @@ export default function Calendars() {
             </div>
           ))}
       </div>
-      <div className="absolute bottom-0">
-        <a
-          href={`https://calendar.google.com/calendar/u/0/r?cid=${calendarId}`}
-          target="_blank"
-        >
-          <span>Take me to my calendar </span>
-          <OpenInNewIcon />
-        </a>
-      </div>
+      {calendarId && (
+        <div className="absolute bottom-0">
+          <a
+            href={`https://calendar.google.com/calendar/u/0/r?cid=${calendarId}`}
+            target="_blank"
+          >
+            <span>Take me to my calendar </span>
+            <OpenInNewIcon />
+          </a>
+        </div>
+      )}
     </main>
   );
 }
