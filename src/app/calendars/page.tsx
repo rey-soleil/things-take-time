@@ -2,13 +2,11 @@
 
 import { TodoistApi } from "@doist/todoist-api-typescript";
 import CheckIcon from "@mui/icons-material/Check";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import CopyToClipboard from "react-copy-to-clipboard";
 import { ClipLoader } from "react-spinners";
 import styles from "../page.module.css";
 
@@ -112,22 +110,15 @@ export default function Calendars() {
             </div>
           ))}
       </div>
-      {calendarId && (
-        <div className="absolute bottom-0">
-          Your calendar id: {calendarId}{" "}
-          <CopyToClipboard text={calendarId}>
-            <button>
-              <ContentCopyIcon />
-            </button>
-          </CopyToClipboard>
-          <a
-            href={`https://calendar.google.com/calendar/u/0/r?cid=${calendarId}`}
-            target="_blank"
-          >
-            <OpenInNewIcon />
-          </a>
-        </div>
-      )}
+      <div className="absolute bottom-0">
+        <a
+          href={`https://calendar.google.com/calendar/u/0/r?cid=${calendarId}`}
+          target="_blank"
+        >
+          <span>Take me to my calendar </span>
+          <OpenInNewIcon />
+        </a>
+      </div>
     </main>
   );
 }

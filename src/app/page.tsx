@@ -1,14 +1,12 @@
 "use client";
 
 import { Task } from "@doist/todoist-api-typescript";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Input from "@mui/material/Input";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import Todoist from "../../components/Todoist";
 import { updateCalendarId } from "./_actions";
 import styles from "./page.module.css";
@@ -101,16 +99,11 @@ export default function Home() {
         </div>
       )}
       <div className="absolute bottom-0">
-        Your calendar id: {calendarId}{" "}
-        <CopyToClipboard text={calendarId}>
-          <button>
-            <ContentCopyIcon />
-          </button>
-        </CopyToClipboard>
         <a
           href={`https://calendar.google.com/calendar/u/0/r?cid=${calendarId}`}
           target="_blank"
         >
+          <span>Take me to my calendar </span>
           <OpenInNewIcon />
         </a>
       </div>
