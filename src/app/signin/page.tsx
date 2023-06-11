@@ -8,8 +8,10 @@ export default function SignIn() {
   const callbackUrl = searchParams.get("callbackUrl") || undefined;
 
   return (
-    <Button onClick={() => signIn("google", { callbackUrl })}>
-      Sign in With Google
-    </Button>
+    <div className="flex h-screen items-center justify-center">
+      <Button onClick={() => signIn("google", { callbackUrl })}>
+        Sign in With Google
+      </Button>
+    </div>
   );
 }
