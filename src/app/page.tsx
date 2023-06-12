@@ -98,6 +98,11 @@ export default function Home() {
           </Link>
         </div>
       )}
+      <div className={`m-5 font-mono ${styles.todoistButton}`}>
+        <Link href="/insights">
+          <p className={styles.todoistButtonText}>insights</p>
+        </Link>
+      </div>
       {calendarId && (
         <div className="absolute bottom-0">
           <a
