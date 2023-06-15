@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Todoist from "../../components/Todoist";
+import { getURL } from "../../utils/url";
 import { updateCalendarId } from "./_actions";
 import styles from "./page.module.css";
 
@@ -89,11 +90,7 @@ export default function Home() {
       )}
       {(eventName || selectedTask) && (
         <div className={`font-mono ${styles.todoistButton}`}>
-          <Link
-            href={`/stopwatch?eventName=${eventName}&task=${JSON.stringify(
-              selectedTask
-            )}`}
-          >
+          <Link href={getURL("/stopwatch", { eventName, task: selectedTask })}>
             <p className={styles.todoistButtonText}>next</p>
           </Link>
         </div>
