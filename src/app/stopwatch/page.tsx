@@ -2,8 +2,7 @@
 
 import { faCirclePlay, faCircleStop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "../page.module.css";
 import { formatAsString } from "../utils";
@@ -14,6 +13,7 @@ export default function Stopwatch() {
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>();
 
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   // TODO: give these real types
   let eventName: any = searchParams.get("eventName");
@@ -53,6 +53,17 @@ export default function Stopwatch() {
     setIntervalId(null);
   };
 
+  function stopStopwatch() {
+    const localStartTime = startTime;
+    const localTimeElapsed = timeElapsed;
+    clearStopwatch();
+    router.push(
+      `confirm?startTime=${localStartTime}&timeElapsed=${localTimeElapsed}&eventName=${eventName}&task=${JSON.stringify(
+        task
+      )}`
+    );
+  }
+
   return (
     <main className={styles.main}>
       <div className={styles.eventNameChip}>
@@ -69,14 +80,9 @@ export default function Stopwatch() {
         </button>
       )}
       {startTime && (
-        <Link
-          href={`confirm?startTime=${startTime}&timeElapsed=${timeElapsed}&eventName=${eventName}&task=${JSON.stringify(
-            task
-          )}`}
-          className="text-8xl"
-        >
+        <button onClick={stopStopwatch} className="text-8xl">
           <FontAwesomeIcon icon={faCircleStop} />
-        </Link>
+        </button>
       )}
     </main>
   );
