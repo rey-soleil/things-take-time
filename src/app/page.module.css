@@ -33,10 +33,6 @@
   margin: 0 2vw;
 }
 
-.todoistTasks {
-  max-width: 100%;
-}
-
 .eventNameChip {
   text-align: center;
   background-color: blue;

@@ -4,7 +4,6 @@ import { Task, TodoistApi } from "@doist/todoist-api-typescript";
 import Chip from "@mui/material/Chip";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import styles from "src/app/page.module.css";
 
 type TodoistTasksProps = {
   selectedTask: Task | undefined;
@@ -25,11 +24,11 @@ export default function Todoist({
   }, [session]);
 
   return (
-    <div className={styles.todoistTasks}>
+    <div className="md:max-w-[80%] max-w-full">
       {tasks?.map((task) => (
         <Chip
           size="medium"
-          sx={{ color: "white", fontSize: "20px" }}
+          sx={{ color: "white", fontSize: "20px", margin: "5px" }}
           key={task.id}
           label={task.content}
           onClick={() => setSelectedTask(task)}
