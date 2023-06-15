@@ -1,5 +1,7 @@
 "use client";
 
+import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -62,11 +64,9 @@ export default function Stopwatch() {
         {formatAsString(timeElapsed)}
       </div>
       {!startTime && (
-        <div className={`font-mono ${styles.todoistButton}`}>
-          <p className={styles.todoistButtonText} onClick={startStopwatch}>
-            start
-          </p>
-        </div>
+        <button onClick={startStopwatch} className="text-8xl">
+          <FontAwesomeIcon icon={faCirclePlay} />
+        </button>
       )}
       {startTime && (
         <div className={styles.stopwatchButtons}>
