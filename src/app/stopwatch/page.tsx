@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "../page.module.css";
 import { formatAsString } from "../utils";
+import { Task } from "@doist/todoist-api-typescript";
 
 export default function Stopwatch() {
   const [startTime, setStartTime] = useState<number | null>();
@@ -15,15 +16,12 @@ export default function Stopwatch() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // TODO: give these real types
-  let eventName: any = searchParams.get("eventName");
-  let task: any = searchParams.get("task");
-
-  if (eventName === "undefined") eventName = undefined;
-  if (task === "undefined") task = undefined;
-  if (task) task = JSON.parse(task);
-
-  // console.log({ eventName, task });
+  const eventName = searchParams.has("eventName")
+    ? searchParams.get("eventName")
+    : undefined;
+  const task: Task = searchParams.has("task")
+    ? JSON.parse(searchParams.get("task") || "")
+    : undefined;
 
   useEffect(() => {
     const maybeStartTime = window.localStorage.getItem("startTime");
