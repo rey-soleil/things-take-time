@@ -1,10 +1,14 @@
 "use client";
 
 import { Task } from "@doist/todoist-api-typescript";
-import { faCirclePlay, faCircleStop } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCirclePlay,
+  faCircleStop,
+  faRotateLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import CuteButton from "../../../components/CuteButton";
 import { getURL } from "../../../utils/url";
 import styles from "../page.module.css";
 import { formatAsString } from "../utils";
@@ -41,6 +45,8 @@ export default function Stopwatch() {
     setStartTime(time);
   };
 
+  // TODO: resolve bug where starting a stopwatch, refreshing it, and clearing
+  // it causes the time to continue incrementing until the next refresh.
   const clearStopwatch = () => {
     window.localStorage.removeItem("startTime");
     setStartTime(null);
@@ -67,14 +73,17 @@ export default function Stopwatch() {
         {formatAsString(timeElapsed)}
       </div>
       {!startTime && (
-        <button onClick={startStopwatch} className="text-8xl">
-          <FontAwesomeIcon icon={faCirclePlay} />
-        </button>
+        <CuteButton onClick={startStopwatch} icon={faCirclePlay} text="start" />
       )}
       {startTime && (
-        <button onClick={stopStopwatch} className="text-8xl">
-          <FontAwesomeIcon icon={faCircleStop} />
-        </button>
+        <div className="flex content-between">
+          <CuteButton
+            onClick={clearStopwatch}
+            icon={faRotateLeft}
+            text="clear"
+          />
+          <CuteButton onClick={stopStopwatch} icon={faCircleStop} text="stop" />
+        </div>
       )}
     </main>
   );
