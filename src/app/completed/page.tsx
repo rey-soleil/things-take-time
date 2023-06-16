@@ -10,8 +10,6 @@ import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import styles from "../page.module.css";
 
-const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
-
 export default function Completed() {
   const { data: session } = useSession({ required: true });
   const calendarId = session?.user?.calendarId ?? null;
@@ -48,9 +46,10 @@ export default function Completed() {
       console.error(e);
     }
     setAddedToGoogleCalendar(true);
-    if (task && task.id && taskComplete) {
+    if (task && task.id && taskComplete && session?.user?.todoistAPIToken) {
       try {
-        await api.closeTask(task.id);
+        const todoistApi = new TodoistApi(session.user.todoistAPIToken);
+        await todoistApi.closeTask(task.id);
       } catch (e) {
         console.error(e);
       }
