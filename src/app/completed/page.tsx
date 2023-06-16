@@ -23,13 +23,14 @@ export default function Completed() {
   const task: Task = searchParams.has("task")
     ? JSON.parse(searchParams.get("task") || "")
     : undefined;
-  const startTime = searchParams.get("startTime");
+  const startTime = Number(searchParams.get("startTime"));
   const timeElapsed = Number(searchParams.get("timeElapsed"));
   let taskComplete = searchParams.get("taskComplete") === "true";
 
   async function createEvent() {
     const body = JSON.stringify({
-      startTime: Number(startTime),
+      startTime: startTime,
+      endTime: startTime + timeElapsed,
       eventName,
       task,
       calendarId,

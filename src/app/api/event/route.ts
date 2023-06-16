@@ -18,7 +18,8 @@ const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
  * from eventName or task.content.
  */
 export async function POST(request: Request) {
-  const { startTime, eventName, task, calendarId } = await request.json();
+  const { startTime, endTime, eventName, task, calendarId } =
+    await request.json();
   const summary = eventName || task.content;
   const description = task?.description || "";
 
@@ -28,9 +29,8 @@ export async function POST(request: Request) {
     start: {
       dateTime: new Date(startTime),
     },
-    // TODO: pass in endTime so that the GCal event is more accurate
     end: {
-      dateTime: new Date(),
+      dateTime: new Date(endTime),
     },
   };
 
