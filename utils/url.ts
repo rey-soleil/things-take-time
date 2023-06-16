@@ -1,11 +1,14 @@
 export function convertParamsToString(params: object) {
-  console.log(typeof params);
   let paramString = "";
+  let marker = "?";
   Object.entries(params).forEach(([paramName, paramValue], index) => {
-    paramString += index === 0 ? "?" : "&";
-    paramString += `${paramName}=${encodeURIComponent(
-      JSON.stringify(paramValue)
-    )}`;
+    if (!paramValue) return;
+    paramString +=
+      marker +
+      `${paramName}=${encodeURIComponent(
+        typeof paramValue === "object" ? JSON.stringify(paramValue) : paramValue
+      )}`;
+    marker = "&";
   });
   return paramString;
 }
