@@ -50,6 +50,7 @@ export default function Confirm() {
             eventName,
             task,
             taskComplete,
+            timeElapsed,
           })}
         >
           <p className={styles.todoistButtonText}>that&apos;s right!</p>
