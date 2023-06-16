@@ -5,6 +5,7 @@ import { Checkbox, FormControlLabel } from "@mui/material";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { getURL } from "../../../utils/url";
 import styles from "../page.module.css";
 import { formatAsString } from "../utils";
 
@@ -44,9 +45,12 @@ export default function Confirm() {
       )}
       <div className={`font-mono ${styles.todoistButton}`}>
         <Link
-          href={`calendars?startTime=${startTime}&eventName=${eventName}&task=${JSON.stringify(
-            task
-          )}&taskComplete=${taskComplete}`}
+          href={getURL("/calendars", {
+            startTime,
+            eventName,
+            task,
+            taskComplete,
+          })}
         >
           <p className={styles.todoistButtonText}>that&apos;s right!</p>
         </Link>
