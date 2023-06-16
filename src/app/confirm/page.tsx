@@ -1,5 +1,6 @@
 "use client";
 
+import { Task } from "@doist/todoist-api-typescript";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -11,16 +12,12 @@ export default function Confirm() {
   const [taskComplete, setTaskComplete] = useState(true);
   const searchParams = useSearchParams();
 
-  let startTime: any = searchParams.get("startTime");
-  let eventName: any = searchParams.get("eventName");
-  let task: any = searchParams.get("task");
-  let timeElapsed: any = searchParams.get("timeElapsed");
-
-  if (eventName === "undefined") eventName = undefined;
-  if (task === "undefined") task = undefined;
-  if (task) task = JSON.parse(task);
-
-  // console.log({ startTime, eventName, task, timeElapsed });
+  const eventName = searchParams.get("eventName");
+  const task: Task = searchParams.has("task")
+    ? JSON.parse(searchParams.get("task") || "")
+    : undefined;
+  const startTime = searchParams.get("startTime");
+  const timeElapsed = Number(searchParams.get("timeElapsed"));
 
   return (
     <main className={styles.main}>

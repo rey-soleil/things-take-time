@@ -1,12 +1,13 @@
 "use client";
 
+import { Task } from "@doist/todoist-api-typescript";
 import { faCirclePlay, faCircleStop } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getURL } from "../../../utils/url";
 import styles from "../page.module.css";
 import { formatAsString } from "../utils";
-import { Task } from "@doist/todoist-api-typescript";
 
 export default function Stopwatch() {
   const [startTime, setStartTime] = useState<number | null>();
@@ -16,9 +17,7 @@ export default function Stopwatch() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const eventName = searchParams.has("eventName")
-    ? searchParams.get("eventName")
-    : undefined;
+  const eventName = searchParams.get("eventName");
   const task: Task = searchParams.has("task")
     ? JSON.parse(searchParams.get("task") || "")
     : undefined;
@@ -52,14 +51,9 @@ export default function Stopwatch() {
   };
 
   function stopStopwatch() {
-    const localStartTime = startTime;
-    const localTimeElapsed = timeElapsed;
-    clearStopwatch();
-    router.push(
-      `confirm?startTime=${localStartTime}&timeElapsed=${localTimeElapsed}&eventName=${eventName}&task=${JSON.stringify(
-        task
-      )}`
-    );
+    window.localStorage.removeItem("startTime");
+    intervalId && clearInterval(intervalId);
+    router.push(getURL("confirm", { startTime, timeElapsed, eventName, task }));
   }
 
   return (
