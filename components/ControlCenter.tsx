@@ -1,4 +1,4 @@
-import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlay, faCircleStop } from "@fortawesome/free-solid-svg-icons";
 import CuteButton from "components/CuteButton";
 
 /**
@@ -7,17 +7,22 @@ import CuteButton from "components/CuteButton";
  * @returns
  */
 export default function ControlCenter({
-  setStartTime,
+  startTime,
+  startStopwatch,
+  stopStopwatch,
 }: {
-  setStartTime: (startTime: number) => void;
+  startTime: number | undefined;
+  startStopwatch: () => void;
+  stopStopwatch: () => void;
 }) {
-  function startStopwatch() {
-    setStartTime(Date.now());
-  }
-
   return (
     <div>
-      <CuteButton onClick={startStopwatch} icon={faCirclePlay} text="start" />
+      {!startTime && (
+        <CuteButton onClick={startStopwatch} icon={faCirclePlay} text="start" />
+      )}
+      {startTime && (
+        <CuteButton onClick={stopStopwatch} icon={faCircleStop} text="stop" />
+      )}
     </div>
   );
 }
