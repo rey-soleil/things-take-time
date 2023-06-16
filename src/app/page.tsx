@@ -15,7 +15,6 @@ import styles from "./page.module.css";
 export default function Home() {
   const { data: session } = useSession({ required: true });
   const router = useRouter();
-  // const { data: session } = useSession();
 
   const [eventName, setEventName] = useState<string | undefined>();
 
@@ -38,10 +37,8 @@ export default function Home() {
       method: "POST",
       body: JSON.stringify({ email: session?.user?.email }),
     }).then((res) => {
-      console.log({ res });
       return res.json();
     });
-    console.log({ data });
 
     setCalendarId(data.calendarId);
     updateCalendarId(session?.user?.email!, data.calendarId);
