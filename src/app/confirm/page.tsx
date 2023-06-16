@@ -45,7 +45,7 @@ export default function Confirm() {
       )}
       <div className={`font-mono ${styles.todoistButton}`}>
         <Link
-          href={getURL("/calendars", {
+          href={getURL("/completed", {
             startTime,
             eventName,
             task,
