@@ -1,6 +1,6 @@
 "use client";
 
-import { TodoistApi } from "@doist/todoist-api-typescript";
+import { Task, TodoistApi } from "@doist/todoist-api-typescript";
 import CheckIcon from "@mui/icons-material/Check";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useSession } from "next-auth/react";
@@ -12,26 +12,22 @@ import styles from "../page.module.css";
 
 const api = new TodoistApi(process.env.NEXT_PUBLIC_TODOIST_API_TOKEN!);
 
-export default function Calendars() {
+export default function Completed() {
   const { data: session } = useSession({ required: true });
+  const calendarId = session?.user?.calendarId ?? null;
 
   const [addedToGoogleCalendar, setAddedToGoogleCalendar] = useState(false);
   const [addedToTodoist, setAddedToTodoist] = useState(false);
 
   const searchParams = useSearchParams();
 
-  let startTime: any = searchParams.get("startTime");
-  let eventName: any = searchParams.get("eventName");
-  let task: any = searchParams.get("task");
-  let taskComplete: any = JSON.parse(
-    searchParams.get("taskComplete") || "false"
-  );
-
-  if (eventName === "undefined") eventName = undefined;
-  if (task === "undefined") task = undefined;
-  if (task) task = JSON.parse(task);
-
-  const calendarId = session?.user?.calendarId ?? null;
+  const eventName = searchParams.get("eventName");
+  const task: Task = searchParams.has("task")
+    ? JSON.parse(searchParams.get("task") || "")
+    : undefined;
+  const startTime = searchParams.get("startTime");
+  const timeElapsed = Number(searchParams.get("timeElapsed"));
+  let taskComplete = searchParams.get("taskComplete") === "true";
 
   async function createEvent() {
     const body = JSON.stringify({
@@ -40,21 +36,24 @@ export default function Calendars() {
       task,
       calendarId,
     });
-    const response = await fetch("/api/event", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    });
-    // TODO: if response returns an error, fail gracefully
+    try {
+      await fetch("/api/event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      });
+    } catch (e) {
+      console.error(e);
+    }
     setAddedToGoogleCalendar(true);
-    // console.log(
-    //   "Attempted to create Google Calendar event. Response is ",
-    //   response
-    // );
     if (task && task.id && taskComplete) {
-      await api.closeTask(task.id);
+      try {
+        await api.closeTask(task.id);
+      } catch (e) {
+        console.error(e);
+      }
       setAddedToTodoist(true);
     }
   }
