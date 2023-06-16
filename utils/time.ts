@@ -1,10 +1,10 @@
 /**
  * Converts a time in milliseconds to a string in the format HH:MM:SS
- * @param time The time in milliseconds
+ * @param milliseconds The time in milliseconds
  * @returns The formatted time
  */
-export function formatAsHHMMSS(time: number) {
-  const seconds = Math.floor(time / 1000);
+export function formatAsHHMMSS(milliseconds: number) {
+  const seconds = Math.floor(milliseconds / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
 

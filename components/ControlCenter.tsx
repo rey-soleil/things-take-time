@@ -6,10 +6,18 @@ import CuteButton from "components/CuteButton";
  * timer.
  * @returns
  */
-export default function ControlCenter() {
+export default function ControlCenter({
+  setStartTime,
+}: {
+  setStartTime: (startTime: number) => void;
+}) {
+  function startStopwatch() {
+    setStartTime(Date.now());
+  }
+
   return (
     <div>
-      <CuteButton onClick={() => {}} icon={faCirclePlay} text="start" />
+      <CuteButton onClick={startStopwatch} icon={faCirclePlay} text="start" />
     </div>
   );
 }
