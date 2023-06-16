@@ -1,3 +1,6 @@
+/**
+ * Converts param (an object) to a string of URL query parameters.
+ */
 export function convertParamsToString(params: object) {
   let paramString = "";
   let marker = "?";

@@ -4,6 +4,7 @@ import { Task } from "@doist/todoist-api-typescript";
 import {
   faCirclePlay,
   faCircleStop,
+  faClock,
   faRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -73,16 +74,33 @@ export default function Stopwatch() {
         {formatAsString(timeElapsed)}
       </div>
       {!startTime && (
-        <CuteButton onClick={startStopwatch} icon={faCirclePlay} text="start" />
+        <CuteButton
+          onClick={startStopwatch}
+          icon={faCirclePlay}
+          text="start"
+          large={true}
+        />
       )}
       {startTime && (
-        <div className="flex content-between">
+        <div className="flex content-between items-end align-bottom">
           <CuteButton
             onClick={clearStopwatch}
             icon={faRotateLeft}
             text="clear"
           />
-          <CuteButton onClick={stopStopwatch} icon={faCircleStop} text="stop" />
+          <CuteButton
+            onClick={stopStopwatch}
+            icon={faCircleStop}
+            text="stop"
+            large={true}
+          />
+          <CuteButton
+            // TODO: implement lap function
+            onClick={() => {}}
+            icon={faClock}
+            text="lap"
+            title="Logs your task immediately and restarts the stopwatch."
+          />
         </div>
       )}
     </main>
