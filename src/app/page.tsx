@@ -8,7 +8,7 @@ export default function Home() {
 
   // TODO: save #F2F2F2 as a CSS variable
   return (
-    <main className="h-screen w-screen bg-[#F2F2F2]">
+    <main className="flex h-screen w-screen flex-col items-center justify-center bg-[#F2F2F2]">
       <Stopwatch />
     </main>
   );
