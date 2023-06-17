@@ -8,17 +8,19 @@ import CuteButton from "components/CuteButton";
  */
 export default function ControlCenter({
   startTime,
+  taskName,
   startStopwatch,
   stopStopwatch,
 }: {
   startTime: number | undefined;
+  taskName: string;
   startStopwatch: () => void;
   stopStopwatch: () => void;
 }) {
   return (
     <div>
       {!startTime && (
-        <CuteButton onClick={startStopwatch} icon={faCirclePlay} text="start" />
+        <CuteButton onClick={startStopwatch} icon={faCirclePlay} text="start" disabled={taskName === ""} />
       )}
       {startTime && (
         <CuteButton onClick={stopStopwatch} icon={faCircleStop} text="stop" />

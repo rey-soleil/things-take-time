@@ -1,6 +1,7 @@
 "use client";
 
 import ControlCenter from "components/ControlCenter";
+import EnterTaskName from "components/EnterTaskName";
 import Stopwatch from "components/Stopwatch";
 import Timeline from "components/Timeline";
 import { useEffect, useState } from "react";
@@ -10,6 +11,8 @@ export default function Home() {
   const [milliseconds, setMilliseconds] = useState(0);
   const [endTime, setEndTime] = useState<number | undefined>();
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>();
+
+  const [taskName, setTaskName] = useState("");
 
   function startStopwatch() {
     setStartTime(Date.now());
@@ -37,9 +40,11 @@ export default function Home() {
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center bg-[#F2F2F2]">
       <Timeline milliseconds={milliseconds} />
+      <EnterTaskName taskName={taskName} setTaskName={setTaskName} />
       <Stopwatch milliseconds={milliseconds} />
       <ControlCenter
         startTime={startTime}
+        taskName={taskName}
         startStopwatch={startStopwatch}
         stopStopwatch={stopStopwatch}
       />
