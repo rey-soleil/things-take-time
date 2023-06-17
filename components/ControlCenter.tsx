@@ -1,3 +1,4 @@
+import { Task } from "@doist/todoist-api-typescript";
 import { faCirclePlay, faCircleStop } from "@fortawesome/free-solid-svg-icons";
 import CuteButton from "components/CuteButton";
 
@@ -9,18 +10,25 @@ import CuteButton from "components/CuteButton";
 export default function ControlCenter({
   startTime,
   taskName,
+  task,
   startStopwatch,
   stopStopwatch,
 }: {
   startTime: number | undefined;
   taskName: string;
+  task: Task | undefined;
   startStopwatch: () => void;
   stopStopwatch: () => void;
 }) {
   return (
     <div>
       {!startTime && (
-        <CuteButton onClick={startStopwatch} icon={faCirclePlay} text="start" disabled={taskName === ""} />
+        <CuteButton
+          onClick={startStopwatch}
+          icon={faCirclePlay}
+          text="start"
+          disabled={!(taskName || task)}
+        />
       )}
       {startTime && (
         <CuteButton onClick={stopStopwatch} icon={faCircleStop} text="stop" />

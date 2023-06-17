@@ -13,6 +13,7 @@ export default function EnterTaskName({
 }) {
   return (
     <Input
+      fullWidth
       placeholder="enter a task here"
       onChange={({ target }) => setTaskName(target.value)}
       value={taskName}

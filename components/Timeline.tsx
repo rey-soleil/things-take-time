@@ -4,6 +4,7 @@
  */
 export default function Timeline({ milliseconds }: { milliseconds: number }) {
   // TODO: add a tooltip with event name and duration
+  // TODO: consider making it horizontal, at least when width > height
   return (
     <div className="absolute bottom-1/2 left-0">
       <div
