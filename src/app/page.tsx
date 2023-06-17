@@ -2,10 +2,9 @@
 
 import { Task, TodoistApi } from "@doist/todoist-api-typescript";
 import ControlCenter from "components/ControlCenter";
-import EnterTaskName from "components/EnterTaskName";
 import Stopwatch from "components/Stopwatch";
+import TaskController from "components/TaskController";
 import Timeline from "components/Timeline";
-import TodoistTaskSelector from "components/TodoistTaskSelector";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -56,20 +55,19 @@ export default function Home() {
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center bg-[#F2F2F2] p-5">
       <Timeline milliseconds={milliseconds} />
-      {!tasks && (
-        <EnterTaskName taskName={taskName} setTaskName={setTaskName} />
-      )}
-      {tasks && (
-        <TodoistTaskSelector
-          tasks={tasks}
-          setTaskName={setTaskName}
-          setTask={setTask}
-        />
-      )}
+      <TaskController
+        startTime={startTime}
+        tasks={tasks}
+        task={task}
+        taskName={taskName}
+        setTaskName={setTaskName}
+        setTask={setTask}
+      />
       <Stopwatch milliseconds={milliseconds} />
       <ControlCenter
         startTime={startTime}
         taskName={taskName}
+        task={task}
         startStopwatch={startStopwatch}
         stopStopwatch={stopStopwatch}
       />
