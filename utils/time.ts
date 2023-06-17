@@ -9,7 +9,8 @@ export function formatAsHHMMSS(milliseconds: number) {
   const hours = Math.floor(minutes / 60);
 
   const formattedHours = hours > 0 ? `${(hours % 24).toString()}:` : "";
-  const formattedMinutes = `${(minutes % 60).toString()}`;
+  let formattedMinutes = `${(minutes % 60).toString()}`;
+  if (hours > 0) formattedMinutes = formattedMinutes.padStart(2, "0");
   const formattedSeconds = `${(seconds % 60).toString().padStart(2, "0")}`;
 
   return `${formattedHours}${formattedMinutes}:${formattedSeconds}`;
