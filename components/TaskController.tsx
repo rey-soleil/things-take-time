@@ -9,6 +9,7 @@ export default function TaskController({
   taskName,
   setTaskName,
   setTask,
+  startStopwatch,
 }: {
   startTime: number | undefined;
   tasks: Task[] | undefined;
@@ -16,6 +17,7 @@ export default function TaskController({
   taskName: string;
   setTaskName: (taskName: string) => void;
   setTask: (task: Task | undefined) => void;
+  startStopwatch: () => void;
 }) {
   if (startTime) {
     return (
@@ -35,6 +37,7 @@ export default function TaskController({
           tasks={tasks}
           setTaskName={setTaskName}
           setTask={setTask}
+          startStopwatch={startStopwatch}
         />
       )}
     </div>

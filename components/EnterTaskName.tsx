@@ -14,7 +14,7 @@ export default function EnterTaskName({
   return (
     <Input
       fullWidth
-      placeholder="enter a task here"
+      placeholder="What are you going to do?"
       onChange={({ target }) => setTaskName(target.value)}
       value={taskName}
       slotProps={{
