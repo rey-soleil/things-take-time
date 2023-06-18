@@ -1,28 +1,28 @@
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-type CuteButtonProps = {
-  onClick: () => void;
-  icon: IconDefinition;
-  text: string;
-  disabled?: boolean;
-};
-
 export default function CuteButton({
   onClick,
   icon,
-  text,
   disabled,
-}: CuteButtonProps) {
+  hidden,
+  large,
+}: {
+  onClick: () => void;
+  icon: IconDefinition;
+  disabled?: boolean;
+  hidden?: boolean;
+  large?: boolean;
+}) {
   return (
     <button
       onClick={onClick}
-      className="m-5 flex flex-col items-center"
+      className={`m-5 flex flex-col items-center ${hidden && "invisible"}`}
       disabled={disabled}
     >
       <FontAwesomeIcon
         icon={icon}
-        className="text-6xl"
+        className={large ? "text-7xl" : "text-5xl"}
         color={disabled ? "gray" : "black"}
       />
     </button>
