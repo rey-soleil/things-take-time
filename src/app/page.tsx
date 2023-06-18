@@ -1,8 +1,8 @@
 "use client";
 
 import { Task, TodoistApi } from "@doist/todoist-api-typescript";
-import ControlCenter from "components/ControlCenter";
 import Stopwatch from "components/Stopwatch";
+import StopwatchButtons from "components/StopwatchButtons";
 import TaskCompleteDialog from "components/TaskCompleteDialog";
 import TaskController from "components/TaskController";
 import Timeline from "components/Timeline";
@@ -26,20 +26,22 @@ export default function Home() {
   const [isTaskConfirmationDialogOpen, setIsTaskConfirmationDialogOpen] =
     useState(false);
 
-  const startStopwatch = () => {
+  function startStopwatch() {
     const startTime = Date.now();
     setStartTime(startTime);
     const intervalId = setInterval(() => {
       setMilliseconds(Date.now() - startTime);
     }, 1000);
     setIntervalId(intervalId);
-  };
+  }
 
   function stopStopwatch() {
-    if (task) {
-      setIsTaskConfirmationDialogOpen(true);
-    }
+    task && setIsTaskConfirmationDialogOpen(true);
     logToGoogleCalendarAndToast(session, startTime, taskName, task);
+    clearStopwatch();
+  }
+
+  function clearStopwatch() {
     setStartTime(undefined);
     setMilliseconds(0);
     clearInterval(intervalId!);
@@ -67,12 +69,13 @@ export default function Home() {
         startStopwatch={startStopwatch}
       />
       <Stopwatch milliseconds={milliseconds} />
-      <ControlCenter
+      <StopwatchButtons
         startTime={startTime}
         taskName={taskName}
         task={task}
         startStopwatch={startStopwatch}
         stopStopwatch={stopStopwatch}
+        clearStopwatch={clearStopwatch}
       />
       <Toaster position="bottom-right" />
       <TaskCompleteDialog
