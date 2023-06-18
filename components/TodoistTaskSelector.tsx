@@ -5,17 +5,23 @@ export default function TodoistTaskSelector({
   tasks,
   setTaskName,
   setTask,
+  startStopwatch,
 }: {
   tasks: Task[];
   setTaskName: (taskName: string) => void;
   setTask: (task: Task | undefined) => void;
+  startStopwatch: () => void;
 }) {
   return (
     <Autocomplete
       freeSolo
       fullWidth
       renderInput={(params) => (
-        <TextField key={params.id} {...params} label="type out or select a task here" />
+        <TextField
+          key={params.id}
+          {...params}
+          label="What are you going to do?"
+        />
       )}
       onInputChange={(_, value, reason) => {
         if (reason === "input") {
@@ -27,11 +33,12 @@ export default function TodoistTaskSelector({
         if (reason === "selectOption") {
           setTaskName("");
           setTask(value as Task);
+          startStopwatch();
         }
       }}
       onKeyDown={(event) => {
         if (event.key === "Enter") {
-          return;
+          startStopwatch();
         }
       }}
       options={tasks}

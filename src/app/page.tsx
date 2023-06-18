@@ -7,7 +7,6 @@ import TaskCompleteDialog from "components/TaskCompleteDialog";
 import TaskController from "components/TaskController";
 import Timeline from "components/Timeline";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { logToGoogleCalendarAndToast } from "utils/task-logging";
@@ -27,9 +26,14 @@ export default function Home() {
   const [isTaskConfirmationDialogOpen, setIsTaskConfirmationDialogOpen] =
     useState(false);
 
-  function startStopwatch() {
-    setStartTime(Date.now());
-  }
+  const startStopwatch = () => {
+    const startTime = Date.now();
+    setStartTime(startTime);
+    const intervalId = setInterval(() => {
+      setMilliseconds(Date.now() - startTime);
+    }, 1000);
+    setIntervalId(intervalId);
+  };
 
   function stopStopwatch() {
     if (task) {
@@ -41,16 +45,6 @@ export default function Home() {
     clearInterval(intervalId!);
     setIntervalId(null);
   }
-
-  // When startTime is set, create an interval to update milliseconds every
-  // second
-  useEffect(() => {
-    if (!startTime) return;
-    const intervalId = setInterval(() => {
-      setMilliseconds(Date.now() - startTime);
-    }, 1000);
-    setIntervalId(intervalId);
-  }, [startTime]);
 
   // If the user has a Todoist API token, fetch their tasks
   useEffect(() => {
@@ -70,6 +64,7 @@ export default function Home() {
         taskName={taskName}
         setTaskName={setTaskName}
         setTask={setTask}
+        startStopwatch={startStopwatch}
       />
       <Stopwatch milliseconds={milliseconds} />
       <ControlCenter
