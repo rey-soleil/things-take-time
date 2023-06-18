@@ -3,12 +3,14 @@
 import { Task, TodoistApi } from "@doist/todoist-api-typescript";
 import ControlCenter from "components/ControlCenter";
 import Stopwatch from "components/Stopwatch";
+import TaskCompleteDialog from "components/TaskCompleteDialog";
 import TaskController from "components/TaskController";
 import Timeline from "components/Timeline";
 import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
-import { logAndToast } from "utils/task-logging";
+import { logToGoogleCalendarAndToast } from "utils/task-logging";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -22,12 +24,18 @@ export default function Home() {
   const [tasks, setTasks] = useState<Task[]>();
   const [task, setTask] = useState<Task>();
 
+  const [isTaskConfirmationDialogOpen, setIsTaskConfirmationDialogOpen] =
+    useState(false);
+
   function startStopwatch() {
     setStartTime(Date.now());
   }
 
   function stopStopwatch() {
-    logAndToast(session, startTime, taskName, task);
+    if (task) {
+      setIsTaskConfirmationDialogOpen(true);
+    }
+    logToGoogleCalendarAndToast(session, startTime, taskName, task);
     setStartTime(undefined);
     setMilliseconds(0);
     clearInterval(intervalId!);
@@ -72,6 +80,12 @@ export default function Home() {
         stopStopwatch={stopStopwatch}
       />
       <Toaster position="bottom-right" />
+      <TaskCompleteDialog
+        task={task}
+        isTaskConfirmationDialogOpen={isTaskConfirmationDialogOpen}
+        setIsTaskConfirmationDialogOpen={setIsTaskConfirmationDialogOpen}
+        session={session}
+      />
     </main>
   );
 }
