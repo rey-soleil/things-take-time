@@ -15,7 +15,7 @@ export default function TodoistTaskSelector({
       freeSolo
       fullWidth
       renderInput={(params) => (
-        <TextField {...params} label="type out or select a task here" />
+        <TextField key={params.id} {...params} label="type out or select a task here" />
       )}
       onInputChange={(_, value, reason) => {
         if (reason === "input") {
