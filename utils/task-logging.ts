@@ -2,7 +2,7 @@ import { Task, TodoistApi } from "@doist/todoist-api-typescript";
 import { Session } from "next-auth";
 import { toastGoogleCalendarCompletion, toastTodoistCompletion } from "./toast";
 
-export function logAndToast(
+export function logToGoogleCalendarAndToast(
   session: Session | null,
   startTime: number | undefined,
   taskName: string,
@@ -14,12 +14,8 @@ export function logAndToast(
     taskName,
     task
   );
-  const todoistPromise = closeTaskInTodoist(session, task);
   if (googleCalendarPromise) {
     toastGoogleCalendarCompletion(googleCalendarPromise, taskName, task);
-  }
-  if (todoistPromise) {
-    toastTodoistCompletion(todoistPromise, task);
   }
 }
 
@@ -47,6 +43,16 @@ export function logTaskToGoogleCalendar(
     body: JSON.stringify(body),
   }).catch((err) => console.error(err));
   return googleCalendarPromise;
+}
+
+export function closeTodoistTaskAndToast(
+  session: Session | null,
+  task: Task | undefined
+) {
+  const todoistPromise = closeTaskInTodoist(session, task);
+  if (todoistPromise) {
+    toastTodoistCompletion(todoistPromise, task);
+  }
 }
 
 export function closeTaskInTodoist(
