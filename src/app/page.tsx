@@ -7,6 +7,8 @@ import TaskController from "components/TaskController";
 import Timeline from "components/Timeline";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
+import { logAndToast } from "utils/task-logging";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -14,10 +16,8 @@ export default function Home() {
   // TODO: clean up all the "| null | undefined" here
   const [startTime, setStartTime] = useState<number | undefined>();
   const [milliseconds, setMilliseconds] = useState(0);
-  const [endTime, setEndTime] = useState<number | undefined>();
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>();
 
-  // TODO: find a way to get task and taskName to play nice
   const [taskName, setTaskName] = useState("");
   const [tasks, setTasks] = useState<Task[]>();
   const [task, setTask] = useState<Task>();
@@ -27,9 +27,9 @@ export default function Home() {
   }
 
   function stopStopwatch() {
+    logAndToast(session, startTime, taskName, task);
     setStartTime(undefined);
     setMilliseconds(0);
-    setEndTime(Date.now());
     clearInterval(intervalId!);
     setIntervalId(null);
   }
@@ -71,6 +71,7 @@ export default function Home() {
         startStopwatch={startStopwatch}
         stopStopwatch={stopStopwatch}
       />
+      <Toaster position="bottom-right" />
     </main>
   );
 }

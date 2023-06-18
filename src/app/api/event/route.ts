@@ -15,12 +15,12 @@ const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
 /*
  * Add a new event to the user's associated Google Calendar. Its summary comes
- * from eventName or task.content.
+ * from taskName or task.content.
  */
 export async function POST(request: Request) {
-  const { startTime, endTime, eventName, task, calendarId } =
+  const { startTime, endTime, taskName, task, calendarId } =
     await request.json();
-  const summary = eventName || task.content;
+  const summary = taskName || task.content;
   const description = task?.description || "";
 
   const resource = {

@@ -35,6 +35,7 @@
     "react": "^18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-spinners": "^0.13.8",
     "recharts": "^2.6.0",
     "typescript": "^5.0.2"
