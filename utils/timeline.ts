@@ -1,6 +1,6 @@
 // The only constraint on NUM_TICKMARKS is that it should be a multiple of 2.
 const NUM_TICKMARKS = 4;
-const MINUTES_ON_SCREEN = 120;
+const MINUTES_ON_SCREEN = 60;
 
 // Returns an array of NUM_TICKMARKS + 1 numbers, each of which is the
 // millisecond value of a tick mark.
@@ -33,11 +33,26 @@ function convertMinutesToMilliseconds(minutes: number) {
 }
 
 function convertTickMarkToLabel(milliseconds: number) {
-  return new Date(milliseconds).toLocaleTimeString();
+  return simplifyTimeString(new Date(milliseconds).toLocaleTimeString());
 }
 
-export function getTickMarksAndLabels(now: number, minutesOnScreen: number) {
+function simplifyTimeString(timeString: string) {
+  return timeString.slice(0, 4) + timeString.slice(-2, -1).toLowerCase();
+}
+
+export function getPercentFromEnd(milliseconds: number, now: number) {
+  const millisecondsOnScreen = convertMinutesToMilliseconds(MINUTES_ON_SCREEN);
+  const end = now + millisecondsOnScreen / 2;
+  return (100 * (end - milliseconds)) / millisecondsOnScreen;
+}
+
+// Returns an array of {milliseconds, label, percentFromEnd} objects.
+export function getTickMarks(now: number) {
   return getTickMarksInMilliseconds(now).map((milliseconds) => {
-    return { milliseconds, label: convertTickMarkToLabel(milliseconds) };
+    return {
+      milliseconds,
+      label: convertTickMarkToLabel(milliseconds),
+      percentFromEnd: getPercentFromEnd(milliseconds, now),
+    };
   });
 }
