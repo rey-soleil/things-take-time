@@ -14,7 +14,7 @@ export function logToGoogleCalendarAndToast(
     task
   );
   if (googleCalendarPromise) {
-    toastGoogleCalendarCompletion(googleCalendarPromise, task);
+    toastGoogleCalendarCompletion(googleCalendarPromise, session, task);
   }
 }
 
