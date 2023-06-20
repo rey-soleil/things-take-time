@@ -1,5 +1,7 @@
 import { updateCalendarId } from "@/app/_actions";
 import { Session } from "next-auth";
+import { convertMinutesToMilliseconds } from "./timeline";
+import { getURL } from "./url";
 
 // If the user has a calendarId in session, use that. If not, create a
 // calendarId (by calling api/calendar) and store it in session.
@@ -23,4 +25,19 @@ export async function setCalendarIdInSession(session: Session) {
 
   updateCalendarId(session?.user?.email!, data.calendarId);
   return { needToRefresh: true };
+}
+
+export async function getRecentCalendarEvents(
+  calendarId: string,
+  now: number,
+  minutesOnScreen: number
+) {
+  const timeMin = now - convertMinutesToMilliseconds(minutesOnScreen / 2);
+  const url = getURL("/api/insights", { timeMin, calendarId });
+
+  const events = await fetch(url, {
+    method: "GET",
+    cache: "no-store",
+  }).then((res) => res.json());
+  return events;
 }
