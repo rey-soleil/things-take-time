@@ -37,21 +37,28 @@ export default function StopwatchButtons({
         <CuteButton
           onClick={startStopwatch}
           icon={faCirclePlay}
+          title="Start the stopwatch"
           disabled={task.content === ""}
           large={true}
         />
       )}
       {startTime && (
         <div className="flex items-center">
-          <CuteButton onClick={clearStopwatch} icon={faRotateLeft} />
+          <CuteButton
+            onClick={clearStopwatch}
+            icon={faRotateLeft}
+            title="Clear the stopwatch"
+          />
           <CuteButton
             onClick={stopStopwatch}
             icon={faCircleStop}
+            title="Stop the stopwatch and log the task"
             large={true}
           />
           <CuteButton
             onClick={() => setIsDescriptionDialogOpen(true)}
             icon={faNoteSticky}
+            title="Add description to the task"
           />
         </div>
       )}
