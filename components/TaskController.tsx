@@ -30,7 +30,11 @@ export default function TaskController({
   return (
     <div className="md:w-[700px] flex w-full justify-center">
       {!tasks && (
-        <EnterTaskName taskName={taskName} setTaskName={setTaskName} />
+        <EnterTaskName
+          taskName={taskName}
+          setTaskName={setTaskName}
+          startStopwatch={startStopwatch}
+        />
       )}
       {tasks && (
         <TodoistTaskSelector
