@@ -10,7 +10,7 @@ export default function HorizontalTickMarks({
   return (
     <>
       {tickMarks.map(({ milliseconds, label, percentFromEnd }) => {
-        if (percentFromEnd < 0 || percentFromEnd > 100) return <></>;
+        if (percentFromEnd < 5 || percentFromEnd > 95) return <></>;
         return (
           <div
             key={milliseconds}
@@ -19,7 +19,7 @@ export default function HorizontalTickMarks({
               right: `${percentFromEnd}%`,
             }}
           >
-            <span>{label}</span>
+            <span className="relative left-1/2">{label}</span>
           </div>
         );
       })}
