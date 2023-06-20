@@ -55,6 +55,12 @@ export default function StopwatchButtons({
           />
         </div>
       )}
+      <DescriptionDialog
+        isDescriptionDialogOpen={isDescriptionDialogOpen}
+        setIsDescriptionDialogOpen={setIsDescriptionDialogOpen}
+        task={task}
+        setTask={setTask}
+      />
     </div>
   );
 }
