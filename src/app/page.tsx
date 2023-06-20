@@ -5,6 +5,7 @@ import Stopwatch from "components/Stopwatch";
 import StopwatchButtons from "components/StopwatchButtons";
 import TaskCompleteDialog from "components/TaskCompleteDialog";
 import TaskController from "components/TaskController";
+import HorizontalTimeline from "components/timeline/HorizontalTimeline";
 import VerticalTimeline from "components/timeline/VerticalTimeline";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -58,7 +59,7 @@ export default function Home() {
   // TODO: save #F2F2F2 as a CSS variable
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center bg-[#F2F2F2] p-5">
-      <VerticalTimeline startTime={startTime} />
+      {/* <VerticalTimeline startTime={startTime} /> */}
       <TaskController
         startTime={startTime}
         tasks={tasks}
@@ -69,6 +70,7 @@ export default function Home() {
         startStopwatch={startStopwatch}
       />
       <Stopwatch milliseconds={milliseconds} />
+      <HorizontalTimeline startTime={startTime} />
       <StopwatchButtons
         startTime={startTime}
         taskName={taskName}
