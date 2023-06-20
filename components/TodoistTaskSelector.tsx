@@ -16,13 +16,7 @@ export default function TodoistTaskSelector({
     <Autocomplete
       freeSolo
       fullWidth
-      renderInput={(params) => (
-        <TextField
-          key={params.id}
-          {...params}
-          label="What are you going to do?"
-        />
-      )}
+      renderInput={(params) => <TextField key={params.id} {...params} />}
       onInputChange={(_, value, reason) => {
         if (reason === "input") {
           setTask(undefined);
