@@ -31,7 +31,7 @@ function populateMilliseconds(
   return milliseconds;
 }
 
-function convertMinutesToMilliseconds(minutes: number) {
+export function convertMinutesToMilliseconds(minutes: number) {
   return minutes * 60 * 1000;
 }
 
