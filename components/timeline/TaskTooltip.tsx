@@ -1,21 +1,20 @@
-import { GCalEvent } from "@/app/utils";
 import { convertTickMarkToLabel } from "utils/timeline";
 
-export function TaskTooltip({ event }: { event: GCalEvent }) {
-  if (!event.start?.dateTime || !event.end?.dateTime)
-    return <>{event.summary}</>;
-
-  const startLabel = convertTickMarkToLabel(
-    new Date(event.start?.dateTime).getTime()
-  );
-
-  const endLabel = convertTickMarkToLabel(
-    new Date(event.end?.dateTime).getTime()
-  );
+export function TaskTooltip({
+  summary,
+  startMilliseconds,
+  endMilliseconds,
+}: {
+  summary: string;
+  startMilliseconds: number;
+  endMilliseconds: number;
+}) {
+  const startLabel = convertTickMarkToLabel(startMilliseconds);
+  const endLabel = convertTickMarkToLabel(endMilliseconds);
 
   return (
     <div>
-      <div className="text-xl font-bold">{event.summary}</div>
+      <div className="text-xl font-bold">{summary}</div>
       <div className="text-base">
         {startLabel} - {endLabel}
       </div>
