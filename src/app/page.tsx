@@ -15,7 +15,7 @@ import { logToGoogleCalendarAndToast } from "utils/task-logging";
 import { Task } from "utils/tasks";
 
 export default function Home() {
-  const { data: session, update } = useSession({ required: true });
+  const { data: session } = useSession({ required: true });
   const router = useRouter();
 
   // TODO: clean up all the "| null | undefined" here
@@ -64,7 +64,7 @@ export default function Home() {
     setCalendarIdInSession(session).then(
       ({ needToRefresh }) => needToRefresh && router.refresh()
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   // This ensures that we clear the task when closing the "Did you complete..."
@@ -72,6 +72,8 @@ export default function Home() {
   useEffect(() => {
     if (!isTaskConfirmationDialogOpen) setTask({ content: "" });
   }, [isTaskConfirmationDialogOpen]);
+
+  if (!session) return <></>;
 
   // TODO: save #F2F2F2 as a CSS variable
   return (
@@ -85,7 +87,7 @@ export default function Home() {
         startStopwatch={startStopwatch}
       />
       <Stopwatch milliseconds={milliseconds} />
-      <HorizontalTimeline startTime={startTime} />
+      <HorizontalTimeline session={session} startTime={startTime} />
       <StopwatchButtons
         startTime={startTime}
         task={task}

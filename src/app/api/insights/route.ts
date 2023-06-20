@@ -11,9 +11,8 @@ const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const selectedNumDays = Number(searchParams.get("selectedNumDays") || "7");
   const calendarId = searchParams.get("calendarId");
-  const timeMin = searchParams.get("timeMin");
+  const timeMin = new Date(Number(searchParams.get("timeMin")!)).toISOString();
   const timeMax = new Date().toISOString();
 
   const calendarResponse = await calendar.events.list({
