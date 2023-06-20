@@ -5,7 +5,7 @@ import Stopwatch from "components/Stopwatch";
 import StopwatchButtons from "components/StopwatchButtons";
 import TaskCompleteDialog from "components/TaskCompleteDialog";
 import TaskController from "components/TaskController";
-import VerticalTimeline from "components/VerticalTimeline";
+import VerticalTimeline from "components/timeline/VerticalTimeline";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
