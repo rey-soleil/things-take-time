@@ -1,7 +1,7 @@
+import { TodoistApi } from "@doist/todoist-api-typescript";
 import { Session } from "next-auth";
 import { Task } from "utils/tasks";
 import { toastGoogleCalendarCompletion, toastTodoistCompletion } from "./toast";
-import { TodoistApi } from "@doist/todoist-api-typescript";
 
 export function logToGoogleCalendarAndToast(
   session: Session | null,
@@ -24,7 +24,7 @@ export function logTaskToGoogleCalendar(
   task: Task | undefined
 ) {
   if (!session?.user.calendarId || !startTime) {
-    return null;
+    return Promise.reject();
   }
   const body = {
     startTime,
