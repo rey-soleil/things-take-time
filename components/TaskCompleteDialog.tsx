@@ -1,20 +1,22 @@
-import { Task } from "@doist/todoist-api-typescript";
 import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
 import { Session } from "next-auth";
 import { closeTodoistTaskAndToast } from "utils/task-logging";
+import { Task } from "utils/tasks";
 
 export default function TaskCompleteDialog({
   task,
+  setTask,
   isTaskConfirmationDialogOpen,
   setIsTaskConfirmationDialogOpen,
   session,
 }: {
-  task: Task | undefined;
+  task: Task;
+  setTask: (task: Task) => void;
   isTaskConfirmationDialogOpen: boolean;
   setIsTaskConfirmationDialogOpen: (isOpen: boolean) => void;
   session: Session | null;
 }) {
-  if (!task || !session) return <></>;
+  if (!session) return <></>;
 
   return (
     <Dialog open={isTaskConfirmationDialogOpen}>
@@ -34,8 +36,8 @@ export default function TaskCompleteDialog({
         </Button>
         <Button
           onClick={() => {
+            closeTodoistTaskAndToast(session, task);
             setIsTaskConfirmationDialogOpen(false);
-            closeTodoistTaskAndToast(session, task!);
           }}
           // Hardcode the background color to MUI blue because Tailwind sets
           // button backgrounds to transparent by default

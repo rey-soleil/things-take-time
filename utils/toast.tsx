@@ -1,25 +1,24 @@
-import { Task } from "@doist/todoist-api-typescript";
 import toast from "react-hot-toast";
+import { Task } from "utils/tasks";
 
 export function toastGoogleCalendarCompletion(
   googleCalendarPromise: Promise<void | Response>,
-  taskName: string,
   task: Task | undefined
 ) {
   toast.promise(googleCalendarPromise, {
     loading: (
       <p>
-        Adding <b>{taskName || task?.content}</b> to Google Calendar
+        Adding <b>{task?.content}</b> to Google Calendar
       </p>
     ),
     success: (
       <p>
-        Added <b>{taskName || task?.content}</b> to Google Calendar
+        Added <b>{task?.content}</b> to Google Calendar
       </p>
     ),
     error: (
       <p>
-        Failed to add <b>{taskName || task?.content}</b> to Google Calendar
+        Failed to add <b>{task?.content}</b> to Google Calendar
       </p>
     ),
   });

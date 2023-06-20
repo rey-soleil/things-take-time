@@ -1,11 +1,13 @@
-import { Task } from "@doist/todoist-api-typescript";
+import { faNoteSticky } from "@fortawesome/free-regular-svg-icons";
 import {
   faCirclePlay,
   faCircleStop,
-  faClock,
   faRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import CuteButton from "components/CuteButton";
+import { useState } from "react";
+import { Task } from "utils/tasks";
+import DescriptionDialog from "./DescriptionDialog";
 
 /**
  * StopwatchButtons contains the buttons for starting, stopping, and clearing the
@@ -14,26 +16,28 @@ import CuteButton from "components/CuteButton";
  */
 export default function StopwatchButtons({
   startTime,
-  taskName,
   task,
+  setTask,
   startStopwatch,
   stopStopwatch,
   clearStopwatch,
 }: {
   startTime: number | undefined;
-  taskName: string;
-  task: Task | undefined;
+  task: Task;
+  setTask: (task: Task) => void;
   startStopwatch: () => void;
   stopStopwatch: () => void;
   clearStopwatch: () => void;
 }) {
+  const [isDescriptionDialogOpen, setIsDescriptionDialogOpen] = useState(false);
+
   return (
     <div>
       {!startTime && (
         <CuteButton
           onClick={startStopwatch}
           icon={faCirclePlay}
-          disabled={!(taskName || task)}
+          disabled={task.content === ""}
           large={true}
         />
       )}
@@ -45,7 +49,10 @@ export default function StopwatchButtons({
             icon={faCircleStop}
             large={true}
           />
-          <CuteButton onClick={() => {}} icon={faClock} />
+          <CuteButton
+            onClick={() => setIsDescriptionDialogOpen(true)}
+            icon={faNoteSticky}
+          />
         </div>
       )}
     </div>

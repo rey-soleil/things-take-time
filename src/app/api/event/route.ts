@@ -18,9 +18,9 @@ const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
  * from taskName or task.content.
  */
 export async function POST(request: Request) {
-  const { startTime, endTime, taskName, task, calendarId } =
+  const { startTime, endTime, task, calendarId } =
     await request.json();
-  const summary = taskName || task.content;
+  const summary = task.content;
   const description = task?.description || "";
 
   const resource = {

@@ -1,15 +1,13 @@
-import { Task } from "@doist/todoist-api-typescript";
 import { Autocomplete, TextField } from "@mui/material";
+import { Task } from "utils/tasks";
 
 export default function TodoistTaskSelector({
   tasks,
-  setTaskName,
   setTask,
   startStopwatch,
 }: {
   tasks: Task[];
-  setTaskName: (taskName: string) => void;
-  setTask: (task: Task | undefined) => void;
+  setTask: (task: Task) => void;
   startStopwatch: () => void;
 }) {
   return (
@@ -19,13 +17,11 @@ export default function TodoistTaskSelector({
       renderInput={(params) => <TextField key={params.id} {...params} />}
       onInputChange={(_, value, reason) => {
         if (reason === "input") {
-          setTask(undefined);
-          setTaskName(value);
+          setTask({content: value});
         }
       }}
       onChange={(event, value, reason) => {
         if (reason === "selectOption") {
-          setTaskName("");
           setTask(value as Task);
           startStopwatch();
         }
