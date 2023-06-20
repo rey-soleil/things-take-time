@@ -13,7 +13,7 @@ import { logToGoogleCalendarAndToast } from "utils/task-logging";
 import { Task } from "utils/tasks";
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session } = useSession({ required: true });
 
   // TODO: clean up all the "| null | undefined" here
   const [startTime, setStartTime] = useState<number | undefined>();

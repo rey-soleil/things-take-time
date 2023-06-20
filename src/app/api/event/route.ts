@@ -18,8 +18,7 @@ const calendar = google.calendar({ version: "v3", auth: oAuth2Client });
  * from taskName or task.content.
  */
 export async function POST(request: Request) {
-  const { startTime, endTime, task, calendarId } =
-    await request.json();
+  const { startTime, endTime, task, calendarId } = await request.json();
   const summary = task.content;
   const description = task?.description || "";
 
@@ -40,7 +39,7 @@ export async function POST(request: Request) {
       resource,
     });
 
-    return new Response(JSON.stringify(calendarResponse));
+    return new Response(JSON.stringify(calendarResponse), { status: 200 });
   } catch (error) {
     console.error(error);
     return new Response(JSON.stringify(error), { status: 500 });
