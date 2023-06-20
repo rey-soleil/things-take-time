@@ -1,6 +1,6 @@
 import { getTickMarks } from "utils/timeline";
 
-export default function TickMarks() {
+export default function HorizontalTickMarks() {
   const tickMarks = getTickMarks(Date.now());
 
   return (
@@ -8,12 +8,12 @@ export default function TickMarks() {
       {tickMarks.map(({ milliseconds, label, percentFromEnd }) => (
         <div
           key={milliseconds}
-          className="absolute my-1 w-full bg-[#F2F2F2] text-center text-xs md:text-base"
+          className="absolute flex h-7 flex-col items-center justify-center text-xs font-semibold text-gray-500 md:text-base"
           style={{
-            bottom: `${percentFromEnd}%`,
+            right: `${percentFromEnd}%`,
           }}
         >
-          {label}
+          <span>{label}</span>
         </div>
       ))}
     </>
