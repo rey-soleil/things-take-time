@@ -16,7 +16,6 @@ export default function EnterTaskName({
   return (
     <Input
       fullWidth
-      placeholder="what's the next right thing?"
       onChange={({ target }) => setTaskName(target.value)}
       onKeyDown={(event) => {
         if (event.key === "Enter") {
