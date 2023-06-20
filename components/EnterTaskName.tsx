@@ -7,15 +7,22 @@ import { Input } from "@mui/material";
 export default function EnterTaskName({
   taskName,
   setTaskName,
+  startStopwatch,
 }: {
   taskName: string;
   setTaskName: (taskName: string) => void;
+  startStopwatch: () => void;
 }) {
   return (
     <Input
       fullWidth
-      placeholder="What are you going to do?"
+      placeholder="what's the next right thing?"
       onChange={({ target }) => setTaskName(target.value)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter") {
+          startStopwatch();
+        }
+      }}
       value={taskName}
       slotProps={{
         input: {
