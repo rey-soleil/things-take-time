@@ -6,7 +6,6 @@ import StopwatchButtons from "components/StopwatchButtons";
 import TaskCompleteDialog from "components/TaskCompleteDialog";
 import TaskController from "components/TaskController";
 import HorizontalTimeline from "components/timeline/HorizontalTimeline";
-import VerticalTimeline from "components/timeline/VerticalTimeline";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -47,6 +46,8 @@ export default function Home() {
     setMilliseconds(0);
     clearInterval(intervalId!);
     setIntervalId(null);
+    setTaskName("");
+    setTask(undefined);
   }
 
   // If the user has a Todoist API token, fetch their tasks
