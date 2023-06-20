@@ -1,6 +1,6 @@
 "use client";
 
-import { Task, TodoistApi } from "@doist/todoist-api-typescript";
+import { TodoistApi } from "@doist/todoist-api-typescript";
 import Stopwatch from "components/Stopwatch";
 import StopwatchButtons from "components/StopwatchButtons";
 import TaskCompleteDialog from "components/TaskCompleteDialog";
@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { logToGoogleCalendarAndToast } from "utils/task-logging";
+import { Task } from "utils/tasks";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -19,9 +20,8 @@ export default function Home() {
   const [milliseconds, setMilliseconds] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>();
 
-  const [taskName, setTaskName] = useState("");
   const [tasks, setTasks] = useState<Task[]>();
-  const [task, setTask] = useState<Task>();
+  const [task, setTask] = useState<Task>({ content: "" });
 
   const [isTaskConfirmationDialogOpen, setIsTaskConfirmationDialogOpen] =
     useState(false);
@@ -36,8 +36,8 @@ export default function Home() {
   }
 
   function stopStopwatch() {
-    task && setIsTaskConfirmationDialogOpen(true);
-    logToGoogleCalendarAndToast(session, startTime, taskName, task);
+    task.id && setIsTaskConfirmationDialogOpen(true);
+    logToGoogleCalendarAndToast(session, startTime, task);
     clearStopwatch();
   }
 
@@ -46,8 +46,7 @@ export default function Home() {
     setMilliseconds(0);
     clearInterval(intervalId!);
     setIntervalId(null);
-    setTaskName("");
-    setTask(undefined);
+    if (!task.id) setTask({ content: "" });
   }
 
   // If the user has a Todoist API token, fetch their tasks
@@ -57,6 +56,12 @@ export default function Home() {
     todoistApi.getTasks({ filter: "today" }).then((res) => setTasks(res));
   }, [session]);
 
+  // This ensures that we clear the task when closing the "Did you complete..."
+  // dialog
+  useEffect(() => {
+    if (!isTaskConfirmationDialogOpen) setTask({ content: "" });
+  }, [isTaskConfirmationDialogOpen]);
+
   // TODO: save #F2F2F2 as a CSS variable
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center bg-[#F2F2F2] p-5">
@@ -65,8 +70,6 @@ export default function Home() {
         startTime={startTime}
         tasks={tasks}
         task={task}
-        taskName={taskName}
-        setTaskName={setTaskName}
         setTask={setTask}
         startStopwatch={startStopwatch}
       />
@@ -74,8 +77,8 @@ export default function Home() {
       <HorizontalTimeline startTime={startTime} />
       <StopwatchButtons
         startTime={startTime}
-        taskName={taskName}
         task={task}
+        setTask={setTask}
         startStopwatch={startStopwatch}
         stopStopwatch={stopStopwatch}
         clearStopwatch={clearStopwatch}
@@ -83,6 +86,7 @@ export default function Home() {
       <Toaster position="bottom-right" />
       <TaskCompleteDialog
         task={task}
+        setTask={setTask}
         isTaskConfirmationDialogOpen={isTaskConfirmationDialogOpen}
         setIsTaskConfirmationDialogOpen={setIsTaskConfirmationDialogOpen}
         session={session}

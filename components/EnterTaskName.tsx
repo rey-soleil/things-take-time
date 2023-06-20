@@ -1,28 +1,29 @@
 import { Input } from "@mui/material";
+import { Task } from "utils/tasks";
 
 /**
  * A component for inputting the task name. Eventually, we'll query Todoist
  * tasks and make this an Autocomplete with a freeSolo option.
  */
 export default function EnterTaskName({
-  taskName,
-  setTaskName,
+  task,
+  setTask,
   startStopwatch,
 }: {
-  taskName: string;
-  setTaskName: (taskName: string) => void;
+  task: Task;
+  setTask: (task: Task) => void;
   startStopwatch: () => void;
 }) {
   return (
     <Input
       fullWidth
-      onChange={({ target }) => setTaskName(target.value)}
+      onChange={({ target }) => setTask({ ...task, content: target.value })}
       onKeyDown={(event) => {
         if (event.key === "Enter") {
           startStopwatch();
         }
       }}
-      value={taskName}
+      value={task.content}
       slotProps={{
         input: {
           className: "text-3xl text-center",
