@@ -1,7 +1,11 @@
 import { getTickMarks } from "utils/timeline";
 
-export default function HorizontalTickMarks() {
-  const tickMarks = getTickMarks(Date.now());
+export default function HorizontalTickMarks({
+  minutesOnScreen,
+}: {
+  minutesOnScreen: number;
+}) {
+  const tickMarks = getTickMarks(Date.now(), minutesOnScreen);
 
   return (
     <>
