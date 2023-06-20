@@ -7,13 +7,16 @@ import TaskCompleteDialog from "components/TaskCompleteDialog";
 import TaskController from "components/TaskController";
 import HorizontalTimeline from "components/timeline/HorizontalTimeline";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { setCalendarIdInSession } from "utils/calendar";
 import { logToGoogleCalendarAndToast } from "utils/task-logging";
 import { Task } from "utils/tasks";
 
 export default function Home() {
-  const { data: session } = useSession({ required: true });
+  const { data: session, update } = useSession({ required: true });
+  const router = useRouter();
 
   // TODO: clean up all the "| null | undefined" here
   const [startTime, setStartTime] = useState<number | undefined>();
@@ -54,6 +57,14 @@ export default function Home() {
     if (!session?.user?.todoistAPIToken) return;
     const todoistApi = new TodoistApi(session.user.todoistAPIToken);
     todoistApi.getTasks({ filter: "today" }).then((res) => setTasks(res));
+  }, [session]);
+
+  useEffect(() => {
+    if (!session || !session.user) return;
+    setCalendarIdInSession(session).then(
+      ({ needToRefresh }) => needToRefresh && router.refresh()
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   // This ensures that we clear the task when closing the "Did you complete..."
