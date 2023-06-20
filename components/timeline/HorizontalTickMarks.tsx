@@ -9,11 +9,11 @@ export default function HorizontalTickMarks({
 
   return (
     <>
-      {tickMarks.map(({ milliseconds, label, percentFromEnd }) => {
+      {tickMarks.map(({ milliseconds, label, percentFromEnd }, index) => {
         if (percentFromEnd < 5 || percentFromEnd > 95) return <></>;
         return (
           <div
-            key={milliseconds}
+            key={`tick-mark-${index}`}
             className="absolute flex h-7 flex-col items-center justify-center text-xs font-semibold text-gray-500 md:text-base"
             style={{
               right: `${percentFromEnd}%`,

@@ -19,17 +19,19 @@ export default function CuteButton({
 }) {
   return (
     <Tooltip title={title}>
-      <button
-      onClick={onClick}
-      className={`m-5 flex flex-col items-center ${hidden && "invisible"}`}
-      disabled={disabled}
-    >
-      <FontAwesomeIcon
-        icon={icon}
-        className={large ? "text-7xl" : "text-5xl"}
-        color={disabled ? "gray" : "black"}
-      />
-    </button>
+      <div>
+        <button
+          onClick={onClick}
+          className={`m-5 flex flex-col items-center ${hidden && "invisible"}`}
+          disabled={disabled}
+        >
+          <FontAwesomeIcon
+            icon={icon}
+            className={large ? "text-7xl" : "text-5xl"}
+            color={disabled ? "gray" : "black"}
+          />
+        </button>
+      </div>
     </Tooltip>
   );
 }
