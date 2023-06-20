@@ -1,25 +1,41 @@
+import { Session } from "next-auth";
 import toast from "react-hot-toast";
 import { Task } from "utils/tasks";
 
 export function toastGoogleCalendarCompletion(
   googleCalendarPromise: Promise<void | Response>,
+  session: Session | null,
   task: Task | undefined
 ) {
   toast.promise(googleCalendarPromise, {
     loading: (
-      <p>
-        Adding <b>{task?.content}</b> to Google Calendar
-      </p>
+      <div>
+        <p>
+          Adding <b>{task?.content}</b> to Google Calendar
+        </p>
+      </div>
     ),
     success: (
-      <p>
-        Added <b>{task?.content}</b> to Google Calendar
-      </p>
+      <div>
+        <p>
+          Added <b>{task?.content}</b> to Google Calendar.{" "}
+        </p>
+        {session?.user.calendarId && (
+          <a
+            href={`https://calendar.google.com/calendar/u/0/r?cid=${session.user.calendarId}`}
+            target="_blank"
+          >
+            Check it out ↗
+          </a>
+        )}
+      </div>
     ),
     error: (
-      <p>
-        Failed to add <b>{task?.content}</b> to Google Calendar
-      </p>
+      <div>
+        <p>
+          Failed to add <b>{task?.content}</b> to Google Calendar
+        </p>
+      </div>
     ),
   });
 }
@@ -30,19 +46,25 @@ export function toastTodoistCompletion(
 ) {
   toast.promise(todoistPromise, {
     loading: (
-      <p>
-        Marking <b>{task?.content}</b> as closed in Todoist
-      </p>
+      <div>
+        <p>
+          Marking <b>{task?.content}</b> as closed in Todoist
+        </p>
+      </div>
     ),
     success: (
-      <p>
-        Marked <b>{task?.content}</b> as closed in Todoist
-      </p>
+      <div>
+        <p>
+          Marked <b>{task?.content}</b> as closed in Todoist
+        </p>
+      </div>
     ),
     error: (
-      <p>
-        Failed to mark <b>{task?.content}</b> as closed in Todoist
-      </p>
+      <div>
+        <p>
+          Failed to mark <b>{task?.content}</b> as closed in Todoist
+        </p>
+      </div>
     ),
   });
 }
