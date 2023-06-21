@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
   try {
     const requestBody = {
-      summary: `Next Right Thing (${email})`,
+      summary: `Things Take Time (${email})`,
     };
     const createdCalendar = await calendar.calendars.insert({
       requestBody,
