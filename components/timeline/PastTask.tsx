@@ -38,6 +38,7 @@ export default function PastTask({
         />
       }
       placement="top"
+      enterTouchDelay={0}
     >
       <div
         className="absolute h-7 bg-green-500 opacity-80"
