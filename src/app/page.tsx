@@ -77,7 +77,7 @@ export default function Home() {
 
   // TODO: save #F2F2F2 as a CSS variable
   return (
-    <main className="flex h-screen w-screen flex-col items-center justify-center bg-[#F2F2F2] p-5">
+    <main className="flex h-screen w-screen flex-col items-center justify-center p-5">
       {/* <VerticalTimeline startTime={startTime} /> */}
       <TaskController
         startTime={startTime}
