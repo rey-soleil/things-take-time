@@ -1,4 +1,5 @@
 import { Roboto, Roboto_Slab } from "next/font/google";
+import Link from "next/link";
 import Provider from "../../components/Provider";
 import "./globals.css";
 
@@ -29,8 +30,8 @@ export default function RootLayout({
       <Provider>
         <body className="bg-[#F2F2F2]">
           <header className="absolute top-0 flex w-screen justify-center py-10">
-            <h1 className="text-4xl font-bold italic md:text-5xl">
-              things take time
+            <h1 className="text-4xl font-bold italic text-gray-500 md:text-5xl">
+              <Link href="/">things take time</Link>
             </h1>
           </header>
           {children}

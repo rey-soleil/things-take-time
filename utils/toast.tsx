@@ -24,6 +24,7 @@ export function toastGoogleCalendarCompletion(
           <a
             href={`https://calendar.google.com/calendar/u/0/r?cid=${session.user.calendarId}`}
             target="_blank"
+            className="text-blue-600 underline hover:text-blue-800"
           >
             Check it out ↗
           </a>
