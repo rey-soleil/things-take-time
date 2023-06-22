@@ -17,7 +17,7 @@ export default function TodoistTaskSelector({
       renderInput={(params) => <TextField key={params.id} {...params} />}
       onInputChange={(_, value, reason) => {
         if (reason === "input") {
-          setTask({content: value});
+          setTask({ content: value });
         }
       }}
       onChange={(event, value, reason) => {
