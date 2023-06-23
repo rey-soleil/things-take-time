@@ -24,7 +24,7 @@ export default function TaskController({
   }
 
   return (
-    <div className="md:w-[700px] flex w-full justify-center">
+    <div className="flex w-full justify-center md:w-[700px]">
       {!tasks && (
         <EnterTaskName
           task={task}
