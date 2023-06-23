@@ -68,8 +68,6 @@ export default function Insights() {
     setIsLoading(false);
   }
 
-  console.log({ tasks });
-
   useEffect(() => {
     session?.user.hasOwnProperty("calendarId") && loadTasks();
   }, [selectedNumDays, session]);
