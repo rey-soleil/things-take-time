@@ -10,8 +10,8 @@ export default function SignIn() {
           Things Take Time is a web app for tracking how you spend your time.
         </p>
         <p>
-          Log in to get a custom Google Calendar with every event you've ever
-          tracked.
+          Log in to get a custom Google Calendar with every event you&apos;ve
+          ever tracked.
         </p>
         <Button onClick={() => signIn("google", { callbackUrl: "/" })}>
           Sign in With Google
