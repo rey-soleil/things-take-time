@@ -27,6 +27,8 @@ export default function StackedTaskChart({
 }: TaskChartProps) {
   const tasksByDate = useMemo(() => convertToTasksByDate(tasks), [tasks]);
 
+  console.log({ tasksByDate });
+
   return (
     <ResponsiveContainer width="100%" height={400} className="flex items-start">
       <BarChart data={tasksByDate}>

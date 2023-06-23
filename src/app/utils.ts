@@ -172,6 +172,14 @@ export function formatAsHourAndMinutes(timeLogged: number) {
 // { day: "Fri Apr 14 2023", code: 120, meditate: 65 }
 export function convertToTasksByDate(tasks?: Task[]) {
   if (!tasks) return [];
+  // Note(6-23): this sort prevents a bug where there were multiple instances of
+  // the same day. However, the long term solution is to transform all this data
+  // server-side.
+  tasks?.sort(
+    (a, b) =>
+      new Date(b.start.dateTime).getTime() -
+      new Date(a.start.dateTime).getTime()
+  );
   return tasks
     .reduce((acc, task) => {
       const dayOfTask = new Date(task.start.dateTime).toDateString();
