@@ -4,8 +4,8 @@ import Provider from "../../components/Provider";
 import "./globals.css";
 
 export const metadata = {
-  title: "the next right thing",
-  description: "created by rey barceló",
+  title: "things take time",
+  description: "a web app for tracking how you spend your time",
 };
 
 const roboto = Roboto({
