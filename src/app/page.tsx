@@ -96,7 +96,7 @@ export default function Home() {
         stopStopwatch={stopStopwatch}
         clearStopwatch={clearStopwatch}
       />
-      <Toaster position="bottom-right" />
+      <Toaster position="bottom-right" containerStyle={{ marginBottom: 0 }} />
       <TaskCompleteDialog
         task={task}
         setTask={setTask}
