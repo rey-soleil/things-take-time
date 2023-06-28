@@ -1,4 +1,8 @@
-import { convertTickMarkToLabel } from "utils/timeline";
+import { formatAsHourAndMinutes } from "@/app/utils";
+import {
+  convertMillisecondsToMinutes,
+  convertTickMarkToLabel,
+} from "utils/timeline";
 
 export function TaskTooltip({
   summary,
@@ -11,10 +15,15 @@ export function TaskTooltip({
 }) {
   const startLabel = convertTickMarkToLabel(startMilliseconds);
   const endLabel = convertTickMarkToLabel(endMilliseconds);
+  const duration = formatAsHourAndMinutes(
+    Math.ceil(convertMillisecondsToMinutes(endMilliseconds - startMilliseconds))
+  );
 
   return (
     <div>
-      <div className="text-xl font-bold">{summary}</div>
+      <div className="text-xl font-bold">
+        {summary} ({duration})
+      </div>
       <div className="text-base">
         {startLabel} - {endLabel}
       </div>

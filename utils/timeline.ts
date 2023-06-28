@@ -35,6 +35,10 @@ export function convertMinutesToMilliseconds(minutes: number) {
   return minutes * 60 * 1000;
 }
 
+export function convertMillisecondsToMinutes(milliseconds: number) {
+  return milliseconds / (60 * 1000);
+}
+
 export function convertTickMarkToLabel(milliseconds: number) {
   return simplifyTimeString(new Date(milliseconds).toLocaleTimeString());
 }
