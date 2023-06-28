@@ -1,30 +1,40 @@
-import { GCalEvent } from "@/app/utils";
 import { Tooltip } from "@mui/material";
 import { TaskTooltip } from "components/timeline/TaskTooltip";
 import { getPercentFromEnd } from "utils/timeline";
 
 export default function PastTask({
-  event,
+  summary,
+  startTime,
+  endTime,
   minutesOnScreen,
 }: {
-  event: GCalEvent;
+  summary: string,
+  startTime: string | number,
+  endTime?: string,
   minutesOnScreen: number;
 }) {
-  if (!event.start?.dateTime || !event.end?.dateTime) return <></>;
+  if (!startTime) return <></>;
 
-  const startMilliseconds = new Date(event.start.dateTime).getTime();
-  const endMilliseconds = new Date(event.end.dateTime).getTime();
+  const startMilliseconds = new Date(startTime).getTime();
 
   const leftPercent = getPercentFromEnd(
     startMilliseconds,
     Date.now(),
     minutesOnScreen
   );
-  const rightPercent = getPercentFromEnd(
-    endMilliseconds,
-    Date.now(),
-    minutesOnScreen
-  );
+
+  let rightPercent = 50;
+  let endMilliseconds = Date.now();
+
+  if (endTime) {
+    endMilliseconds = new Date(endTime).getTime();
+
+    rightPercent = getPercentFromEnd(
+      endMilliseconds,
+      Date.now(),
+      minutesOnScreen
+    );
+  }
 
   const width = leftPercent - rightPercent;
 
@@ -32,7 +42,7 @@ export default function PastTask({
     <Tooltip
       title={
         <TaskTooltip
-          summary={event.summary}
+          summary={summary}
           startMilliseconds={startMilliseconds}
           endMilliseconds={endMilliseconds}
         />

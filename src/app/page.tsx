@@ -87,7 +87,7 @@ export default function Home() {
         startStopwatch={startStopwatch}
       />
       <Stopwatch milliseconds={milliseconds} />
-      <HorizontalTimeline session={session} startTime={startTime} />
+      <HorizontalTimeline session={session} startTime={startTime} task={task} />
       <StopwatchButtons
         startTime={startTime}
         task={task}
