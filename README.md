@@ -1,38 +1,23 @@
-# the next right thing
+# Things Take Time
 
-<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/68834278/239098242-efcc805b-84ef-4777-b0f1-83023108081d.gif" width="640" height="400"/>
+<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/68834278/260510785-0b9f3b52-26b8-4b9f-9235-5970a78e720b.gif" width="576" height="360"/>
 
 ## About
-**the next right thing** (NRT) is a web app to help you decide what to do next. 
 
-It's a combination stopwatch, to-do list, and analytics page, and it integrates with Google Calendar and Todoist.
+Things Take Time (TTT) is a web app for time tracking. 
+
+With TTT, you can import your tasks from Todoist and log all your completed tasks to Google Calendar. 
+
+You can also see charts breaking down your time usage by category on the `/insights` page.
 
 ## Frameworks
+- `Next.js`: for full-stack development
+- `NextAuth`: for user sign in using OAuth 2.0
+- `MongoDB`: to store user session data
+- `Todoist API`: to fetch users' tasks
+- `Google Calendar API`: to write completed tasks
+- `Recharts`: to render the insights chart
+- `Tailwind CSS`: for styling!
+- `React`
+- `TypeScript`
 
-NRT is build with Next.js and deployed to Vercel.
-
-It uses Tailwind for inline CSS and recharts for the insights page.
-
-It fetches tasks from the Todoist API and reads/writes from/to the Google Calendar API.
-
-## Running Locally
-
-```bash
-git clone https://github.com/rey-soleil/next-right-thing.git
-cd next-right-thing
-npm i
-npm run dev
-```
-
-### Environment Variables
-You'll need to `cp .env.example .env.local` and fill in the environment variables there.
-
-You can get your Google Calendar API key using the process described [here](https://support.google.com/googleapi/answer/6158862?hl=en)
-
-You can get your Todoist API key using the process described [here](https://developer.todoist.com/guides/#developing-with-todoist)
-
-## About the Name
-
-> If you do with conviction the next and most necessary thing, you are always doing something meaningful and intended by fate. 
-
--- Carl Jung
