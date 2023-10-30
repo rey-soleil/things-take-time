@@ -21,6 +21,9 @@ export async function POST(request: Request) {
   const { startTime, endTime, task, calendarId } = await request.json();
   const summary = task.content;
   const description = task?.description || "";
+  const taskType = summary.split(":").length > 0 ? summary.split(":")[0].toLowerCase() : null;
+  let colorId = null;
+  if(taskType === "freelance") colorId = 9
 
   const resource = {
     summary,
@@ -31,6 +34,7 @@ export async function POST(request: Request) {
     end: {
       dateTime: new Date(endTime),
     },
+    colorId
   };
 
   try {
