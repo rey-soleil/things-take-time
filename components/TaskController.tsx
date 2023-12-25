@@ -17,7 +17,7 @@ export default function TaskController({
 }) {
   if (startTime) {
     return (
-      <div className="w-fit max-w-[700px] rounded-full bg-[#0000FF] p-5 text-center text-4xl font-bold text-white">
+      <div className="w-fit max-w-[700px] rounded-full bg-[#0000FF] p-5 text-center text-4xl font-bold text-white overflow-y-auto max-h-[120px]">
         {task.content}
       </div>
     );

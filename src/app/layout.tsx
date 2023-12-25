@@ -1,5 +1,5 @@
+import NavBar from "components/NavBar";
 import { Roboto, Roboto_Slab } from "next/font/google";
-import Link from "next/link";
 import Provider from "../../components/Provider";
 import "./globals.css";
 
@@ -28,14 +28,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${roboto.variable} ${roboto_slab.variable}`}>
       <Provider>
-        <body className="bg-[#F2F2F2]">
-          <header className="flex w-screen justify-center py-10">
+        <body className="bg-[#F2F2F2] h-screen">
+          {/* <header className="flex w-screen justify-center py-10">
             <h1 className="text-4xl font-bold italic text-gray-500 md:text-5xl">
               <Link href="/">things take time</Link>
             </h1>
-          </header>
+          </header> */}
           {children}
         </body>
+        <NavBar />
       </Provider>
     </html>
   );
