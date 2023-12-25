@@ -9,7 +9,7 @@ export default function NavBar() {
     const [value, setValue] = useState(0);
 
     return (
-        <BottomNavigation showLabels className="fixed bottom-0 w-full flex justify-evenly" value={value}
+        <BottomNavigation showLabels className="fixed bottom-0 w-full flex !justify-evenly" value={value}
             onChange={(event, newValue) => {
                 setValue(newValue);
             }}>
