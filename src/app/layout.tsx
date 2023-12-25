@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${roboto.variable} ${roboto_slab.variable}`}>
       <Provider>
-        <body className="bg-[#F2F2F2] h-screen overflow-y-hidden">
+        <body className="bg-[#F2F2F2] h-screen overflow-y-clip">
           {/* <header className="flex w-screen justify-center py-10">
             <h1 className="text-4xl font-bold italic text-gray-500 md:text-5xl">
               <Link href="/">things take time</Link>
