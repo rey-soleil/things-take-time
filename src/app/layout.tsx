@@ -26,9 +26,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${roboto.variable} ${roboto_slab.variable}`}>
+    <html lang="en" className={`${roboto.variable} ${roboto_slab.variable} h-full`}>
       <Provider>
-        <body className="bg-[#F2F2F2] h-screen overflow-y-clip">
+        <body className="bg-[#F2F2F2] overflow-y-clip h-full">
           {/* <header className="flex w-screen justify-center py-10">
             <h1 className="text-4xl font-bold italic text-gray-500 md:text-5xl">
               <Link href="/">things take time</Link>
