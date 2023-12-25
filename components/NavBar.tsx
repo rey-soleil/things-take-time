@@ -12,7 +12,7 @@ export default function NavBar() {
     return (
         <BottomNavigation
             showLabels
-            className="fixed bottom-0 w-full flex !justify-evenly"
+            className="fixed bottom-0 w-full flex !justify-evenly h-[10%]"
             value={path}
         >
             <BottomNavigationAction className='' icon={<ScheduleIcon />} label="Timer" href='/' value="/" />
