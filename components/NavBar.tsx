@@ -5,7 +5,7 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 
 export default function NavBar() {
-    if (!window) return
+    if (!window) return <></>
 
     const path = window.location.pathname;
 
