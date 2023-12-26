@@ -2,6 +2,7 @@ import NavBar from "components/NavBar";
 import { Roboto, Roboto_Slab } from "next/font/google";
 import Provider from "../../components/Provider";
 import "./globals.css";
+import { NAVBAR_HEIGHT } from "./utils";
 
 export const metadata = {
   title: "things take time",
@@ -28,16 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${roboto.variable} ${roboto_slab.variable} h-full`}>
       <Provider>
-        <body className="bg-[#F2F2F2] overflow-y-auto h-[90%]">
-          {/* <header className="flex w-screen justify-center py-10">
-            <h1 className="text-4xl font-bold italic text-gray-500 md:text-5xl">
-              <Link href="/">things take time</Link>
-            </h1>
-          </header> */}
-          {children}
+        <body className='h-full'>
+          <div className={`bg-[#F2F2F2] h-full pb-[${NAVBAR_HEIGHT}] overflow-y-auto`}>
+            {children}
+          </div>
+          <NavBar />
         </body>
-        <NavBar />
       </Provider>
-    </html>
+    </html >
   );
 }

@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { setCalendarIdInSession } from "utils/calendar";
 import { logToGoogleCalendarAndToast } from "utils/task-logging";
 import { Task } from "utils/tasks";
+import { NAVBAR_HEIGHT } from "./utils";
 
 export default function Home() {
   const { data: session } = useSession({ required: true });
@@ -76,8 +77,7 @@ export default function Home() {
 
   // TODO: save #F2F2F2 as a CSS variable
   return (
-    <main className="flex w-screen flex-col items-center px-5 py-10 h-full justify-center space-y-8 overflow-y-clip">
-      {/* <VerticalTimeline startTime={startTime} /> */}
+    <main className="flex w-screen flex-col items-center px-5 h-full justify-center space-y-8">
       <TaskController
         startTime={startTime}
         tasks={tasks}
@@ -86,7 +86,6 @@ export default function Home() {
         startStopwatch={startStopwatch}
       />
       <Stopwatch milliseconds={milliseconds} />
-      {/* <HorizontalTimeline session={session} startTime={startTime} task={task} /> */}
       <StopwatchButtons
         startTime={startTime}
         task={task}
@@ -95,7 +94,6 @@ export default function Home() {
         stopStopwatch={stopStopwatch}
         clearStopwatch={clearStopwatch}
       />
-      <Toaster position="bottom-right" containerStyle={{ marginBottom: 0 }} />
       <TaskCompleteDialog
         task={task}
         setTask={setTask}
@@ -103,7 +101,7 @@ export default function Home() {
         setIsTaskConfirmationDialogOpen={setIsTaskConfirmationDialogOpen}
         session={session}
       />
-
+      <Toaster position="bottom-right" containerStyle={{ marginBottom: NAVBAR_HEIGHT, zIndex: 1 }} />
     </main>
   );
 }

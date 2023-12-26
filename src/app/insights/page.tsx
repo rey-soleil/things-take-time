@@ -1,6 +1,5 @@
 "use client";
 
-import CloseIcon from "@mui/icons-material/Close";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 import { ClipLoader } from "react-spinners";
@@ -105,13 +104,6 @@ export default function Insights() {
         )}
         <RecentTasks tasks={tasks} clusteredTasks={clusteredTasks} />
       </div>
-      <a
-        className="absolute right-8 top-8"
-        href="/"
-        title="go back to homepage"
-      >
-        <CloseIcon />
-      </a>
     </div>
   );
 }

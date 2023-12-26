@@ -1,5 +1,7 @@
 import _ from "lodash";
 
+export const NAVBAR_HEIGHT = "56px";
+
 export type Task = {
   start: { dateTime: string };
   end: { dateTime: string };
