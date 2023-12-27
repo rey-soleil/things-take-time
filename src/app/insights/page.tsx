@@ -74,7 +74,7 @@ export default function Insights() {
   if (isLoading)
     return (
       <div className="absolute left-1/2 top-1/2">
-        <ClipLoader color="white" />
+        <ClipLoader color="black" />
       </div>
     );
 
