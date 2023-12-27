@@ -80,7 +80,7 @@ export default function Insights() {
 
   return (
     <div className="m-4 flex flex-col md:flex-row">
-      <div className="flex flex-col md:p-4">
+      <div className="flex flex-col md:p-4 max-w-[25%]">
         <TaskSelector
           taskLabels={taskLabels}
           selectedTasks={selectedTasks}
