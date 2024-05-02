@@ -1,7 +1,7 @@
 "use client";
 
 import { TodoistApi } from "@doist/todoist-api-typescript";
-import Stopwatch from "components/Stopwatch";
+import Clock from "components/Clock";
 import StopwatchButtons from "components/StopwatchButtons";
 import TaskCompleteDialog from "components/TaskCompleteDialog";
 import TaskController from "components/TaskController";
@@ -20,8 +20,11 @@ export default function Home() {
 
   // TODO: clean up all the "| null | undefined" here
   const [startTime, setStartTime] = useState<number | undefined>();
-  const [milliseconds, setMilliseconds] = useState(0);
+  const [msElapsed, setMsElapsed] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>();
+
+  // How long, in milliseconds, the user has set the timer for
+  const [msUntilAlarm, setMsUntilAlarm] = useState<number>(0);
 
   const [tasks, setTasks] = useState<Task[]>();
   const [task, setTask] = useState<Task>({ content: "" });
@@ -33,7 +36,7 @@ export default function Home() {
     const startTime = Date.now();
     setStartTime(startTime);
     const intervalId = setInterval(() => {
-      setMilliseconds(Date.now() - startTime);
+      setMsElapsed(Date.now() - startTime);
     }, 1000);
     setIntervalId(intervalId);
   }
@@ -46,7 +49,8 @@ export default function Home() {
 
   function clearStopwatch() {
     setStartTime(undefined);
-    setMilliseconds(0);
+    setMsElapsed(0);
+    setMsUntilAlarm(0);
     clearInterval(intervalId!);
     setIntervalId(null);
     if (!task.id) setTask({ content: "" });
@@ -85,7 +89,7 @@ export default function Home() {
         setTask={setTask}
         startStopwatch={startStopwatch}
       />
-      <Stopwatch milliseconds={milliseconds} />
+      <Clock startTime={startTime} msElapsed={msElapsed} msUntilAlarm={msUntilAlarm} setMsUntilAlarm={setMsUntilAlarm} />
       <StopwatchButtons
         startTime={startTime}
         task={task}
