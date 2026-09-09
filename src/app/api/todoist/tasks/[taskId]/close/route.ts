@@ -9,7 +9,7 @@ function getTodoistToken() {
 
 export async function POST(
   _request: Request,
-  { params }: { params: { taskId: string } }
+  { params }: { params: Promise<{ taskId: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session) {
@@ -23,9 +23,11 @@ export async function POST(
     });
   }
 
+  const { taskId } = await params;
+
   try {
     const response = await fetch(
-      `${TODOIST_API_BASE}/tasks/${encodeURIComponent(params.taskId)}/close`,
+      `${TODOIST_API_BASE}/tasks/${encodeURIComponent(taskId)}/close`,
       {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
