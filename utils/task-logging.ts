@@ -1,4 +1,3 @@
-import { TodoistApi } from "@doist/todoist-api-typescript";
 import { Session } from "next-auth";
 import { Task } from "utils/tasks";
 import { toastGoogleCalendarCompletion, toastTodoistCompletion } from "./toast";
@@ -32,14 +31,18 @@ export function logTaskToGoogleCalendar(
     task,
     calendarId: session.user.calendarId,
   };
-  const googleCalendarPromise = fetch("/api/event", {
+  return fetch("/api/event", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(body),
-  }).catch((err) => console.error(err));
-  return googleCalendarPromise;
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Google Calendar request failed: ${response.status}`);
+    }
+    return response;
+  });
 }
 
 export function closeTodoistTaskAndToast(
@@ -56,12 +59,15 @@ export function closeTaskInTodoist(
   session: Session | null,
   task: Task | undefined
 ) {
-  if (!task || !task.id || !session?.user.todoistAPIToken) {
+  if (!task?.id || !session) {
     return null;
   }
-  const todoistApi = new TodoistApi(session.user.todoistAPIToken);
-  const todoistPromise = todoistApi
-    .closeTask(task.id)
-    .catch((err) => console.error(err));
-  return todoistPromise;
+
+  return fetch(`/api/todoist/tasks/${encodeURIComponent(task.id)}/close`, {
+    method: "POST",
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Todoist request failed: ${response.status}`);
+    }
+  });
 }
