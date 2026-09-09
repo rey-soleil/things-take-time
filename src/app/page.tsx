@@ -1,6 +1,5 @@
 "use client";
 
-import { TodoistApi } from "@doist/todoist-api-typescript";
 import Clock from "components/Clock";
 import StopwatchButtons from "components/StopwatchButtons";
 import TaskCompleteDialog from "components/TaskCompleteDialog";
@@ -27,6 +26,7 @@ export default function Home() {
   const [msUntilAlarm, setMsUntilAlarm] = useState<number>(0);
 
   const [tasks, setTasks] = useState<Task[]>();
+  const [todoistError, setTodoistError] = useState<string>();
   const [task, setTask] = useState<Task>({ content: "" });
 
   const [isTaskConfirmationDialogOpen, setIsTaskConfirmationDialogOpen] =
@@ -56,11 +56,24 @@ export default function Home() {
     if (!task.id) setTask({ content: "" });
   }
 
-  // If the user has a Todoist API token, fetch their tasks
   useEffect(() => {
-    if (!session?.user?.todoistAPIToken) return;
-    const todoistApi = new TodoistApi(session.user.todoistAPIToken);
-    todoistApi.getTasks({ filter: "today" }).then((res) => setTasks(res));
+    if (!session) return;
+
+    setTodoistError(undefined);
+    fetch("/api/todoist/tasks")
+      .then(async (response) => {
+        if (!response.ok) {
+          const body = await response.json().catch(() => ({}));
+          throw new Error(body.error || "Todoist is unavailable");
+        }
+        return response.json();
+      })
+      .then(({ tasks }) => setTasks(tasks))
+      .catch((error) => {
+        console.error(error);
+        setTasks(undefined);
+        setTodoistError(error.message || "Todoist is unavailable");
+      });
   }, [session]);
 
   useEffect(() => {
@@ -82,13 +95,20 @@ export default function Home() {
   // TODO: save #F2F2F2 as a CSS variable
   return (
     <main className="flex w-screen flex-col items-center px-5 h-full justify-center space-y-8">
-      <TaskController
-        startTime={startTime}
-        tasks={tasks}
-        task={task}
-        setTask={setTask}
-        startStopwatch={startStopwatch}
-      />
+      <div className="flex w-full flex-col items-center gap-2">
+        <TaskController
+          startTime={startTime}
+          tasks={tasks}
+          task={task}
+          setTask={setTask}
+          startStopwatch={startStopwatch}
+        />
+        {todoistError && !startTime && (
+          <p className="text-center font-mono text-sm">
+            Todoist unavailable — using manual task entry.
+          </p>
+        )}
+      </div>
       <Clock startTime={startTime} msElapsed={msElapsed} msUntilAlarm={msUntilAlarm} setMsUntilAlarm={setMsUntilAlarm} />
       <StopwatchButtons
         startTime={startTime}
