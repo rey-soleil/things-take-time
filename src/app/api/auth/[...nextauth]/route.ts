@@ -3,7 +3,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import clientPromise from "../../../../../lib/mongo/client";
 
-const authOptions = {
+export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -18,7 +18,6 @@ const authOptions = {
     async session({ session, user }: any) {
       session.user.id = user.id;
       session.user.calendarId = user.calendarId;
-      session.user.todoistAPIToken = user.todoistAPIToken;
       return session;
     },
   },
