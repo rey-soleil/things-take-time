@@ -1,8 +1,13 @@
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import clientPromise from "./mongo/client";
 
-export const authOptions = {
+const adapter = process.env.MONGODB_URI
+  ? MongoDBAdapter(clientPromise)
+  : undefined;
+
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -13,7 +18,6 @@ export const authOptions = {
     signIn: "/signin",
   },
   callbacks: {
-    // TODO: add types to session, user
     async session({ session, user }: any) {
       session.user.id = user.id;
       session.user.calendarId = user.calendarId;
@@ -21,5 +25,5 @@ export const authOptions = {
       return session;
     },
   },
-  adapter: MongoDBAdapter(clientPromise),
+  ...(adapter ? { adapter } : {}),
 };
