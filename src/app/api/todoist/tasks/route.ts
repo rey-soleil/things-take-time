@@ -1,10 +1,14 @@
+import { authOptions } from "lib/auth";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
 
 const TODOIST_API_BASE = "https://api.todoist.com/api/v1";
 
-function getTodoistToken() {
-  return process.env.TODOIST_API_TOKEN || process.env.NEXT_PUBLIC_TODOIST_API_TOKEN;
+function getTodoistToken(session: any) {
+  return (
+    session?.user?.todoistAPIToken ||
+    process.env.TODOIST_API_TOKEN ||
+    process.env.NEXT_PUBLIC_TODOIST_API_TOKEN
+  );
 }
 
 export async function GET() {
@@ -13,7 +17,7 @@ export async function GET() {
     return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
   }
 
-  const token = getTodoistToken();
+  const token = getTodoistToken(session);
   if (!token) {
     return new Response(JSON.stringify({ error: "Todoist is not configured" }), {
       status: 503,

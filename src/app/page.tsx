@@ -20,7 +20,7 @@ export default function Home() {
   // TODO: clean up all the "| null | undefined" here
   const [startTime, setStartTime] = useState<number | undefined>();
   const [msElapsed, setMsElapsed] = useState(0);
-  const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>();
+  const [intervalId, setIntervalId] = useState<ReturnType<typeof setInterval> | null>(null);
 
   // How long, in milliseconds, the user has set the timer for
   const [msUntilAlarm, setMsUntilAlarm] = useState<number>(0);
@@ -51,7 +51,7 @@ export default function Home() {
     setStartTime(undefined);
     setMsElapsed(0);
     setMsUntilAlarm(0);
-    clearInterval(intervalId!);
+    if (intervalId) clearInterval(intervalId);
     setIntervalId(null);
     if (!task.id) setTask({ content: "" });
   }
