@@ -1,12 +1,14 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { Task } from "utils/tasks";
+import { Task, taskKey, taskSourceLabel } from "utils/tasks";
 
 function hasTime(task: Task) {
   return Boolean(task.due?.date?.includes("T"));
 }
 
 function isRoutine(task: Task) {
-  return Boolean(task.due?.is_recurring && hasTime(task));
+  return (
+    task.source !== "notion" && Boolean(task.due?.is_recurring && hasTime(task))
+  );
 }
 
 function dueTimestamp(task: Task) {
@@ -26,18 +28,22 @@ function formatTime(task: Task) {
   });
 }
 
-export default function TodoistTaskSelector({
+export default function TaskSelector({
   tasks,
+  task,
   setTask,
   startStopwatch,
 }: {
   tasks: Task[];
+  task: Task;
   setTask: (task: Task) => void;
   startStopwatch: () => void;
 }) {
   const now = Date.now();
 
   function groupForTask(task: Task) {
+    if (task.source === "notion")
+      return task.active ? "NOTION · ACTIVE" : "NOTION · OTHER TASKS";
     if (!isRoutine(task)) return "TASKS";
     return dueTimestamp(task) < now ? "EARLIER TODAY" : "ROUTINES";
   }
@@ -46,8 +52,10 @@ export default function TodoistTaskSelector({
     const groupRank = (task: Task) => {
       const group = groupForTask(task);
       if (group === "TASKS") return 0;
-      if (group === "ROUTINES") return 1;
-      return 2;
+      if (group === "NOTION · ACTIVE") return 1;
+      if (group === "ROUTINES") return 2;
+      if (group === "EARLIER TODAY") return 3;
+      return 4;
     };
 
     const groupDifference = groupRank(a) - groupRank(b);
@@ -58,7 +66,8 @@ export default function TodoistTaskSelector({
       if (priorityDifference !== 0) return priorityDifference;
 
       const dueDifference = dueTimestamp(a) - dueTimestamp(b);
-      if (dueDifference !== 0) return dueDifference;
+      if (!Number.isNaN(dueDifference) && dueDifference !== 0)
+        return dueDifference;
 
       return (a.day_order ?? 0) - (b.day_order ?? 0);
     }
@@ -72,20 +81,35 @@ export default function TodoistTaskSelector({
     <Autocomplete
       freeSolo
       fullWidth
-      renderInput={(params) => <TextField key={params.id} {...params} />}
+      value={task.id ? task : null}
+      inputValue={task.content}
+      isOptionEqualToValue={(option, value) =>
+        taskKey(option) === taskKey(value)
+      }
+      getOptionKey={(option) =>
+        typeof option === "string" ? option : taskKey(option)
+      }
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          placeholder="what will you take the time to do?"
+          inputProps={{
+            ...params.inputProps,
+            "aria-label": "Choose a task or enter a name",
+          }}
+        />
+      )}
       onInputChange={(_, value, reason) => {
-        if (reason === "input") {
+        if (reason === "input" || reason === "clear") {
           setTask({ content: value });
         }
       }}
-      onChange={(_, value, reason) => {
-        if (reason === "selectOption") {
-          setTask(value as Task);
+      onChange={(_, value) => {
+        if (value && typeof value !== "string") {
+          setTask(value);
           startStopwatch();
-        }
-      }}
-      onKeyDown={(event) => {
-        if (event.key === "Enter") {
+        } else if (typeof value === "string" && value.trim()) {
+          setTask({ content: value });
           startStopwatch();
         }
       }}
@@ -108,11 +132,21 @@ export default function TodoistTaskSelector({
           <li
             key={key}
             {...optionProps}
-            className={`${optionProps.className ?? ""} flex justify-between gap-4 ${
-              earlier ? "opacity-50" : ""
-            }`}
+            className={`${
+              optionProps.className ?? ""
+            } flex justify-between gap-4 ${earlier ? "opacity-50" : ""}`}
           >
             <span className="min-w-0 truncate">{option.content}</span>
+            {option.source === "notion" && (
+              <span className="shrink-0 text-xs text-black/50">
+                {option.estimatedMinutes
+                  ? `${option.estimatedMinutes} min · `
+                  : ""}
+                {option.due?.date
+                  ? `due ${option.due.date.slice(0, 10)}`
+                  : taskSourceLabel(option)}
+              </span>
+            )}
             {time && (
               <span className="shrink-0 text-sm tabular-nums text-black/45">
                 {time}

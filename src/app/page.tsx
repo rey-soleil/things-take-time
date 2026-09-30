@@ -4,39 +4,54 @@ import Clock from "components/Clock";
 import StopwatchButtons from "components/StopwatchButtons";
 import TaskCompleteDialog from "components/TaskCompleteDialog";
 import TaskController from "components/TaskController";
+import NotionConnectionDialog from "components/NotionConnectionDialog";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { setCalendarIdInSession } from "utils/calendar";
 import { logToGoogleCalendarAndToast } from "utils/task-logging";
-import { Task } from "utils/tasks";
+import { Task, taskKey } from "utils/tasks";
 import { NAVBAR_HEIGHT } from "./utils";
 
 export default function Home() {
   const { data: session } = useSession({ required: true });
+  const email = session?.user?.email;
   const router = useRouter();
 
   // TODO: clean up all the "| null | undefined" here
   const [startTime, setStartTime] = useState<number | undefined>();
   const [msElapsed, setMsElapsed] = useState(0);
-  const [intervalId, setIntervalId] = useState<ReturnType<typeof setInterval> | null>(null);
+  const [intervalId, setIntervalId] = useState<ReturnType<
+    typeof setInterval
+  > | null>(null);
 
   // How long, in milliseconds, the user has set the timer for
   const [msUntilAlarm, setMsUntilAlarm] = useState<number>(0);
 
-  const [tasks, setTasks] = useState<Task[]>();
-  const [todoistError, setTodoistError] = useState<string>();
+  const [tasksBySource, setTasksBySource] = useState<Record<string, Task[]>>(
+    {}
+  );
+  const [sourceErrors, setSourceErrors] = useState<Record<string, string>>({});
+  const [notionConfigured, setNotionConfigured] = useState(false);
+  const [notionDataSourceId, setNotionDataSourceId] = useState<string>();
+  const [suggestedNotionDatabase, setSuggestedNotionDatabase] =
+    useState<string>();
+  const [notionDialogOpen, setNotionDialogOpen] = useState(false);
+  const [refreshCount, setRefreshCount] = useState(0);
+  const [tasksLoading, setTasksLoading] = useState(false);
+  const tasks = Object.values(tasksBySource).flat();
   const [task, setTask] = useState<Task>({ content: "" });
 
   const [isTaskConfirmationDialogOpen, setIsTaskConfirmationDialogOpen] =
     useState(false);
 
   function startStopwatch() {
-    const startTime = Date.now();
-    setStartTime(startTime);
+    if (startTime) return;
+    const startedAt = Date.now();
+    setStartTime(startedAt);
     const intervalId = setInterval(() => {
-      setMsElapsed(Date.now() - startTime);
+      setMsElapsed(Date.now() - startedAt);
     }, 1000);
     setIntervalId(intervalId);
   }
@@ -57,24 +72,62 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (!session) return;
-
-    setTodoistError(undefined);
-    fetch("/api/todoist/tasks")
-      .then(async (response) => {
-        if (!response.ok) {
-          const body = await response.json().catch(() => ({}));
-          throw new Error(body.error || "Todoist is unavailable");
+    if (!email) return;
+    const controller = new AbortController();
+    setTasksLoading(true);
+    setSourceErrors({});
+    Promise.allSettled(
+      (["todoist", "notion"] as const).map(async (source) => {
+        try {
+          const response = await fetch(`/api/${source}/tasks`, {
+            signal: controller.signal,
+            cache: "no-store",
+          });
+          const body = await response.json();
+          if (!response.ok)
+            throw new Error(body.error || `${source} is unavailable`);
+          if (controller.signal.aborted) return;
+          setTasksBySource((current) => ({
+            ...current,
+            [source]: body.tasks.map((item: Task) => ({ ...item, source })),
+          }));
+          if (source === "notion") {
+            setNotionConfigured(body.configured);
+            setNotionDataSourceId(body.dataSourceId);
+          }
+        } catch (error) {
+          if (controller.signal.aborted) return;
+          setTasksBySource((current) => ({ ...current, [source]: [] }));
+          setSourceErrors((current) => ({
+            ...current,
+            [source]:
+              error instanceof Error
+                ? error.message
+                : `${source} is unavailable`,
+          }));
         }
-        return response.json();
       })
-      .then(({ tasks }) => setTasks(tasks))
-      .catch((error) => {
-        console.error(error);
-        setTasks(undefined);
-        setTodoistError(error.message || "Todoist is unavailable");
-      });
-  }, [session]);
+    ).then(() => {
+      if (!controller.signal.aborted) setTasksLoading(false);
+    });
+    return () => controller.abort();
+  }, [email, refreshCount]);
+
+  useEffect(() => {
+    const database = new URLSearchParams(window.location.search).get(
+      "notionDatabase"
+    );
+    if (database) {
+      setSuggestedNotionDatabase(database);
+      setNotionDialogOpen(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const refresh = () => setRefreshCount((count) => count + 1);
+    window.addEventListener("focus", refresh);
+    return () => window.removeEventListener("focus", refresh);
+  }, []);
 
   useEffect(() => {
     if (!session || !session.user) return;
@@ -94,7 +147,7 @@ export default function Home() {
 
   // TODO: save #F2F2F2 as a CSS variable
   return (
-    <main className="flex w-screen flex-col items-center px-5 h-full justify-center space-y-8">
+    <main className="flex h-full w-screen flex-col items-center justify-center space-y-8 px-5">
       <div className="flex w-full flex-col items-center gap-2">
         <TaskController
           startTime={startTime}
@@ -103,13 +156,43 @@ export default function Home() {
           setTask={setTask}
           startStopwatch={startStopwatch}
         />
-        {todoistError && !startTime && (
-          <p className="text-center font-mono text-sm">
-            Todoist unavailable — using manual task entry.
-          </p>
+        {!startTime && (
+          <>
+            <div className="flex gap-5 text-sm text-black/60">
+              <button
+                type="button"
+                className="underline"
+                onClick={() => setNotionDialogOpen(true)}
+              >
+                {notionConfigured ? "Notion settings" : "Connect Notion"}
+              </button>
+              <button
+                type="button"
+                className="underline disabled:opacity-50"
+                disabled={tasksLoading}
+                onClick={() => setRefreshCount((count) => count + 1)}
+              >
+                {tasksLoading ? "Refreshing…" : "Refresh tasks"}
+              </button>
+            </div>
+            {Object.entries(sourceErrors).map(([source, error]) => (
+              <p
+                key={source}
+                role="status"
+                className="max-w-[700px] text-center text-sm text-red-700"
+              >
+                {source === "notion" ? "Notion" : "Todoist"}: {error}
+              </p>
+            ))}
+          </>
         )}
       </div>
-      <Clock startTime={startTime} msElapsed={msElapsed} msUntilAlarm={msUntilAlarm} setMsUntilAlarm={setMsUntilAlarm} />
+      <Clock
+        startTime={startTime}
+        msElapsed={msElapsed}
+        msUntilAlarm={msUntilAlarm}
+        setMsUntilAlarm={setMsUntilAlarm}
+      />
       <StopwatchButtons
         startTime={startTime}
         task={task}
@@ -120,12 +203,34 @@ export default function Home() {
       />
       <TaskCompleteDialog
         task={task}
-        setTask={setTask}
+        onCompleted={(completed) => {
+          setTasksBySource((current) =>
+            Object.fromEntries(
+              Object.entries(current).map(([source, items]) => [
+                source,
+                items.filter((item) => taskKey(item) !== taskKey(completed)),
+              ])
+            )
+          );
+          setRefreshCount((count) => count + 1);
+        }}
         isTaskConfirmationDialogOpen={isTaskConfirmationDialogOpen}
         setIsTaskConfirmationDialogOpen={setIsTaskConfirmationDialogOpen}
         session={session}
       />
-      <Toaster position="bottom-right" containerStyle={{ marginBottom: NAVBAR_HEIGHT, zIndex: 1 }} />
+      {notionDialogOpen && (
+        <NotionConnectionDialog
+          open
+          configured={notionConfigured}
+          dataSourceId={notionDataSourceId ?? suggestedNotionDatabase}
+          onClose={() => setNotionDialogOpen(false)}
+          onSaved={() => setRefreshCount((count) => count + 1)}
+        />
+      )}
+      <Toaster
+        position="bottom-right"
+        containerStyle={{ marginBottom: NAVBAR_HEIGHT, zIndex: 1 }}
+      />
     </main>
   );
 }

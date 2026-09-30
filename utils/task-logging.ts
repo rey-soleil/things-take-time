@@ -1,6 +1,6 @@
 import { Session } from "next-auth";
-import { Task } from "utils/tasks";
-import { toastGoogleCalendarCompletion, toastTodoistCompletion } from "./toast";
+import { Task, taskSourceLabel } from "utils/tasks";
+import { toastGoogleCalendarCompletion, toastTaskCompletion } from "./toast";
 
 export function logToGoogleCalendarAndToast(
   session: Session | null,
@@ -45,17 +45,18 @@ export function logTaskToGoogleCalendar(
   });
 }
 
-export function closeTodoistTaskAndToast(
+export function closeTaskAndToast(
   session: Session | null,
   task: Task | undefined
 ) {
-  const todoistPromise = closeTaskInTodoist(session, task);
-  if (todoistPromise) {
-    toastTodoistCompletion(todoistPromise, task);
+  const completionPromise = closeTaskInSource(session, task);
+  if (completionPromise) {
+    toastTaskCompletion(completionPromise, task);
   }
+  return completionPromise;
 }
 
-export function closeTaskInTodoist(
+export function closeTaskInSource(
   session: Session | null,
   task: Task | undefined
 ) {
@@ -63,11 +64,16 @@ export function closeTaskInTodoist(
     return null;
   }
 
-  return fetch(`/api/todoist/tasks/${encodeURIComponent(task.id)}/close`, {
+  const source = task.source === "notion" ? "notion" : "todoist";
+  return fetch(`/api/${source}/tasks/${encodeURIComponent(task.id)}/close`, {
     method: "POST",
-  }).then((response) => {
+  }).then(async (response) => {
     if (!response.ok) {
-      throw new Error(`Todoist request failed: ${response.status}`);
+      const body = await response.json().catch(() => ({}));
+      throw new Error(
+        body.error ||
+          `${taskSourceLabel(task)} request failed: ${response.status}`
+      );
     }
   });
 }
