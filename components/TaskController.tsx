@@ -1,6 +1,6 @@
 import { Task } from "utils/tasks";
 import EnterTaskName from "./EnterTaskName";
-import TodoistTaskSelector from "./TodoistTaskSelector";
+import TaskSelector from "./TaskSelector";
 
 export default function TaskController({
   startTime,
@@ -17,7 +17,7 @@ export default function TaskController({
 }) {
   if (startTime) {
     return (
-      <div className="w-fit max-w-[700px] rounded-full bg-[#0000FF] p-5 text-center text-4xl font-bold text-white overflow-y-auto max-h-[120px]">
+      <div className="max-h-[120px] w-fit max-w-[700px] overflow-y-auto rounded-full bg-[#0000FF] p-5 text-center text-4xl font-bold text-white">
         {task.content}
       </div>
     );
@@ -33,8 +33,9 @@ export default function TaskController({
         />
       )}
       {tasks && (
-        <TodoistTaskSelector
+        <TaskSelector
           tasks={tasks}
+          task={task}
           setTask={setTask}
           startStopwatch={startStopwatch}
         />

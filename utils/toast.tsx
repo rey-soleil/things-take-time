@@ -1,6 +1,6 @@
 import { Session } from "next-auth";
 import toast from "react-hot-toast";
-import { Task } from "utils/tasks";
+import { Task, taskSourceLabel } from "utils/tasks";
 
 export function toastGoogleCalendarCompletion(
   googleCalendarPromise: Promise<void | Response>,
@@ -41,29 +41,30 @@ export function toastGoogleCalendarCompletion(
   });
 }
 
-export function toastTodoistCompletion(
-  todoistPromise: Promise<boolean | void>,
+export function toastTaskCompletion(
+  completionPromise: Promise<boolean | void>,
   task: Task | undefined
 ) {
-  toast.promise(todoistPromise, {
+  const source = task ? taskSourceLabel(task) : "task source";
+  toast.promise(completionPromise, {
     loading: (
       <div>
         <p>
-          Marking <b>{task?.content}</b> as closed in Todoist
+          Marking <b>{task?.content}</b> complete in {source}
         </p>
       </div>
     ),
     success: (
       <div>
         <p>
-          Marked <b>{task?.content}</b> as closed in Todoist
+          Marked <b>{task?.content}</b> complete in {source}
         </p>
       </div>
     ),
     error: (
       <div>
         <p>
-          Failed to mark <b>{task?.content}</b> as closed in Todoist
+          Failed to mark <b>{task?.content}</b> complete in {source}
         </p>
       </div>
     ),
